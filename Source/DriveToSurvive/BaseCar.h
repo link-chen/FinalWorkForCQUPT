@@ -26,8 +26,6 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	USpringArmComponent* SpringArm;
 	UPROPERTY(EditAnywhere)
 	UAudioComponent* Audio;
-	UPROPERTY(EditAnywhere)
-	float MaxSpeed;
 	bool bExternal=true;
 	
 
@@ -45,5 +43,7 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 public:
 	bool bCanUseDRS;
+	UPROPERTY(EditAnywhere)
+	float MaxSpeed;
 	ABaseCar();
 };

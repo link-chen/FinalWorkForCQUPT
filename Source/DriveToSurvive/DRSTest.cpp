@@ -12,7 +12,7 @@ ADRSTest::ADRSTest()
 	PrimaryActorTick.bCanEverTick = true;
 	Box=CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
 	FScriptDelegate Del;
-	Del.BindUFunction(this,"OnOverLap");
+	Del.BindUFunction(this,"OnOverlayBegin");
 	Box->OnComponentBeginOverlap.Add(Del);
 }
 
@@ -29,7 +29,7 @@ void ADRSTest::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ADRSTest::OnOverLap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void ADRSTest::OnOverlayBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if(ABaseCar* Car=Cast<ABaseCar>(OtherActor))
 	{
