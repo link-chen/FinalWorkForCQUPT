@@ -14,11 +14,11 @@ ABaseCar::ABaseCar()
 	ExternalCamera->SetupAttachment(SpringArm);
 	InternalCamera->SetupAttachment(RootComponent);
 	Audio=CreateDefaultSubobject<UAudioComponent>(TEXT("AudiComponent"));
+	InternalCamera->Deactivate();
 }
 void ABaseCar::BeginPlay()
 {
 	Super::BeginPlay();
-	InternalCamera->Deactivate();
 }
 void ABaseCar::Tick(float DeltaSeconds)
 {
@@ -27,8 +27,7 @@ void ABaseCar::Tick(float DeltaSeconds)
 
 void ABaseCar::MoveForward(float Value)
 {
-	if(GetVehicleMovementComponent()->GetForwardSpeed()<MaxSpeed)
-	GetVehicleMovementComponent()->SetThrottleInput(Value*UpRate);
+	GetVehicleMovementComponent()->SetThrottleInput(Value);
 	PlayEngineSound();
 }
 

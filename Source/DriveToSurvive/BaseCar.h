@@ -28,8 +28,6 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	UAudioComponent* Audio;
 	UPROPERTY(EditAnywhere)
 	float MaxSpeed;
-	UPROPERTY(EditAnywhere)
-	float UpRate;
 	bool bExternal=true;
 	
 
