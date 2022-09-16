@@ -15,6 +15,7 @@ ABaseCar::ABaseCar()
 	InternalCamera->SetupAttachment(RootComponent);
 	Audio=CreateDefaultSubobject<UAudioComponent>(TEXT("AudiComponent"));
 	InternalCamera->Deactivate();
+	bAddForce=true;
 }
 void ABaseCar::BeginPlay()
 {
@@ -22,7 +23,13 @@ void ABaseCar::BeginPlay()
 }
 void ABaseCar::Tick(float DeltaSeconds)
 {
-	
+	UE_LOG(LogTemp,Warning,TEXT("%f"),GetVehicleMovementComponent()->GetForwardSpeed())
+	if(bAddForce)
+	{
+		FVector forward=GetActorForwardVector();
+		if(GetVehicleMovementComponent()->GetForwardSpeed()>0)
+		GetMesh()->AddForce(-forward*300000);
+	}
 }
 
 void ABaseCar::MoveForward(float Value)
@@ -70,10 +77,25 @@ void ABaseCar::ChangeCamera()
 
 void ABaseCar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	
 	PlayerInputComponent->BindAction("Brake",IE_Pressed,this,&ABaseCar::Brake);
 	PlayerInputComponent->BindAction("Brake",IE_Released,this,&ABaseCar::CancleBrake);
+	
 	PlayerInputComponent->BindAction("ChangeCamera",IE_Pressed,this,&ABaseCar::ChangeCamera);
+	
 	PlayerInputComponent->BindAxis("MoveForward",this,&ABaseCar::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight",this,&ABaseCar::MoveRight);
 }
+
+void ABaseCar::UseDRS()
+{
+	bAddForce=false;
+}
+
+void ABaseCar::DisableDRS()
+{
+	bAddForce=true;
+}
+
 

@@ -27,7 +27,9 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	UPROPERTY(EditAnywhere)
 	UAudioComponent* Audio;
 	bool bExternal=true;
-	
+	UPROPERTY(EditAnywhere)
+	bool bIsmanual;
+	bool bAddForce;
 
 	
 	UPROPERTY(EditAnywhere)
@@ -45,5 +47,7 @@ public:
 	bool bCanUseDRS;
 	UPROPERTY(EditAnywhere)
 	float MaxSpeed;
+	void UseDRS();
+	void DisableDRS();
 	ABaseCar();
 };

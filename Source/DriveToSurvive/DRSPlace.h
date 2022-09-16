@@ -16,6 +16,8 @@ class DRIVETOSURVIVE_API ADRSPlace : public AActor
 	UBoxComponent* DRSStart;
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* DRSEnd;
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* MeshComponent;
 	
 public:	
 	// Sets default values for this actor's properties

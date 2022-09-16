@@ -4,6 +4,7 @@
 #include "DRSPlace.h"
 
 #include "BaseCar.h"
+#include "WheeledVehicleMovementComponent.h"
 
 // Sets default values
 ADRSPlace::ADRSPlace()
@@ -12,7 +13,11 @@ ADRSPlace::ADRSPlace()
 	PrimaryActorTick.bCanEverTick = true;
 	DRSStart=CreateDefaultSubobject<UBoxComponent>(TEXT("DRSStart"));
 	DRSEnd=CreateDefaultSubobject<UBoxComponent>(TEXT("DRSEnd"));
+	MeshComponent=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 
+	DRSStart->SetupAttachment(MeshComponent);
+	DRSEnd->SetupAttachment(MeshComponent);
+	
 	FScriptDelegate Start;
 	Start.BindUFunction(this,"DRSStartFunction");
 	DRSStart->OnComponentBeginOverlap.Add(Start);
@@ -41,8 +46,8 @@ void ADRSPlace::DRSStartFunction(UPrimitiveComponent* OverlappedComponent, AActo
 	{
 		if(Car->bCanUseDRS)
 		{
-			Car->MaxSpeed+=25.0f;
-			UE_LOG(LogTemp,Warning,TEXT("DRSStart"));
+			UE_LOG(LogTemp,Warning,TEXT("UseDRS"));
+			Car->UseDRS();
 		}
 	}
 }
@@ -53,9 +58,9 @@ void ADRSPlace::DRSEndFunction(UPrimitiveComponent* OverlappedComponent, AActor*
 	{
 		if(Car->bCanUseDRS)
 		{
+			UE_LOG(LogTemp,Warning,TEXT("EndDRS"));
+			Car->DisableDRS();
 			Car->bCanUseDRS=false;
-			Car->MaxSpeed-=25.0f;
-			UE_LOG(LogTemp,Warning,TEXT("DRSEnd"));
 		}
 	}
 }
