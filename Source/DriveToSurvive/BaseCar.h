@@ -30,7 +30,9 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	UPROPERTY(EditAnywhere)
 	bool bIsmanual;
 	bool bAddForce;
-
+	float CurrentSpeed;
+	UPROPERTY(EditAnywhere)
+	float ElectronicPower;
 	
 	UPROPERTY(EditAnywhere)
 	TArray<USoundCue*> SoundArray;
@@ -45,9 +47,12 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 public:
 	bool bCanUseDRS;
+	bool bInDRSPlace;
 	UPROPERTY(EditAnywhere)
 	float MaxSpeed;
 	void UseDRS();
 	void DisableDRS();
+	void UseERS();
+	void CancleERS();
 	ABaseCar();
 };

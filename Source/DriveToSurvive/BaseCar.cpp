@@ -45,10 +45,12 @@ void ABaseCar::MoveRight(float Value)
 
 void ABaseCar::Brake()
 {
+	CurrentSpeed=GetVehicleMovementComponent()->GetForwardSpeed();
 	GetVehicleMovementComponent()->SetHandbrakeInput(true);
 }
 void ABaseCar::CancleBrake()
 {
+	float DeltaSpeed=CurrentSpeed-GetVehicleMovementComponent()->GetForwardSpeed();
 	GetVehicleMovementComponent()->SetHandbrakeInput(false);
 }
 
@@ -82,6 +84,8 @@ void ABaseCar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Brake",IE_Pressed,this,&ABaseCar::Brake);
 	PlayerInputComponent->BindAction("Brake",IE_Released,this,&ABaseCar::CancleBrake);
 	
+	PlayerInputComponent->BindAction("TakeDRS",IE_Pressed,this,&ABaseCar::UseDRS);
+	
 	PlayerInputComponent->BindAction("ChangeCamera",IE_Pressed,this,&ABaseCar::ChangeCamera);
 	
 	PlayerInputComponent->BindAxis("MoveForward",this,&ABaseCar::MoveForward);
@@ -90,12 +94,23 @@ void ABaseCar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ABaseCar::UseDRS()
 {
+	if(bInDRSPlace)
 	bAddForce=false;
 }
 
 void ABaseCar::DisableDRS()
 {
 	bAddForce=true;
+}
+
+void ABaseCar::UseERS()
+{
+	
+}
+
+void ABaseCar::CancleERS()
+{
+	
 }
 
 

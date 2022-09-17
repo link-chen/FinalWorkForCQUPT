@@ -46,8 +46,7 @@ void ADRSPlace::DRSStartFunction(UPrimitiveComponent* OverlappedComponent, AActo
 	{
 		if(Car->bCanUseDRS)
 		{
-			UE_LOG(LogTemp,Warning,TEXT("UseDRS"));
-			Car->UseDRS();
+			Car->bInDRSPlace=true;
 		}
 	}
 }
@@ -58,9 +57,9 @@ void ADRSPlace::DRSEndFunction(UPrimitiveComponent* OverlappedComponent, AActor*
 	{
 		if(Car->bCanUseDRS)
 		{
-			UE_LOG(LogTemp,Warning,TEXT("EndDRS"));
 			Car->DisableDRS();
 			Car->bCanUseDRS=false;
+			Car->bInDRSPlace=false;
 		}
 	}
 }
