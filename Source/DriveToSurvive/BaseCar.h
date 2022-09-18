@@ -33,6 +33,9 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	float CurrentSpeed;
 	UPROPERTY(EditAnywhere)
 	float ElectronicPower;
+	bool bUseERS;
+	bool bERSCanOpen;
+	FTimerHandle ERSTimeCount;
 	
 	UPROPERTY(EditAnywhere)
 	TArray<USoundCue*> SoundArray;
@@ -53,6 +56,6 @@ public:
 	void UseDRS();
 	void DisableDRS();
 	void UseERS();
-	void CancleERS();
+	void ERS();
 	ABaseCar();
 };

@@ -16,6 +16,7 @@ ABaseCar::ABaseCar()
 	Audio=CreateDefaultSubobject<UAudioComponent>(TEXT("AudiComponent"));
 	InternalCamera->Deactivate();
 	bAddForce=true;
+	bERSCanOpen=false;
 }
 void ABaseCar::BeginPlay()
 {
@@ -23,12 +24,20 @@ void ABaseCar::BeginPlay()
 }
 void ABaseCar::Tick(float DeltaSeconds)
 {
-	UE_LOG(LogTemp,Warning,TEXT("%f"),GetVehicleMovementComponent()->GetForwardSpeed())
+	FVector forward=GetActorForwardVector();
 	if(bAddForce)
 	{
-		FVector forward=GetActorForwardVector();
 		if(GetVehicleMovementComponent()->GetForwardSpeed()>0)
 		GetMesh()->AddForce(-forward*300000);
+	}
+	if(!bAddForce)
+	{
+		if(GetVehicleMovementComponent()->GetForwardSpeed()>0)
+		GetMesh()->AddForce(forward*360000);
+	}
+	if(bUseERS)
+	{
+		GetMesh()->AddForce(forward*100000);
 	}
 }
 
@@ -52,6 +61,8 @@ void ABaseCar::CancleBrake()
 {
 	float DeltaSpeed=CurrentSpeed-GetVehicleMovementComponent()->GetForwardSpeed();
 	GetVehicleMovementComponent()->SetHandbrakeInput(false);
+	ElectronicPower=ElectronicPower+DeltaSpeed/45<=450.0f?ElectronicPower+DeltaSpeed/45:450.0f;
+	UE_LOG(LogTemp,Warning,TEXT("Recharge"));
 }
 
 void ABaseCar::PlayEngineSound()
@@ -85,6 +96,7 @@ void ABaseCar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Brake",IE_Released,this,&ABaseCar::CancleBrake);
 	
 	PlayerInputComponent->BindAction("TakeDRS",IE_Pressed,this,&ABaseCar::UseDRS);
+	PlayerInputComponent->BindAction("TakeERS",IE_Pressed,this,&ABaseCar::UseERS);
 	
 	PlayerInputComponent->BindAction("ChangeCamera",IE_Pressed,this,&ABaseCar::ChangeCamera);
 	
@@ -105,12 +117,33 @@ void ABaseCar::DisableDRS()
 
 void ABaseCar::UseERS()
 {
-	
+	if(!bERSCanOpen)
+	{
+		UE_LOG(LogTemp,Warning,TEXT("OpenERS"));
+		GetWorldTimerManager().SetTimer(ERSTimeCount,this,&ABaseCar::ERS,0.2,true);
+		bERSCanOpen=true;
+	}
+	else
+	{
+		UE_LOG(LogTemp,Warning,TEXT("CloseERS"));
+		bERSCanOpen=false;
+		GetWorldTimerManager().ClearTimer(ERSTimeCount);
+	}
 }
-
-void ABaseCar::CancleERS()
+void ABaseCar::ERS()
 {
 	
+	if(ElectronicPower!=0.0)
+	{
+		UE_LOG(LogTemp,Warning,TEXT("TakeERS"));
+		bUseERS=true;
+		ElectronicPower=ElectronicPower-5.0f<0.0f?0.0f:ElectronicPower-5.0f;
+	}
+	else
+	{
+		bUseERS=false;
+		bERSCanOpen=false;
+		GetWorldTimerManager().ClearTimer(ERSTimeCount);
+	}
 }
-
 
