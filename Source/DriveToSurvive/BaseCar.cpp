@@ -21,6 +21,9 @@ ABaseCar::ABaseCar()
 void ABaseCar::BeginPlay()
 {
 	Super::BeginPlay();
+	ReBornRotator=GetTransform().Rotator();
+	LastLocation=GetTransform().GetLocation();
+	ElectronicPower=MaxElectronicPower;
 }
 void ABaseCar::Tick(float DeltaSeconds)
 {
@@ -30,14 +33,9 @@ void ABaseCar::Tick(float DeltaSeconds)
 		if(GetVehicleMovementComponent()->GetForwardSpeed()>0)
 		GetMesh()->AddForce(-forward*300000);
 	}
-	if(!bAddForce)
-	{
-		if(GetVehicleMovementComponent()->GetForwardSpeed()>0)
-		GetMesh()->AddForce(forward*360000);
-	}
 	if(bUseERS)
 	{
-		GetMesh()->AddForce(forward*100000);
+		GetMesh()->AddForce(forward*BaseRate*ERSRate);
 	}
 }
 
@@ -61,8 +59,7 @@ void ABaseCar::CancleBrake()
 {
 	float DeltaSpeed=CurrentSpeed-GetVehicleMovementComponent()->GetForwardSpeed();
 	GetVehicleMovementComponent()->SetHandbrakeInput(false);
-	ElectronicPower=ElectronicPower+DeltaSpeed/45<=450.0f?ElectronicPower+DeltaSpeed/45:450.0f;
-	UE_LOG(LogTemp,Warning,TEXT("Recharge"));
+	ElectronicPower=ElectronicPower+DeltaSpeed/45<=MaxElectronicPower?ElectronicPower+DeltaSpeed/45:MaxElectronicPower;
 }
 
 void ABaseCar::PlayEngineSound()
@@ -97,6 +94,8 @@ void ABaseCar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	
 	PlayerInputComponent->BindAction("TakeDRS",IE_Pressed,this,&ABaseCar::UseDRS);
 	PlayerInputComponent->BindAction("TakeERS",IE_Pressed,this,&ABaseCar::UseERS);
+
+	PlayerInputComponent->BindAction("ReSet",IE_Pressed,this,&ABaseCar::ReSetTransform);
 	
 	PlayerInputComponent->BindAction("ChangeCamera",IE_Pressed,this,&ABaseCar::ChangeCamera);
 	
@@ -119,13 +118,11 @@ void ABaseCar::UseERS()
 {
 	if(!bERSCanOpen)
 	{
-		UE_LOG(LogTemp,Warning,TEXT("OpenERS"));
-		GetWorldTimerManager().SetTimer(ERSTimeCount,this,&ABaseCar::ERS,0.2,true);
+		GetWorldTimerManager().SetTimer(ERSTimeCount,this,&ABaseCar::ERS,0.25,true);
 		bERSCanOpen=true;
 	}
 	else
 	{
-		UE_LOG(LogTemp,Warning,TEXT("CloseERS"));
 		bERSCanOpen=false;
 		GetWorldTimerManager().ClearTimer(ERSTimeCount);
 	}
@@ -135,9 +132,8 @@ void ABaseCar::ERS()
 	
 	if(ElectronicPower!=0.0)
 	{
-		UE_LOG(LogTemp,Warning,TEXT("TakeERS"));
 		bUseERS=true;
-		ElectronicPower=ElectronicPower-5.0f<0.0f?0.0f:ElectronicPower-5.0f;
+		ElectronicPower=ElectronicPower-2.5f<0.0f?0.0f:ElectronicPower-2.5f;
 	}
 	else
 	{
@@ -145,5 +141,11 @@ void ABaseCar::ERS()
 		bERSCanOpen=false;
 		GetWorldTimerManager().ClearTimer(ERSTimeCount);
 	}
+}
+
+void ABaseCar::ReSetTransform()
+{
+	GetMesh()->SetWorldLocation(LastLocation,false,NULL,ETeleportType::TeleportPhysics);
+	GetMesh()->SetWorldRotation(ReBornRotator,false,NULL,ETeleportType::TeleportPhysics);
 }
 

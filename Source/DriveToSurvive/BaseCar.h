@@ -8,7 +8,6 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Sound/SoundCue.h"
 #include "BaseCar.generated.h"
-
 /**
  * 
  */
@@ -16,8 +15,8 @@ UCLASS()
 class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 {
 	GENERATED_BODY()
-
 	
+	int BaseRate=100000;
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* ExternalCamera;
 	UPROPERTY(EditAnywhere)
@@ -32,7 +31,10 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	bool bAddForce;
 	float CurrentSpeed;
 	UPROPERTY(EditAnywhere)
+	float MaxElectronicPower;
 	float ElectronicPower;
+	UPROPERTY(EditAnywhere)
+	float ERSRate;
 	bool bUseERS;
 	bool bERSCanOpen;
 	FTimerHandle ERSTimeCount;
@@ -53,9 +55,12 @@ public:
 	bool bInDRSPlace;
 	UPROPERTY(EditAnywhere)
 	float MaxSpeed;
+	FVector LastLocation;
+	FRotator ReBornRotator;
 	void UseDRS();
 	void DisableDRS();
 	void UseERS();
 	void ERS();
+	void ReSetTransform();
 	ABaseCar();
 };
