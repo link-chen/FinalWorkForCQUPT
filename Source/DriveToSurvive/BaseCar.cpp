@@ -2,6 +2,8 @@
 
 
 #include "BaseCar.h"
+
+#include "DriveToSurviveGameModeBase.h"
 #include "WheeledVehicleMovementComponent.h"
 #include "Components/AudioComponent.h"
 
@@ -84,6 +86,10 @@ void ABaseCar::ChangeCamera()
 		bExternal=true;
 	}
 }
+void ABaseCar::QuitGame()
+{
+	GetWorld()->GetFirstPlayerController()->ConsoleCommand("QUIT");
+}
 
 void ABaseCar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -96,6 +102,8 @@ void ABaseCar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("TakeERS",IE_Pressed,this,&ABaseCar::UseERS);
 
 	PlayerInputComponent->BindAction("ReSet",IE_Pressed,this,&ABaseCar::ReSetTransform);
+
+	PlayerInputComponent->BindAction("EndGame",IE_Pressed,this,&ABaseCar::QuitGame);
 	
 	PlayerInputComponent->BindAction("ChangeCamera",IE_Pressed,this,&ABaseCar::ChangeCamera);
 	
@@ -118,12 +126,15 @@ void ABaseCar::UseERS()
 {
 	if(!bERSCanOpen)
 	{
-		GetWorldTimerManager().SetTimer(ERSTimeCount,this,&ABaseCar::ERS,0.25,true);
+		UE_LOG(LogTemp,Warning,TEXT("ERSOn"));
+		GetWorldTimerManager().SetTimer(ERSTimeCount,this,&ABaseCar::ERS,ERSTickTime,true);
 		bERSCanOpen=true;
 	}
 	else
 	{
+		UE_LOG(LogTemp,Warning,TEXT("ERSOff"));
 		bERSCanOpen=false;
+		bUseERS=false;
 		GetWorldTimerManager().ClearTimer(ERSTimeCount);
 	}
 }

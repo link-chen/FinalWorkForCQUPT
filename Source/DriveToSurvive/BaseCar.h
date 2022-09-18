@@ -31,13 +31,12 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	bool bAddForce;
 	float CurrentSpeed;
 	UPROPERTY(EditAnywhere)
-	float MaxElectronicPower;
-	float ElectronicPower;
-	UPROPERTY(EditAnywhere)
 	float ERSRate;
 	bool bUseERS;
 	bool bERSCanOpen;
 	FTimerHandle ERSTimeCount;
+	UPROPERTY(EditAnywhere)
+	float ERSTickTime;
 	
 	UPROPERTY(EditAnywhere)
 	TArray<USoundCue*> SoundArray;
@@ -49,12 +48,17 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	void CancleBrake();
 	void PlayEngineSound();
 	void ChangeCamera();
+	void QuitGame();
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 public:
 	bool bCanUseDRS;
 	bool bInDRSPlace;
 	UPROPERTY(EditAnywhere)
 	float MaxSpeed;
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	float MaxElectronicPower;
+	UPROPERTY(BlueprintReadOnly)
+	float ElectronicPower;
 	FVector LastLocation;
 	FRotator ReBornRotator;
 	void UseDRS();
