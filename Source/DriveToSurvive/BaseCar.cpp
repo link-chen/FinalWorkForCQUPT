@@ -39,6 +39,9 @@ void ABaseCar::Tick(float DeltaSeconds)
 	{
 		GetMesh()->AddForce(forward*BaseRate*ERSRate);
 	}
+	FVector Down=FVector(0,0,-1);
+	float Speed=GetVehicleMovementComponent()->GetForwardSpeed()/100*3.6;
+	GetMesh()->AddForce(Down*BaseRate*DownForceRate*Speed);
 }
 
 void ABaseCar::MoveForward(float Value)

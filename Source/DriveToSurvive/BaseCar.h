@@ -37,6 +37,8 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	FTimerHandle ERSTimeCount;
 	UPROPERTY(EditAnywhere)
 	float ERSTickTime;
+	UPROPERTY(EditAnywhere)
+	float DownForceRate;
 	
 	UPROPERTY(EditAnywhere)
 	TArray<USoundCue*> SoundArray;
