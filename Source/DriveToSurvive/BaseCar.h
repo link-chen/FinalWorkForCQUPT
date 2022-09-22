@@ -6,6 +6,7 @@
 #include "WheeledVehicle.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "DriveToSurviveGameModeBase.h"
 #include "Sound/SoundCue.h"
 #include "BaseCar.generated.h"
 /**
@@ -52,6 +53,9 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	void ChangeCamera();
 	void QuitGame();
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+	ADriveToSurviveGameModeBase* GameModeBase;
+	bool (ADriveToSurviveGameModeBase:: *CarRunable)();
+	bool bStart;
 public:
 	bool bCanUseDRS;
 	bool bInDRSPlace;
@@ -63,10 +67,14 @@ public:
 	float ElectronicPower;
 	FVector LastLocation;
 	FRotator ReBornRotator;
+	UPROPERTY(BlueprintReadOnly)
+	bool bCanCarRun;
 	void UseDRS();
 	void DisableDRS();
 	void UseERS();
 	void ERS();
 	void ReSetTransform();
+	UFUNCTION(BlueprintImplementableEvent)
+	void LightOut();
 	ABaseCar();
 };

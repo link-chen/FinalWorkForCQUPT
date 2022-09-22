@@ -11,7 +11,7 @@ void ADriveToSurviveGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 	UE_LOG(LogTemp,Warning,TEXT("LightCount"));
-	CurrentState=EGameState::EWait;
+	bCanCarRun=false;
 	GetWorldTimerManager().SetTimer(Time,this,&ADriveToSurviveGameModeBase::CountTime,1,true);
 }
 void ADriveToSurviveGameModeBase::CountTime()
@@ -21,13 +21,11 @@ void ADriveToSurviveGameModeBase::CountTime()
 	else
 	{
 		UE_LOG(LogTemp,Warning,TEXT("It's Light out and here we go"));
-		CurrentState=EGameState::EPlaying;
+		bCanCarRun=true;
 		GetWorldTimerManager().ClearTimer(Time);
 	}
 }
-
-EGameState ADriveToSurviveGameModeBase::GetGameState()
+bool ADriveToSurviveGameModeBase::GetCarRunable()
 {
-	return CurrentState;
+	return bCanCarRun;
 }
-

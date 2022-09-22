@@ -26,6 +26,12 @@ void ABaseCar::BeginPlay()
 	ReBornRotator=GetTransform().Rotator();
 	LastLocation=GetTransform().GetLocation();
 	ElectronicPower=MaxElectronicPower;
+	UWorld* World=GetWorld();
+	if(World!=nullptr)
+	{
+		GameModeBase=Cast<ADriveToSurviveGameModeBase>(World->GetAuthGameMode());
+	}
+	bStart=false;
 }
 void ABaseCar::Tick(float DeltaSeconds)
 {
@@ -42,15 +48,18 @@ void ABaseCar::Tick(float DeltaSeconds)
 	FVector Down=FVector(0,0,-1);
 	float Speed=GetVehicleMovementComponent()->GetForwardSpeed()/100*3.6;
 	GetMesh()->AddForce(Down*BaseRate*DownForceRate*Speed);
+	if(GameModeBase->GetCarRunable()&&!bStart)
+	{
+		bCanCarRun=true;
+		bStart=true;
+		LightOut();
+		UE_LOG(LogTemp,Warning,TEXT("Let's Go!"))
+	}
 }
 
 void ABaseCar::MoveForward(float Value)
 {
-	UWorld* World=GetWorld();
-	ADriveToSurviveGameModeBase* GameMode=Cast<ADriveToSurviveGameModeBase>(World->GetAuthGameMode());
-	if(GameMode==nullptr)
-		return;
-	if(GameMode->GetGameState()==EGameState::EPlaying)
+	if(bCanCarRun)
 	{
 		GetVehicleMovementComponent()->SetThrottleInput(Value);
 		PlayEngineSound();
