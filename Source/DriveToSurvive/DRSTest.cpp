@@ -20,7 +20,7 @@ ADRSTest::ADRSTest()
 void ADRSTest::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	TimeSecond=0.0f;
 }
 
 // Called every frame
@@ -33,8 +33,13 @@ void ADRSTest::OnOverlayBegin(UPrimitiveComponent* OverlappedComponent, AActor* 
 {
 	if(ABaseCar* Car=Cast<ABaseCar>(OtherActor))
 	{
-		UE_LOG(LogTemp,Warning,TEXT("CanUseDRS"));
-		Car->bCanUseDRS=true;
+		float CurrentTime=GetGameTimeSinceCreation();
+		float DeltaTime=CurrentTime-TimeSecond;
+		TimeSecond=CurrentTime;
+		if(DeltaTime<=1.0f)
+		{
+			Car->bCanUseDRS=true;
+		}
 	}
 }
 

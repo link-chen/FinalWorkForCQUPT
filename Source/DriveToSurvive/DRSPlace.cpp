@@ -30,7 +30,6 @@ ADRSPlace::ADRSPlace()
 void ADRSPlace::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame

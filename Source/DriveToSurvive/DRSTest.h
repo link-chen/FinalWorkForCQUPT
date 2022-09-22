@@ -14,7 +14,7 @@ class DRIVETOSURVIVE_API ADRSTest : public AActor
 
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* Box;
-	
+	float TimeSecond;
 public:	
 	// Sets default values for this actor's properties
 	ADRSTest();

@@ -9,9 +9,20 @@
 /**
  * 
  */
+enum class EGameState :short {
+	EWait,
+	EPlaying,
+};
 UCLASS()
 class DRIVETOSURVIVE_API ADriveToSurviveGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+	FTimerHandle Time;
+	int LeftTime;
+	EGameState CurrentState;
+	virtual void BeginPlay() override;
+	void CountTime();
+public:
+	EGameState GetGameState();
+	ADriveToSurviveGameModeBase();
 };

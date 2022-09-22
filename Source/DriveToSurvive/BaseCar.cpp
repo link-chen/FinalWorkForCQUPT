@@ -46,8 +46,15 @@ void ABaseCar::Tick(float DeltaSeconds)
 
 void ABaseCar::MoveForward(float Value)
 {
-	GetVehicleMovementComponent()->SetThrottleInput(Value);
-	PlayEngineSound();
+	UWorld* World=GetWorld();
+	ADriveToSurviveGameModeBase* GameMode=Cast<ADriveToSurviveGameModeBase>(World->GetAuthGameMode());
+	if(GameMode==nullptr)
+		return;
+	if(GameMode->GetGameState()==EGameState::EPlaying)
+	{
+		GetVehicleMovementComponent()->SetThrottleInput(Value);
+		PlayEngineSound();
+	}
 }
 
 void ABaseCar::MoveRight(float Value)
