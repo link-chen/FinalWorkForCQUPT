@@ -36,7 +36,8 @@ void ARebornPlace::BeginOverLap(UPrimitiveComponent* OverlappedComponent, AActor
 {
 	if(ABaseCar* Car=Cast<ABaseCar>(OtherActor))
 	{
-		Car->LastLocation=this->GetTransform().GetLocation();
+		Car->LastLocation=Car->GetTransform().GetLocation();
+		Car->ReBornRotator=Car->GetTransform().Rotator();
 		bCross=true;
 	}
 }
