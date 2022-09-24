@@ -15,6 +15,7 @@ ARebornPlace::ARebornPlace()
 	FScriptDelegate Del;
 	Del.BindUFunction(this,"BeginOverLap");
 	Box->OnComponentBeginOverlap.Add(Del);
+	bCross=false;
 }
 
 // Called when the game starts or when spawned
@@ -36,6 +37,7 @@ void ARebornPlace::BeginOverLap(UPrimitiveComponent* OverlappedComponent, AActor
 	if(ABaseCar* Car=Cast<ABaseCar>(OtherActor))
 	{
 		Car->LastLocation=this->GetTransform().GetLocation();
+		bCross=true;
 	}
 }
 

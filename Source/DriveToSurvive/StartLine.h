@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "RebornPlace.h"
 #include "GameFramework/Actor.h"
 #include "StartLine.generated.h"
 
@@ -13,6 +14,13 @@ class DRIVETOSURVIVE_API AStartLine : public AActor
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* Line;
+	UPROPERTY(EditAnywhere)
+	UBoxComponent* CrossingBox;
+	
+	UPROPERTY(EditAnywhere)
+	TArray<ARebornPlace*> RebornArray;
+
+	void CheckFinish();
 	
 public:	
 	// Sets default values for this actor's properties
@@ -25,5 +33,6 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
+	UFUNCTION()
+	void BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 };

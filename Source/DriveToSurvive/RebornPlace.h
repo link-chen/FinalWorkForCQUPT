@@ -25,6 +25,7 @@ protected:
 
 public:	
 	// Called every frame
+	bool bCross;
 	virtual void Tick(float DeltaTime) override;
 	
 };
