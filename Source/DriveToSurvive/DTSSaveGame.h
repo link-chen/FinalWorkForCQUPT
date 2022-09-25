@@ -21,6 +21,7 @@ public:
 	uint32 UserIndex;
 	UPROPERTY()
 	int FinishedCircle;
+	//
 	UPROPERTY()
 	int Money;
 	UPROPERTY()
@@ -29,5 +30,7 @@ public:
 	int Mass;
 	UPROPERTY()
 	float MaxElectronicPower;
+	UPROPERTY()
+	float ChangeGeerTime;
 	UDTSSaveGame();
 };

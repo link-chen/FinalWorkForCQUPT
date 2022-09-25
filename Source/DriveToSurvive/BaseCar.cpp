@@ -185,7 +185,7 @@ float ABaseCar::GetERSRate()
 }
 void ABaseCar::SetERSRate(float Value)
 {
-	ERSRate=Value<=3.0f?Value:3.0f;
+	ERSRate=Value<=6.0f?Value:6.0f;
 }
 
 

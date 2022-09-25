@@ -5,6 +5,7 @@
 
 #include "BaseCar.h"
 #include "DTSSaveGame.h"
+#include "WheeledVehicleMovementComponent.h"
 #include "GameFramework/GameSession.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -48,6 +49,7 @@ void ADriveToSurviveGameModeBase::SaveGameMessage()
 		Save->FinishedCircle=FinishedCircle;
 		Save->MaxElectronicPower=PlayerCar->ElectronicPower;
 		Save->ERSRate=PlayerCar->GetERSRate();
+		Save->Mass=PlayerCar->GetVehicleMovementComponent()->Mass;
 		if(UGameplayStatics::SaveGameToSlot(Save,"SaveSlot",0))
 		{
 			
@@ -63,6 +65,8 @@ void ADriveToSurviveGameModeBase::ReadGameMessage()
 		Money=Read->Money;
 		PlayerCar->MaxElectronicPower=Read->MaxElectronicPower;
 		PlayerCar->SetERSRate(Read->ERSRate);
+		PlayerCar->GetVehicleMovementComponent();
+		PlayerCar->GetVehicleMovementComponent()->Mass=Read->Mass;
 	}
 }
 

@@ -16,7 +16,6 @@ class DRIVETOSURVIVE_API ADriveToSurviveGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	FTimerHandle Time;
-	int LeftTime;
 	virtual void BeginPlay() override;
 	void CountTime();
 	bool bCanCarRun;
@@ -24,6 +23,8 @@ class DRIVETOSURVIVE_API ADriveToSurviveGameModeBase : public AGameModeBase
 	CarUpdateMessage* CarMessage;
 	ABaseCar* PlayerCar;
 public:
+	UPROPERTY(BlueprintReadOnly)
+	int LeftTime;
 	UPROPERTY(BlueprintReadWrite)
 	int FinishedCircle;
 	bool GetCarRunable();
