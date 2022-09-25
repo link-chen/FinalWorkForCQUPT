@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CarUpdateMessage.h"
 #include "GameFramework/GameModeBase.h"
 #include "DriveToSurviveGameModeBase.generated.h"
 
+class ABaseCar;
 /**
  * 
  */
@@ -18,6 +20,9 @@ class DRIVETOSURVIVE_API ADriveToSurviveGameModeBase : public AGameModeBase
 	virtual void BeginPlay() override;
 	void CountTime();
 	bool bCanCarRun;
+	int Money;
+	CarUpdateMessage* CarMessage;
+	ABaseCar* PlayerCar;
 public:
 	UPROPERTY(BlueprintReadWrite)
 	int FinishedCircle;

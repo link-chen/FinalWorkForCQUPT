@@ -21,5 +21,7 @@ public:
 	uint32 UserIndex;
 	UPROPERTY()
 	int FinishedCircle;
+	UPROPERTY()
+	int Money;
 	UDTSSaveGame();
 };
