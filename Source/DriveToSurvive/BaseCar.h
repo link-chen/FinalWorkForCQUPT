@@ -76,5 +76,7 @@ public:
 	void ReSetTransform();
 	UFUNCTION(BlueprintImplementableEvent)
 	void LightOut();
+	float GetERSRate();
+	void SetERSRate(float Value);
 	ABaseCar();
 };

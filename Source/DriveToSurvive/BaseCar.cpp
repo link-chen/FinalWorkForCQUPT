@@ -179,3 +179,13 @@ void ABaseCar::ReSetTransform()
 	GetMesh()->SetWorldRotation(ReBornRotator,false,NULL,ETeleportType::TeleportPhysics);
 }
 
+float ABaseCar::GetERSRate()
+{
+	return ERSRate;
+}
+void ABaseCar::SetERSRate(float Value)
+{
+	ERSRate=Value<=3.0f?Value:3.0f;
+}
+
+

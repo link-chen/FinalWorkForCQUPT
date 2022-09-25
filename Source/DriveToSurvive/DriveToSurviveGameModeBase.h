@@ -31,5 +31,7 @@ public:
 	void SaveGameMessage();
 	UFUNCTION(BlueprintCallable)
 	void ReadGameMessage();
+	UFUNCTION(BlueprintCallable)
+	void UpdateCar();
 	ADriveToSurviveGameModeBase();
 };

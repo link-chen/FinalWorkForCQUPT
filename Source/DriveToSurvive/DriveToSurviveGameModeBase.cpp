@@ -46,6 +46,8 @@ void ADriveToSurviveGameModeBase::SaveGameMessage()
 	if(UDTSSaveGame* Save=Cast<UDTSSaveGame>(UGameplayStatics::CreateSaveGameObject(UDTSSaveGame::StaticClass())))
 	{
 		Save->FinishedCircle=FinishedCircle;
+		Save->MaxElectronicPower=PlayerCar->ElectronicPower;
+		Save->ERSRate=PlayerCar->GetERSRate();
 		if(UGameplayStatics::SaveGameToSlot(Save,"SaveSlot",0))
 		{
 			
@@ -59,5 +61,13 @@ void ADriveToSurviveGameModeBase::ReadGameMessage()
 	{
 		FinishedCircle=Read->FinishedCircle;
 		Money=Read->Money;
+		PlayerCar->MaxElectronicPower=Read->MaxElectronicPower;
+		PlayerCar->SetERSRate(Read->ERSRate);
 	}
+}
+
+void ADriveToSurviveGameModeBase::UpdateCar()
+{
+	PlayerCar->SetERSRate(PlayerCar->GetERSRate()+0.5f);
+	SaveGameMessage();
 }

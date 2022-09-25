@@ -23,5 +23,11 @@ public:
 	int FinishedCircle;
 	UPROPERTY()
 	int Money;
+	UPROPERTY()
+	float ERSRate;
+	UPROPERTY()
+	int Mass;
+	UPROPERTY()
+	float MaxElectronicPower;
 	UDTSSaveGame();
 };
