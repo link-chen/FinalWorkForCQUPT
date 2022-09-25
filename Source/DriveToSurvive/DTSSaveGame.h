@@ -25,11 +25,19 @@ public:
 	UPROPERTY()
 	int Money;
 	UPROPERTY()
+	int ERSLevel;
+	UPROPERTY()
 	float ERSRate;
+	UPROPERTY()
+	int MassLevel;
 	UPROPERTY()
 	int Mass;
 	UPROPERTY()
+	int ElectronicLevel;
+	UPROPERTY()
 	float MaxElectronicPower;
+	UPROPERTY()
+	int GeerLevel;
 	UPROPERTY()
 	float ChangeGeerTime;
 	UDTSSaveGame();
