@@ -65,6 +65,8 @@ public:
 	float MaxElectronicPower;
 	UPROPERTY(BlueprintReadOnly)
 	float ElectronicPower;
+	UPROPERTY(EditAnywhere)
+	float ElectronicCost;
 	FVector LastLocation;
 	FRotator ReBornRotator;
 	UPROPERTY(BlueprintReadOnly)
@@ -78,5 +80,7 @@ public:
 	void LightOut();
 	float GetERSRate();
 	void SetERSRate(float Value);
+	float GetDownForceRate();
+	void SetDownForceRate(float Value);
 	ABaseCar();
 };

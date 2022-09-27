@@ -19,7 +19,6 @@ class DRIVETOSURVIVE_API ADriveToSurviveGameModeBase : public AGameModeBase
 	virtual void BeginPlay() override;
 	void CountTime();
 	bool bCanCarRun;
-	int Money;
 	CarUpdateMessage* CarMessage;
 	ABaseCar* PlayerCar;
 public:
@@ -27,12 +26,12 @@ public:
 	int LeftTime;
 	UPROPERTY(BlueprintReadWrite)
 	int FinishedCircle;
+	UPROPERTY(BlueprintReadWrite)
+	int Point;
 	bool GetCarRunable();
 	UFUNCTION(BlueprintCallable)
 	void SaveGameMessage();
 	UFUNCTION(BlueprintCallable)
 	void ReadGameMessage();
-	UFUNCTION(BlueprintCallable)
-	void UpdateCar();
 	ADriveToSurviveGameModeBase();
 };

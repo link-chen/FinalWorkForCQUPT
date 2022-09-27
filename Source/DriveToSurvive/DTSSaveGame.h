@@ -23,21 +23,15 @@ public:
 	int FinishedCircle;
 	//
 	UPROPERTY()
-	int Money;
-	UPROPERTY()
-	int ERSLevel;
+	int Point;
 	UPROPERTY()
 	float ERSRate;
 	UPROPERTY()
-	int MassLevel;
-	UPROPERTY()
 	int Mass;
-	UPROPERTY()
-	int ElectronicLevel;
 	UPROPERTY()
 	float MaxElectronicPower;
 	UPROPERTY()
-	int GeerLevel;
+	float DownForceRate;
 	UPROPERTY()
 	float ChangeGeerTime;
 	UDTSSaveGame();

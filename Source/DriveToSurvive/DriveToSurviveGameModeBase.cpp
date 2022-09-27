@@ -14,7 +14,7 @@ class ABaseCar;
 ADriveToSurviveGameModeBase::ADriveToSurviveGameModeBase()
 {
 	LeftTime=5;
-	Money=10000;
+	Point=10;
 }
 void ADriveToSurviveGameModeBase::BeginPlay()
 {
@@ -24,8 +24,10 @@ void ADriveToSurviveGameModeBase::BeginPlay()
 	GetWorldTimerManager().SetTimer(Time,this,&ADriveToSurviveGameModeBase::CountTime,1,true);
 	PlayerCar=Cast<ABaseCar>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	if(PlayerCar!=nullptr)
-		UE_LOG(LogTemp,Warning,TEXT("Player Is Not NULL"));
 	ReadGameMessage();
+	UE_LOG(LogTemp,Warning,TEXT("%f"),PlayerCar->GetERSRate());
+	UE_LOG(LogTemp,Warning,TEXT("DownForceRate%f"),PlayerCar->GetDownForceRate());
+	UE_LOG(LogTemp,Warning,TEXT("ElectronicPower%f"),PlayerCar->MaxElectronicPower);
 }
 void ADriveToSurviveGameModeBase::CountTime()
 {
@@ -50,6 +52,8 @@ void ADriveToSurviveGameModeBase::SaveGameMessage()
 		Save->MaxElectronicPower=PlayerCar->ElectronicPower;
 		Save->ERSRate=PlayerCar->GetERSRate();
 		Save->Mass=PlayerCar->GetVehicleMovementComponent()->Mass;
+		Save->Point=Point;
+		Save->DownForceRate=PlayerCar->GetDownForceRate();
 		if(UGameplayStatics::SaveGameToSlot(Save,"SaveSlot",0))
 		{
 			
@@ -62,16 +66,11 @@ void ADriveToSurviveGameModeBase::ReadGameMessage()
 	if(UDTSSaveGame* Read=Cast<UDTSSaveGame>(UGameplayStatics::LoadGameFromSlot("SaveSlot",0)))
 	{
 		FinishedCircle=Read->FinishedCircle;
-		Money=Read->Money;
+		Point=Read->Point;
 		PlayerCar->MaxElectronicPower=Read->MaxElectronicPower;
 		PlayerCar->SetERSRate(Read->ERSRate);
 		PlayerCar->GetVehicleMovementComponent();
 		PlayerCar->GetVehicleMovementComponent()->Mass=Read->Mass;
+		PlayerCar->SetDownForceRate(Read->DownForceRate);
 	}
-}
-
-void ADriveToSurviveGameModeBase::UpdateCar()
-{
-	PlayerCar->SetERSRate(PlayerCar->GetERSRate()+0.5f);
-	SaveGameMessage();
 }

@@ -48,12 +48,15 @@ void ABaseCar::Tick(float DeltaSeconds)
 	FVector Down=FVector(0,0,-1);
 	float Speed=fabs(GetVehicleMovementComponent()->GetForwardSpeed()/100*3.6);
 	GetMesh()->AddForce(Down*BaseRate*DownForceRate*Speed);
-	if(GameModeBase->GetCarRunable()&&!bStart)
+	if(GameModeBase!=nullptr)
 	{
-		bCanCarRun=true;
-		bStart=true;
-		LightOut();
-		UE_LOG(LogTemp,Warning,TEXT("Let's Go!"))
+		if(GameModeBase->GetCarRunable()&&!bStart)
+		{
+			bCanCarRun=true;
+			bStart=true;
+			LightOut();
+			UE_LOG(LogTemp,Warning,TEXT("Let's Go!"))
+		}
 	}
 }
 
@@ -163,7 +166,7 @@ void ABaseCar::ERS()
 	if(ElectronicPower!=0.0)
 	{
 		bUseERS=true;
-		ElectronicPower=ElectronicPower-2.5f<0.0f?0.0f:ElectronicPower-2.5f;
+		ElectronicPower=ElectronicPower-ElectronicCost<0.0f?0.0f:ElectronicPower-ElectronicCost;
 	}
 	else
 	{
@@ -185,7 +188,16 @@ float ABaseCar::GetERSRate()
 }
 void ABaseCar::SetERSRate(float Value)
 {
-	ERSRate=Value<=6.0f?Value:6.0f;
+	ERSRate=Value<=12.0f?Value:12.0f;
 }
 
+float ABaseCar::GetDownForceRate()
+{
+	return DownForceRate;
+}
+
+void ABaseCar::SetDownForceRate(float Value)
+{
+	DownForceRate=Value;
+}
 
