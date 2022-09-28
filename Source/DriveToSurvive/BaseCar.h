@@ -40,6 +40,7 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	float ERSTickTime;
 	UPROPERTY(EditAnywhere)
 	float DownForceRate;
+	float ReChargeRate;
 	
 	UPROPERTY(EditAnywhere)
 	TArray<USoundCue*> SoundArray;
@@ -82,5 +83,7 @@ public:
 	void SetERSRate(float Value);
 	float GetDownForceRate();
 	void SetDownForceRate(float Value);
+	float GetReChargeRate();
+	void SetReChargeRate(float Value);
 	ABaseCar();
 };

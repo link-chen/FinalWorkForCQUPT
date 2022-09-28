@@ -14,7 +14,7 @@ class ABaseCar;
 ADriveToSurviveGameModeBase::ADriveToSurviveGameModeBase()
 {
 	LeftTime=5;
-	Point=10;
+	Point=18;
 }
 void ADriveToSurviveGameModeBase::BeginPlay()
 {
@@ -25,9 +25,10 @@ void ADriveToSurviveGameModeBase::BeginPlay()
 	PlayerCar=Cast<ABaseCar>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	if(PlayerCar!=nullptr)
 	ReadGameMessage();
-	UE_LOG(LogTemp,Warning,TEXT("%f"),PlayerCar->GetERSRate());
-	UE_LOG(LogTemp,Warning,TEXT("DownForceRate%f"),PlayerCar->GetDownForceRate());
-	UE_LOG(LogTemp,Warning,TEXT("ElectronicPower%f"),PlayerCar->MaxElectronicPower);
+	UE_LOG(LogTemp,Warning,TEXT("ERSRate==%f"),PlayerCar->GetERSRate());
+	UE_LOG(LogTemp,Warning,TEXT("DownForceRate==%f"),PlayerCar->GetDownForceRate());
+	UE_LOG(LogTemp,Warning,TEXT("ElectronicPower==%f"),PlayerCar->MaxElectronicPower);
+	UE_LOG(LogTemp,Warning,TEXT("Mass==%f"),PlayerCar->GetVehicleMovementComponent()->Mass);
 }
 void ADriveToSurviveGameModeBase::CountTime()
 {
@@ -69,7 +70,6 @@ void ADriveToSurviveGameModeBase::ReadGameMessage()
 		Point=Read->Point;
 		PlayerCar->MaxElectronicPower=Read->MaxElectronicPower;
 		PlayerCar->SetERSRate(Read->ERSRate);
-		PlayerCar->GetVehicleMovementComponent();
 		PlayerCar->GetVehicleMovementComponent()->Mass=Read->Mass;
 		PlayerCar->SetDownForceRate(Read->DownForceRate);
 	}

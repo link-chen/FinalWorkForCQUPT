@@ -19,6 +19,7 @@ ABaseCar::ABaseCar()
 	InternalCamera->Deactivate();
 	bAddForce=true;
 	bERSCanOpen=false;
+	ReChargeRate=0.00005f;
 }
 void ABaseCar::BeginPlay()
 {
@@ -81,9 +82,10 @@ void ABaseCar::Brake()
 }
 void ABaseCar::CancleBrake()
 {
-	float DeltaSpeed=CurrentSpeed-GetVehicleMovementComponent()->GetForwardSpeed();
+	float DeltaSpeed=CurrentSpeed-GetVehicleMovementComponent()->GetForwardSpeed()/100.0f;
 	GetVehicleMovementComponent()->SetHandbrakeInput(false);
-	ElectronicPower=ElectronicPower+DeltaSpeed/45<=MaxElectronicPower?ElectronicPower+DeltaSpeed/45:MaxElectronicPower;
+	float EPower=GetVehicleMovementComponent()->Mass*DeltaSpeed*DeltaSpeed*0.5f*ReChargeRate;
+	ElectronicPower=ElectronicPower+EPower<=MaxElectronicPower?ElectronicPower+EPower:MaxElectronicPower;
 }
 
 void ABaseCar::PlayEngineSound()
@@ -199,5 +201,15 @@ float ABaseCar::GetDownForceRate()
 void ABaseCar::SetDownForceRate(float Value)
 {
 	DownForceRate=Value;
+}
+
+float ABaseCar::GetReChargeRate()
+{
+	return ReChargeRate;
+}
+
+void ABaseCar::SetReChargeRate(float Value)
+{
+	ReChargeRate=Value;
 }
 
