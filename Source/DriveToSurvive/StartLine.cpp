@@ -17,7 +17,7 @@ AStartLine::AStartLine()
 	CrossingBox->SetupAttachment(RootComponent);
 	Line->SetupAttachment(CrossingBox);
 	FScriptDelegate ScriptDelegate;
-	ScriptDelegate.BindUFunction(this,"");
+	ScriptDelegate.BindUFunction(this,"BeginOverlap");
 	CrossingBox->OnComponentBeginOverlap.Add(ScriptDelegate);
 }
 
@@ -34,7 +34,7 @@ void AStartLine::CheckFinish()
 	{
 		if(!RebornArray[i]->bCross)
 			flag=false;
-		RebornArray[i]=false;
+		RebornArray[i]->bCross=false;
 	}
 	if(flag)
 	{
@@ -42,7 +42,7 @@ void AStartLine::CheckFinish()
 		ADriveToSurviveGameModeBase* GameModeBase=Cast<ADriveToSurviveGameModeBase>(World->GetAuthGameMode());
 		if(GameModeBase!=nullptr)
 			GameModeBase->FinishedCircle++;
-		UE_LOG(LogTemp,Warning,TEXT("Finish On Circle"));
+		UE_LOG(LogTemp,Warning,TEXT("Finish One Circle"));
 	}
 }
 
