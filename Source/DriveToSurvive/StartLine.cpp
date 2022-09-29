@@ -19,6 +19,7 @@ AStartLine::AStartLine()
 	FScriptDelegate ScriptDelegate;
 	ScriptDelegate.BindUFunction(this,"BeginOverlap");
 	CrossingBox->OnComponentBeginOverlap.Add(ScriptDelegate);
+	Circle=0;
 }
 
 // Called when the game starts or when spawned
@@ -42,7 +43,12 @@ void AStartLine::CheckFinish()
 		ADriveToSurviveGameModeBase* GameModeBase=Cast<ADriveToSurviveGameModeBase>(World->GetAuthGameMode());
 		if(GameModeBase!=nullptr)
 			GameModeBase->FinishedCircle++;
-		UE_LOG(LogTemp,Warning,TEXT("Finish One Circle"));
+		Circle++;
+	}
+	if(TargetCircle==Circle)
+	{
+		UE_LOG(LogTemp,Warning,TEXT("Finished"));
+		FinishGame();
 	}
 }
 
