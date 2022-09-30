@@ -33,6 +33,8 @@ public:
 	UPROPERTY()
 	float DownForceRate;
 	UPROPERTY()
+	float ReChargeRate;
+	UPROPERTY()
 	float ChangeGeerTime;
 	UDTSSaveGame();
 };

@@ -40,6 +40,7 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	float ERSTickTime;
 	UPROPERTY(EditAnywhere)
 	float DownForceRate;
+	UPROPERTY(EditAnywhere)
 	float ReChargeRate;
 	
 	UPROPERTY(EditAnywhere)
@@ -85,5 +86,7 @@ public:
 	void SetDownForceRate(float Value);
 	float GetReChargeRate();
 	void SetReChargeRate(float Value);
+	float GetGeerChangeTime();
+	void SetGeerChangeTime(float Value);
 	ABaseCar();
 };

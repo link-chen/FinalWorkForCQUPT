@@ -6,6 +6,7 @@
 #include "BaseCar.h"
 #include "DTSSaveGame.h"
 #include "WheeledVehicleMovementComponent.h"
+#include "WheeledVehicleMovementComponent4W.h"
 #include "GameFramework/GameSession.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -72,5 +73,8 @@ void ADriveToSurviveGameModeBase::ReadGameMessage()
 		PlayerCar->SetERSRate(Read->ERSRate);
 		PlayerCar->GetVehicleMovementComponent()->Mass=Read->Mass;
 		PlayerCar->SetDownForceRate(Read->DownForceRate);
+		UWheeledVehicleMovementComponent4W* WheelMoveComponent=Cast<UWheeledVehicleMovementComponent4W>(PlayerCar->GetVehicleMovementComponent());
+		WheelMoveComponent->TransmissionSetup.GearSwitchTime=Read->ChangeGeerTime;
+		UE_LOG(LogTemp,Warning,TEXT("ChangeTime==%f"),WheelMoveComponent->TransmissionSetup.GearSwitchTime);
 	}
 }

@@ -5,6 +5,7 @@
 
 #include "DriveToSurviveGameModeBase.h"
 #include "WheeledVehicleMovementComponent.h"
+#include "WheeledVehicleMovementComponent4W.h"
 #include "Components/AudioComponent.h"
 
 ABaseCar::ABaseCar()
@@ -20,6 +21,8 @@ ABaseCar::ABaseCar()
 	bAddForce=true;
 	bERSCanOpen=false;
 	ReChargeRate=0.00005f;
+	UWheeledVehicleMovementComponent4W *MovementComponent4W=Cast<UWheeledVehicleMovementComponent4W>(GetVehicleMovementComponent());
+	MovementComponent4W->TransmissionSetup.GearSwitchTime=0.1f;	
 }
 void ABaseCar::BeginPlay()
 {
@@ -211,5 +214,16 @@ float ABaseCar::GetReChargeRate()
 void ABaseCar::SetReChargeRate(float Value)
 {
 	ReChargeRate=Value;
+}
+
+float ABaseCar::GetGeerChangeTime()
+{
+	return 0.5f;
+}
+
+void ABaseCar::SetGeerChangeTime(float Value)
+{
+	UWheeledVehicleMovementComponent4W *MovementComponent4W=Cast<UWheeledVehicleMovementComponent4W>(GetVehicleMovementComponent());
+	MovementComponent4W->TransmissionSetup.GearSwitchTime=0.1f;	
 }
 
