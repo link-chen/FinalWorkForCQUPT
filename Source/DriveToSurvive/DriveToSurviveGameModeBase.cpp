@@ -15,7 +15,7 @@ class ABaseCar;
 ADriveToSurviveGameModeBase::ADriveToSurviveGameModeBase()
 {
 	LeftTime=5;
-	Point=18;
+	Point=72;
 }
 void ADriveToSurviveGameModeBase::BeginPlay()
 {
@@ -30,6 +30,7 @@ void ADriveToSurviveGameModeBase::BeginPlay()
 	UE_LOG(LogTemp,Warning,TEXT("DownForceRate==%f"),PlayerCar->GetDownForceRate());
 	UE_LOG(LogTemp,Warning,TEXT("ElectronicPower==%f"),PlayerCar->MaxElectronicPower);
 	UE_LOG(LogTemp,Warning,TEXT("Mass==%f"),PlayerCar->GetVehicleMovementComponent()->Mass);
+	UE_LOG(LogTemp,Warning,TEXT("ReChargeRate%f"),PlayerCar->GetReChargeRate());
 }
 void ADriveToSurviveGameModeBase::CountTime()
 {
@@ -56,6 +57,9 @@ void ADriveToSurviveGameModeBase::SaveGameMessage()
 		Save->Mass=PlayerCar->GetVehicleMovementComponent()->Mass;
 		Save->Point=Point;
 		Save->DownForceRate=PlayerCar->GetDownForceRate();
+		Save->ReChargeRate=PlayerCar->GetReChargeRate();
+		UWheeledVehicleMovementComponent4W* WheelMoveComponent=Cast<UWheeledVehicleMovementComponent4W>(PlayerCar->GetVehicleMovementComponent());
+		Save->ChangeGeerTime=WheelMoveComponent->TransmissionSetup.GearSwitchTime;
 		if(UGameplayStatics::SaveGameToSlot(Save,"SaveSlot",0))
 		{
 			
@@ -73,6 +77,7 @@ void ADriveToSurviveGameModeBase::ReadGameMessage()
 		PlayerCar->SetERSRate(Read->ERSRate);
 		PlayerCar->GetVehicleMovementComponent()->Mass=Read->Mass;
 		PlayerCar->SetDownForceRate(Read->DownForceRate);
+		PlayerCar->SetReChargeRate(Read->ReChargeRate);
 		UWheeledVehicleMovementComponent4W* WheelMoveComponent=Cast<UWheeledVehicleMovementComponent4W>(PlayerCar->GetVehicleMovementComponent());
 		WheelMoveComponent->TransmissionSetup.GearSwitchTime=Read->ChangeGeerTime;
 		UE_LOG(LogTemp,Warning,TEXT("ChangeTime==%f"),WheelMoveComponent->TransmissionSetup.GearSwitchTime);
