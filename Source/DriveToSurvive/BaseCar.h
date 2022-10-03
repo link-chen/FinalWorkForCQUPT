@@ -55,6 +55,7 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	void ChangeCamera();
 	void QuitGame();
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+	
 	ADriveToSurviveGameModeBase* GameModeBase;
 	bool (ADriveToSurviveGameModeBase:: *CarRunable)();
 	bool bStart;
@@ -88,5 +89,9 @@ public:
 	void SetReChargeRate(float Value);
 	float GetGeerChangeTime();
 	void SetGeerChangeTime(float Value);
+	UFUNCTION()
+	virtual void OnOverlayBegin(UPrimitiveComponent * OverlappedComponent, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 	ABaseCar();
 };

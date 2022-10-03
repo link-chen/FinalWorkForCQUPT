@@ -22,7 +22,10 @@ ABaseCar::ABaseCar()
 	bERSCanOpen=false;
 	ReChargeRate=0.00005f;
 	UWheeledVehicleMovementComponent4W *MovementComponent4W=Cast<UWheeledVehicleMovementComponent4W>(GetVehicleMovementComponent());
-	MovementComponent4W->TransmissionSetup.GearSwitchTime=0.1f;	
+	MovementComponent4W->TransmissionSetup.GearSwitchTime=0.1f;
+	FScriptDelegate Crash;
+	Crash.BindUFunction(this,"OnHit");
+	GetMesh()->OnComponentHit.Add(Crash);
 }
 void ABaseCar::BeginPlay()
 {
@@ -226,4 +229,18 @@ void ABaseCar::SetGeerChangeTime(float Value)
 	UWheeledVehicleMovementComponent4W *MovementComponent4W=Cast<UWheeledVehicleMovementComponent4W>(GetVehicleMovementComponent());
 	MovementComponent4W->TransmissionSetup.GearSwitchTime=0.1f;	
 }
+
+void ABaseCar::OnOverlayBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if(ABaseCar* Car=Cast<ABaseCar>(OtherActor))
+	{
+		UE_LOG(LogTemp,Warning,TEXT("CarCrashed"));
+	}
+}
+
+void ABaseCar::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
+{
+		UE_LOG(LogTemp,Warning,TEXT("Crashed!"));
+}
+
 
