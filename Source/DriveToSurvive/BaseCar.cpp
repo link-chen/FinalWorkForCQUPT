@@ -52,7 +52,7 @@ void ABaseCar::Tick(float DeltaSeconds)
 	{
 		GetMesh()->AddForce(forward*BaseRate*ERSRate);
 	}
-	FVector Down=FVector(0,0,-1);
+	FVector Down=-GetActorUpVector();
 	float Speed=fabs(GetVehicleMovementComponent()->GetForwardSpeed()/100*3.6);
 	GetMesh()->AddForce(Down*BaseRate*DownForceRate*Speed);
 	if(GameModeBase!=nullptr)
