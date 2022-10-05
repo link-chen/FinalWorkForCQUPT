@@ -49,4 +49,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UpdateChangeGear(int Change);
 	virtual void BeginPlay() override;
+	UFUNCTION(BlueprintImplementableEvent)
+	void MinLevle();
+	UFUNCTION(BlueprintImplementableEvent)
+	void MaxLevel();
 };

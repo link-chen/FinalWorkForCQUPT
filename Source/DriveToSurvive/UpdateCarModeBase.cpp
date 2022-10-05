@@ -68,6 +68,8 @@ void AUpdateCarModeBase::UpdateERS(int Change)
 			Point--;
 			SaveGameMessage();
 		}
+		else
+			MaxLevel();
 		UE_LOG(LogTemp,Warning,TEXT("UpdateERS"));
 	}
 	if(Change==-1)
@@ -78,6 +80,8 @@ void AUpdateCarModeBase::UpdateERS(int Change)
 			Point++;
 			SaveGameMessage();
 		}
+		else
+			MinLevle();
 	}
 }
 
@@ -91,6 +95,8 @@ void AUpdateCarModeBase::UpdateElectronic(int Change)
 			Point--;
 			SaveGameMessage();
 		}
+		else
+			MaxLevel();
 	}
 	if(Change==-1)
 	{
@@ -100,6 +106,8 @@ void AUpdateCarModeBase::UpdateElectronic(int Change)
 			Point++;
 			SaveGameMessage();
 		}
+		else
+			MinLevle();
 	}
 }
 
@@ -113,6 +121,8 @@ void AUpdateCarModeBase::UpdateMass(int Change)
 			Point--;
 			SaveGameMessage();
 		}
+		else
+			MaxLevel();
 	}
 	if(Change==-1)
 	{
@@ -122,6 +132,8 @@ void AUpdateCarModeBase::UpdateMass(int Change)
 			Point++;
 			SaveGameMessage();
 		}
+		else
+			MinLevle();
 	}
 }
 
@@ -134,9 +146,7 @@ void AUpdateCarModeBase::UpdateDownForce(int Change)
 			Point--;
 			SaveGameMessage();
 		}else
-		{
-			
-		}
+			MaxLevel();
 	}
 	if(Change==-1)
 	{
@@ -146,6 +156,8 @@ void AUpdateCarModeBase::UpdateDownForce(int Change)
 			Point++;
 			SaveGameMessage();
 		}
+		else
+			MinLevle();
 	}
 }
 
@@ -153,12 +165,14 @@ void AUpdateCarModeBase::UpdateReCharge(int Change)
 {
 	if(Change==1)
 	{
-		if(Point>=1&&ReChargeRate<=0.00014f)
+		if(Point>=1&&ReChargeRate<=0.00009f)
 		{
 			ReChargeRate+=0.00001f;
 			Point--;
 			SaveGameMessage();
 		}
+		else
+			MaxLevel();
 	}
 	if(Change==-1)
 	{
@@ -168,6 +182,8 @@ void AUpdateCarModeBase::UpdateReCharge(int Change)
 			ReChargeRate-=0.00001f;
 			SaveGameMessage();
 		}
+		else
+			MinLevle();
 	}
 }
 
@@ -181,6 +197,8 @@ void AUpdateCarModeBase::UpdateChangeGear(int Change)
 			ChangeGeerTime-=0.05f;
 			SaveGameMessage();
 		}
+		else
+			MaxLevel();
 	}
 	if(Change==-1)
 	{
@@ -189,6 +207,10 @@ void AUpdateCarModeBase::UpdateChangeGear(int Change)
 			Point++;
 			ChangeGeerTime+=0.05f;
 			SaveGameMessage();
+		}
+		else
+		{
+			MinLevle();
 		}
 	}
 }
