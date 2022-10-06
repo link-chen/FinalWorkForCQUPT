@@ -3,12 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CarWheel.h"
 #include "WheeledVehicle.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "DriveToSurviveGameModeBase.h"
 #include "Sound/SoundCue.h"
 #include "BaseCar.generated.h"
+class UWheeledVehicleMovementComponent4W;
 /**
  * 
  */
@@ -16,8 +18,8 @@ UCLASS()
 class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 {
 	GENERATED_BODY()
-	
-	int BaseRate=100000;
+
+	int BaseRate = 100000;
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* ExternalCamera;
 	UPROPERTY(EditAnywhere)
@@ -26,7 +28,7 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	USpringArmComponent* SpringArm;
 	UPROPERTY(EditAnywhere)
 	UAudioComponent* Audio;
-	bool bExternal=true;
+	bool bExternal = true;
 	UPROPERTY(EditAnywhere)
 	bool bIsmanual;
 	bool bAddForce;
@@ -42,7 +44,7 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	float DownForceRate;
 	UPROPERTY(EditAnywhere)
 	float ReChargeRate;
-	
+
 	UPROPERTY(EditAnywhere)
 	TArray<USoundCue*> SoundArray;
 	virtual void BeginPlay() override;
@@ -55,16 +57,20 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	void ChangeCamera();
 	void QuitGame();
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
-	
+
+	TArray<UCarWheel*> CarWheelsArray;
+	FTimerHandle Timer;
+	void WearTyre();
+
 	ADriveToSurviveGameModeBase* GameModeBase;
-	bool (ADriveToSurviveGameModeBase:: *CarRunable)();
+	bool (ADriveToSurviveGameModeBase::*CarRunable)();
 	bool bStart;
 public:
 	bool bCanUseDRS;
 	bool bInDRSPlace;
 	UPROPERTY(EditAnywhere)
 	float MaxSpeed;
-	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float MaxElectronicPower;
 	UPROPERTY(BlueprintReadOnly)
 	float ElectronicPower;
@@ -90,8 +96,11 @@ public:
 	float GetGeerChangeTime();
 	void SetGeerChangeTime(float Value);
 	UFUNCTION()
-	virtual void OnOverlayBegin(UPrimitiveComponent * OverlappedComponent, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+	virtual void OnOverlayBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	                            UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+	                            const FHitResult& SweepResult);
 	UFUNCTION()
-	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent,
+	           FVector NormalImpulse, const FHitResult& Hit);
 	ABaseCar();
 };

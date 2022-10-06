@@ -3,6 +3,7 @@
 
 #include "BaseCar.h"
 
+#include "CarWheel.h"
 #include "DriveToSurviveGameModeBase.h"
 #include "WheeledVehicleMovementComponent.h"
 #include "WheeledVehicleMovementComponent4W.h"
@@ -21,8 +22,11 @@ ABaseCar::ABaseCar()
 	bAddForce=true;
 	bERSCanOpen=false;
 	ReChargeRate=0.00005f;
+	
 	UWheeledVehicleMovementComponent4W *MovementComponent4W=Cast<UWheeledVehicleMovementComponent4W>(GetVehicleMovementComponent());
 	MovementComponent4W->TransmissionSetup.GearSwitchTime=0.1f;
+	
+	
 	FScriptDelegate Crash;
 	Crash.BindUFunction(this,"OnHit");
 	GetMesh()->OnComponentHit.Add(Crash);
@@ -39,6 +43,13 @@ void ABaseCar::BeginPlay()
 		GameModeBase=Cast<ADriveToSurviveGameModeBase>(World->GetAuthGameMode());
 	}
 	bStart=false;
+	TArray<UVehicleWheel*> TempArray=GetVehicleMovementComponent()->Wheels;
+
+	for(int i=0;i<TempArray.Num();i++)
+	{
+		CarWheelsArray.Add(Cast<UCarWheel>(TempArray[i]));
+	}
+	GetWorldTimerManager().SetTimer(Timer,this,&ABaseCar::WearTyre,5,true);
 }
 void ABaseCar::Tick(float DeltaSeconds)
 {
@@ -89,7 +100,12 @@ void ABaseCar::Brake()
 void ABaseCar::CancleBrake()
 {
 	float DeltaSpeed=CurrentSpeed-GetVehicleMovementComponent()->GetForwardSpeed()/100.0f;
+	UE_LOG(LogTemp,Warning,TEXT("DeltaSpeed==%f"),DeltaSpeed);
 	GetVehicleMovementComponent()->SetHandbrakeInput(false);
+	for(int i=0;i<CarWheelsArray.Num();i++)
+	{
+		CarWheelsArray[i]->Wear(DeltaSpeed);
+	}
 	float EPower=GetVehicleMovementComponent()->Mass*DeltaSpeed*DeltaSpeed*0.5f*ReChargeRate;
 	ElectronicPower=ElectronicPower+EPower<=MaxElectronicPower?ElectronicPower+EPower:MaxElectronicPower;
 }
@@ -139,6 +155,21 @@ void ABaseCar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	
 	PlayerInputComponent->BindAxis("MoveForward",this,&ABaseCar::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight",this,&ABaseCar::MoveRight);
+}
+
+void ABaseCar::WearTyre()
+{
+	for(int i=0;i<CarWheelsArray.Num();i++)
+	{
+		if(CarWheelsArray[i]!=nullptr)
+		{
+			CarWheelsArray[i]->Wear(10);
+			if(CarWheelsArray[i]->GetCurrentLife()<0.0f)
+			{
+				UE_LOG(LogTemp,Warning,TEXT("CarWheelsArray[%d] Destory"),i);
+			}
+		}
+	}
 }
 
 void ABaseCar::UseDRS()
