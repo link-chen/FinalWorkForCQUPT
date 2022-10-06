@@ -94,19 +94,20 @@ void ABaseCar::MoveRight(float Value)
 
 void ABaseCar::Brake()
 {
-	CurrentSpeed=GetVehicleMovementComponent()->GetForwardSpeed();
+	CurrentSpeed=GetVehicleMovementComponent()->GetForwardSpeed()/100.0f;
 	GetVehicleMovementComponent()->SetHandbrakeInput(true);
 }
 void ABaseCar::CancleBrake()
 {
-	float DeltaSpeed=CurrentSpeed-GetVehicleMovementComponent()->GetForwardSpeed()/100.0f;
+	float TempSpeed=GetVehicleMovementComponent()->GetForwardSpeed()/100.0f;
+	float DeltaSpeed=CurrentSpeed-TempSpeed;
 	UE_LOG(LogTemp,Warning,TEXT("DeltaSpeed==%f"),DeltaSpeed);
 	GetVehicleMovementComponent()->SetHandbrakeInput(false);
 	for(int i=0;i<CarWheelsArray.Num();i++)
 	{
 		CarWheelsArray[i]->Wear(DeltaSpeed);
 	}
-	float EPower=GetVehicleMovementComponent()->Mass*DeltaSpeed*DeltaSpeed*0.5f*ReChargeRate;
+	float EPower=GetVehicleMovementComponent()->Mass*DeltaSpeed*DeltaSpeed*ReChargeRate;
 	ElectronicPower=ElectronicPower+EPower<=MaxElectronicPower?ElectronicPower+EPower:MaxElectronicPower;
 }
 

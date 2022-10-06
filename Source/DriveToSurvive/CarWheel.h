@@ -22,4 +22,5 @@ public:
 	void Wear(float Value);//磨损
 	float GetLifeRate();
 	float GetCurrentLife();
+	void ReCoverTyre();
 };

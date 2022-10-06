@@ -34,4 +34,10 @@ float UCarWheel::GetCurrentLife()
 	return CurrentLife;
 }
 
+void UCarWheel::ReCoverTyre()
+{
+	CurrentLife=MaxLife;
+}
+
+
 

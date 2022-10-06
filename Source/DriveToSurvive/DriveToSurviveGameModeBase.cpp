@@ -15,7 +15,7 @@ class ABaseCar;
 ADriveToSurviveGameModeBase::ADriveToSurviveGameModeBase()
 {
 	LeftTime=5;
-	Point=72;
+	Point=576;
 }
 void ADriveToSurviveGameModeBase::BeginPlay()
 {

@@ -53,7 +53,7 @@ void AUpdateCarModeBase::ReadGameMessage()
 		DownForceRate=0.0f;
 		Mass=2750.0f;
 		ChangeGeerTime=0.5f;
-		Point=72;
+		Point=576;
 		ReChargeRate=0.00005f;
 	}
 }
@@ -165,7 +165,7 @@ void AUpdateCarModeBase::UpdateReCharge(int Change)
 {
 	if(Change==1)
 	{
-		if(Point>=1&&ReChargeRate<=0.00009f)
+		if(Point>=1&&ReChargeRate<=0.099f)
 		{
 			ReChargeRate+=0.00001f;
 			Point--;
