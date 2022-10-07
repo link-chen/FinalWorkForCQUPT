@@ -3,6 +3,8 @@
 
 #include "BoxStation.h"
 
+#include "BaseCar.h"
+
 // Sets default values
 ABoxStation::ABoxStation()
 {
@@ -13,6 +15,7 @@ ABoxStation::ABoxStation()
 	FScriptDelegate BoxDel;
 	BoxDel.BindUFunction(this,"OnOverlayBegin");
 	Box->OnComponentBeginOverlap.Add(BoxDel);
+	Mesh=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 }
 
 // Called when the game starts or when spawned
@@ -31,7 +34,10 @@ void ABoxStation::Tick(float DeltaTime)
 
 void ABoxStation::OnOverlayBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	
+	if(ABaseCar* Car=Cast<ABaseCar>(OtherActor))
+	{
+		UE_LOG(LogTemp,Warning,TEXT("CarCross"));
+	}
 }
 
 

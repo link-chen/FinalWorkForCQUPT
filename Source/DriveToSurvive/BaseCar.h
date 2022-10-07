@@ -93,8 +93,8 @@ public:
 	void SetDownForceRate(float Value);
 	float GetReChargeRate();
 	void SetReChargeRate(float Value);
-	float GetGeerChangeTime();
-	void SetGeerChangeTime(float Value);
+	float GetGearChangeTime();
+	void SetGearChangeTime(float Value);
 	UFUNCTION()
 	virtual void OnOverlayBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	                            UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,

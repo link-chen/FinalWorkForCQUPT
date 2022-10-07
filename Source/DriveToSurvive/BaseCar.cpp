@@ -23,8 +23,6 @@ ABaseCar::ABaseCar()
 	bERSCanOpen=false;
 	ReChargeRate=0.00005f;
 	
-	UWheeledVehicleMovementComponent4W *MovementComponent4W=Cast<UWheeledVehicleMovementComponent4W>(GetVehicleMovementComponent());
-	MovementComponent4W->TransmissionSetup.GearSwitchTime=0.1f;
 	
 	
 	FScriptDelegate Crash;
@@ -50,6 +48,8 @@ void ABaseCar::BeginPlay()
 		CarWheelsArray.Add(Cast<UCarWheel>(TempArray[i]));
 	}
 	GetWorldTimerManager().SetTimer(Timer,this,&ABaseCar::WearTyre,5,true);
+	UWheeledVehicleMovementComponent4W *MovementComponent4W=Cast<UWheeledVehicleMovementComponent4W>(GetVehicleMovementComponent());
+	UE_LOG(LogTemp,Warning,TEXT("GearSwitchTime==%f"),MovementComponent4W->TransmissionSetup.GearSwitchTime);
 }
 void ABaseCar::Tick(float DeltaSeconds)
 {
@@ -164,7 +164,7 @@ void ABaseCar::WearTyre()
 	{
 		if(CarWheelsArray[i]!=nullptr)
 		{
-			CarWheelsArray[i]->Wear(10);
+			CarWheelsArray[i]->Wear(5);
 			if(CarWheelsArray[i]->GetCurrentLife()<0.0f)
 			{
 				UE_LOG(LogTemp,Warning,TEXT("CarWheelsArray[%d] Destory"),i);
@@ -251,12 +251,12 @@ void ABaseCar::SetReChargeRate(float Value)
 	ReChargeRate=Value;
 }
 
-float ABaseCar::GetGeerChangeTime()
+float ABaseCar::GetGearChangeTime()
 {
 	return 0.5f;
 }
 
-void ABaseCar::SetGeerChangeTime(float Value)
+void ABaseCar::SetGearChangeTime(float Value)
 {
 	UWheeledVehicleMovementComponent4W *MovementComponent4W=Cast<UWheeledVehicleMovementComponent4W>(GetVehicleMovementComponent());
 	MovementComponent4W->TransmissionSetup.GearSwitchTime=0.1f;	

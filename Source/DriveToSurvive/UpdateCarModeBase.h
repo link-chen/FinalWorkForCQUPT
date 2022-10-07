@@ -34,7 +34,7 @@ public:
 	UPROPERTY()
 	float ReChargeRate;
 	UPROPERTY()
-	float ChangeGeerTime;
+	float ChangeGearTime;
 	AUpdateCarModeBase();
 	UFUNCTION(BlueprintCallable)
 	void UpdateERS(int Change);

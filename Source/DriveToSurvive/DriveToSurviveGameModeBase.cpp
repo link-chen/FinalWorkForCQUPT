@@ -59,7 +59,7 @@ void ADriveToSurviveGameModeBase::SaveGameMessage()
 		Save->DownForceRate=PlayerCar->GetDownForceRate();
 		Save->ReChargeRate=PlayerCar->GetReChargeRate();
 		UWheeledVehicleMovementComponent4W* WheelMoveComponent=Cast<UWheeledVehicleMovementComponent4W>(PlayerCar->GetVehicleMovementComponent());
-		Save->ChangeGeerTime=WheelMoveComponent->TransmissionSetup.GearSwitchTime;
+		Save->ChangeGearTime=WheelMoveComponent->TransmissionSetup.GearSwitchTime;
 		if(UGameplayStatics::SaveGameToSlot(Save,"SaveSlot",0))
 		{
 			
@@ -79,7 +79,7 @@ void ADriveToSurviveGameModeBase::ReadGameMessage()
 		PlayerCar->SetDownForceRate(Read->DownForceRate);
 		PlayerCar->SetReChargeRate(Read->ReChargeRate);
 		UWheeledVehicleMovementComponent4W* WheelMoveComponent=Cast<UWheeledVehicleMovementComponent4W>(PlayerCar->GetVehicleMovementComponent());
-		WheelMoveComponent->TransmissionSetup.GearSwitchTime=Read->ChangeGeerTime;
+		WheelMoveComponent->TransmissionSetup.GearSwitchTime=Read->ChangeGearTime;
 		UE_LOG(LogTemp,Warning,TEXT("ChangeTime==%f"),WheelMoveComponent->TransmissionSetup.GearSwitchTime);
 	}
 }

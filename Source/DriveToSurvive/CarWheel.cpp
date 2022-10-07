@@ -3,7 +3,6 @@
 
 #include "CarWheel.h"
 
-#include "BehaviorTree/BehaviorTreeTypes.h"
 
 UCarWheel::UCarWheel()
 {

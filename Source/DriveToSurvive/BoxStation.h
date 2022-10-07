@@ -14,7 +14,8 @@ class DRIVETOSURVIVE_API ABoxStation : public AActor
 
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* Box;
-	
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* Mesh;
 public:	
 	// Sets default values for this actor's properties
 	ABoxStation();
