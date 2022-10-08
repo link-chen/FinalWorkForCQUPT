@@ -3,36 +3,28 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/PointLightComponent.h"
 #include "GameFramework/Actor.h"
-#include "NiagaraComponent.h"
-#include "FireWorks.generated.h"
+#include "LampLight.generated.h"
 
 UCLASS()
-class DRIVETOSURVIVE_API AFireWorks : public AActor
+class DRIVETOSURVIVE_API ALampLight : public AActor
 {
 	GENERATED_BODY()
-
 	UPROPERTY(EditAnywhere)
-	UNiagaraComponent* TailComponent;
+	UStaticMeshComponent *Lamp;
 	UPROPERTY(EditAnywhere)
-	UNiagaraComponent* BoomComponent;
-	bool bBoomed;
-	
-	UPROPERTY(EditAnywhere)
-	float MaxHeight;
-	
+	UPointLightComponent* LightComponent;
 public:	
 	// Sets default values for this actor's properties
-	AFireWorks();
-
+	ALampLight();
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
 	// Called every frame
-	UFUNCTION(BlueprintImplementableEvent)
-	void Boom();
 	virtual void Tick(float DeltaTime) override;
 
 };

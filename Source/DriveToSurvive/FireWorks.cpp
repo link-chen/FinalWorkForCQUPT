@@ -11,25 +11,31 @@ AFireWorks::AFireWorks()
 
 	TailComponent=CreateDefaultSubobject<UNiagaraComponent>(TEXT("Tail"));
 	BoomComponent=CreateDefaultSubobject<UNiagaraComponent>(TEXT("Boom"));
+	BoomComponent->SetupAttachment(TailComponent);
 }
 
 // Called when the game starts or when spawned
 void AFireWorks::BeginPlay()
 {
 	Super::BeginPlay();
-	MaxHeight=MaxHeight+rand();
+	MaxHeight=MaxHeight+rand()%10;
 	TailComponent->Activate();
 	BoomComponent->Deactivate();
+	bBoomed=false;
 }
 
 // Called every frame
 void AFireWorks::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if(GetActorLocation().Z>=MaxHeight)
+	AddActorLocalOffset(FVector(0,0,2.75f));
+	if(GetActorLocation().Z>=MaxHeight&&!bBoomed)
 	{
+		UE_LOG(LogTemp,Warning,TEXT("FireWorksBoom"));
 		TailComponent->Deactivate();
 		BoomComponent->Activate();
+		bBoomed=true;
+		Boom();
 	}
 }
 

@@ -116,7 +116,7 @@ void AUpdateCarModeBase::UpdateMass(int Change)
 {
 	if(Change==1)
 	{
-		if(Mass-10>=2400)
+		if(Mass-10>=750)
 		{
 			Mass-=10;
 			Point--;
