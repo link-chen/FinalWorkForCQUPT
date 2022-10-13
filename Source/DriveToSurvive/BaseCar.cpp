@@ -22,8 +22,12 @@ ABaseCar::ABaseCar()
 	bAddForce=true;
 	bERSCanOpen=false;
 	ReChargeRate=0.00005f;
+	LeftPointLight=CreateDefaultSubobject<USpotLightComponent>(TEXT("LeftLight"));
+	RightPointLight=CreateDefaultSubobject<USpotLightComponent>(TEXT("RightLight"));
 	
-	
+	LeftPointLight->SetupAttachment(GetMesh());
+	RightPointLight->SetupAttachment(GetMesh());
+	bUseLight=true;
 	
 	FScriptDelegate Crash;
 	Crash.BindUFunction(this,"OnHit");
@@ -35,11 +39,13 @@ void ABaseCar::BeginPlay()
 	ReBornRotator=GetTransform().Rotator();
 	LastLocation=GetTransform().GetLocation();
 	ElectronicPower=MaxElectronicPower;
+
 	UWorld* World=GetWorld();
 	if(World!=nullptr)
 	{
 		GameModeBase=Cast<ADriveToSurviveGameModeBase>(World->GetAuthGameMode());
 	}
+
 	bStart=false;
 	TArray<UVehicleWheel*> TempArray=GetVehicleMovementComponent()->Wheels;
 
@@ -47,9 +53,11 @@ void ABaseCar::BeginPlay()
 	{
 		CarWheelsArray.Add(Cast<UCarWheel>(TempArray[i]));
 	}
+
 	GetWorldTimerManager().SetTimer(Timer,this,&ABaseCar::WearTyre,5,true);
 	UWheeledVehicleMovementComponent4W *MovementComponent4W=Cast<UWheeledVehicleMovementComponent4W>(GetVehicleMovementComponent());
-	UE_LOG(LogTemp,Warning,TEXT("GearSwitchTime==%f"),MovementComponent4W->TransmissionSetup.GearSwitchTime);
+
+	TurnLight();
 }
 void ABaseCar::Tick(float DeltaSeconds)
 {
@@ -275,4 +283,18 @@ void ABaseCar::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPri
 		UE_LOG(LogTemp,Warning,TEXT("Crashed!"));
 }
 
-
+void ABaseCar::TurnLight()
+{
+	if(bUseLight)
+	{
+		bUseLight=false;
+		LeftPointLight->SetLightBrightness(0.0f);
+		RightPointLight->SetLightBrightness(0.0f);
+	}
+	else
+	{
+		bUseLight=true;
+		LeftPointLight->SetLightBrightness(480000.0f);
+		RightPointLight->SetLightBrightness(480000.0f);
+	}
+}

@@ -12,6 +12,8 @@ ARebornPlace::ARebornPlace()
 	PrimaryActorTick.bCanEverTick = true;
 	Box=CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
 
+	MeshComponent=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	
 	FScriptDelegate Del;
 	Del.BindUFunction(this,"BeginOverLap");
 	Box->OnComponentBeginOverlap.Add(Del);
@@ -37,8 +39,23 @@ void ARebornPlace::BeginOverLap(UPrimitiveComponent* OverlappedComponent, AActor
 	if(ABaseCar* Car=Cast<ABaseCar>(OtherActor))
 	{
 		Car->LastLocation=Car->GetTransform().GetLocation();
-		Car->ReBornRotator=Car->GetTransform().Rotator();
 		bCross=true;
 	}
 }
+
+void ARebornPlace::Fire()
+{
+	UWorld* World=GetWorld();
+	if(World)
+	{
+		World->SpawnActor<AFireWorks>(FireWork,GetActorLocation(),GetActorRotation());
+	}
+}
+
+void ARebornPlace::StartFire()
+{
+	GetWorldTimerManager().SetTimer(Time,this,&ARebornPlace::Fire,1,true);
+}
+
+
 

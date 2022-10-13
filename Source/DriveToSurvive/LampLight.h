@@ -15,6 +15,8 @@ class DRIVETOSURVIVE_API ALampLight : public AActor
 	UStaticMeshComponent *Lamp;
 	UPROPERTY(EditAnywhere)
 	UPointLightComponent* LightComponent;
+	UPROPERTY(EditAnywhere)
+	UPointLightComponent* LightComponent1;
 public:	
 	// Sets default values for this actor's properties
 	ALampLight();

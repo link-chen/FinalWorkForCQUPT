@@ -8,6 +8,8 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "DriveToSurviveGameModeBase.h"
+#include "Components/PointLightComponent.h"
+#include "Components/SpotLightComponent.h"
 #include "Sound/SoundCue.h"
 #include "BaseCar.generated.h"
 class UWheeledVehicleMovementComponent4W;
@@ -60,11 +62,21 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 
 	TArray<UCarWheel*> CarWheelsArray;
 	FTimerHandle Timer;
+
+	UPROPERTY(EditAnywhere)
+	USpotLightComponent* LeftPointLight;
+	UPROPERTY(EditAnywhere)
+	USpotLightComponent* RightPointLight;
+	
 	void WearTyre();
 
 	ADriveToSurviveGameModeBase* GameModeBase;
 	bool (ADriveToSurviveGameModeBase::*CarRunable)();
 	bool bStart;
+
+	bool bUseLight;
+	void TurnLight();
+	
 public:
 	bool bCanUseDRS;
 	bool bInDRSPlace;

@@ -12,6 +12,7 @@ AFireWorks::AFireWorks()
 	TailComponent=CreateDefaultSubobject<UNiagaraComponent>(TEXT("Tail"));
 	BoomComponent=CreateDefaultSubobject<UNiagaraComponent>(TEXT("Boom"));
 	BoomComponent->SetupAttachment(TailComponent);
+	TailComponent->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -28,7 +29,7 @@ void AFireWorks::BeginPlay()
 void AFireWorks::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	AddActorLocalOffset(FVector(0,0,2.75f));
+	AddActorLocalOffset(FVector(0,0,4.75f));
 	if(GetActorLocation().Z>=MaxHeight&&!bBoomed)
 	{
 		UE_LOG(LogTemp,Warning,TEXT("FireWorksBoom"));

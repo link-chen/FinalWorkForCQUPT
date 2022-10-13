@@ -48,6 +48,8 @@ void AStartLine::CheckFinish()
 	if(TargetCircle==Circle)
 	{
 		UE_LOG(LogTemp,Warning,TEXT("Finished"));
+		for(int i=0;i<RebornArray.Num();i++)
+			RebornArray[i]->StartFire();
 		FinishGame();
 	}
 }

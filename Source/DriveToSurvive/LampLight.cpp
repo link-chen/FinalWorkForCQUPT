@@ -11,6 +11,7 @@ ALampLight::ALampLight()
 
 	Lamp=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Lamp"));
 	LightComponent=CreateDefaultSubobject<UPointLightComponent>(TEXT("Light"));
+	LightComponent1=CreateDefaultSubobject<UPointLightComponent>(TEXT("Light1"));
 	LightComponent->SetupAttachment(Lamp);
 	LightComponent->SetRelativeLocation(Lamp->GetRelativeLocation());
 }
