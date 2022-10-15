@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "FireWorkSpawnSpace.h"
 #include "RebornPlace.h"
 #include "GameFramework/Actor.h"
 #include "StartLine.generated.h"
@@ -22,6 +23,8 @@ class DRIVETOSURVIVE_API AStartLine : public AActor
 	
 	UPROPERTY(EditAnywhere)
 	TArray<ARebornPlace*> RebornArray;
+    UPROPERTY(EditAnywhere)
+	TArray<AFireWorkSpawnSpace*> FireWorkSpawnSpacesArray;
 
 	void CheckFinish();
 	

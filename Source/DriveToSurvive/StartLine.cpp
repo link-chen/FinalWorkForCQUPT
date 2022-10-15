@@ -50,6 +50,8 @@ void AStartLine::CheckFinish()
 		UE_LOG(LogTemp,Warning,TEXT("Finished"));
 		for(int i=0;i<RebornArray.Num();i++)
 			RebornArray[i]->StartFire();
+		for(int i=0;i<FireWorkSpawnSpacesArray.Num();i++)
+			FireWorkSpawnSpacesArray[i]->StartFireWork();
 		FinishGame();
 	}
 }

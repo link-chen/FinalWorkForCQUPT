@@ -23,6 +23,8 @@ void AFireWorks::BeginPlay()
 	TailComponent->Activate();
 	BoomComponent->Deactivate();
 	bBoomed=false;
+	Time=(rand()%100)/(100.0f);
+	MaxHeight+=rand()%175;
 }
 
 // Called every frame

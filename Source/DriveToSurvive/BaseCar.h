@@ -8,7 +8,6 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "DriveToSurviveGameModeBase.h"
-#include "Components/PointLightComponent.h"
 #include "Components/SpotLightComponent.h"
 #include "Sound/SoundCue.h"
 #include "BaseCar.generated.h"

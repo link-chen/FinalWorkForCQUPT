@@ -32,6 +32,7 @@ ABaseCar::ABaseCar()
 	FScriptDelegate Crash;
 	Crash.BindUFunction(this,"OnHit");
 	GetMesh()->OnComponentHit.Add(Crash);
+	
 }
 void ABaseCar::BeginPlay()
 {
@@ -164,6 +165,8 @@ void ABaseCar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	
 	PlayerInputComponent->BindAxis("MoveForward",this,&ABaseCar::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight",this,&ABaseCar::MoveRight);
+
+	PlayerInputComponent->BindAction("Light",IE_Pressed,this,&ABaseCar::TurnLight);
 }
 
 void ABaseCar::WearTyre()
@@ -290,11 +293,15 @@ void ABaseCar::TurnLight()
 		bUseLight=false;
 		LeftPointLight->SetLightBrightness(0.0f);
 		RightPointLight->SetLightBrightness(0.0f);
+		UE_LOG(LogTemp,Warning,TEXT("Close"));
+		UE_LOG(LogTemp,Warning,TEXT("LightIntensity==%f"),LeftPointLight->Intensity);
 	}
 	else
 	{
 		bUseLight=true;
-		LeftPointLight->SetLightBrightness(480000.0f);
-		RightPointLight->SetLightBrightness(480000.0f);
+		LeftPointLight->SetLightBrightness(30000.0f);
+		RightPointLight->SetLightBrightness(30000.0f);
+		UE_LOG(LogTemp,Warning,TEXT("Open"));
+		UE_LOG(LogTemp,Warning,TEXT("LightIntensity==%f"),LeftPointLight->Intensity);
 	}
 }
