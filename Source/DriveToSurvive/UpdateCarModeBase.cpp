@@ -54,7 +54,7 @@ void AUpdateCarModeBase::ReadGameMessage()
 		DownForceRate=0.0f;
 		Mass=2750.0f;
 		ChangeGearTime=0.5f;
-		Point=576;
+		Point=5760;
 		ReChargeRate=0.00005f;
 	}
 }

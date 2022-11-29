@@ -66,6 +66,8 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	USpotLightComponent* LeftPointLight;
 	UPROPERTY(EditAnywhere)
 	USpotLightComponent* RightPointLight;
+
+	int Lable;
 	
 	void WearTyre();
 

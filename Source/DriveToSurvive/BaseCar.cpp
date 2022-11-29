@@ -3,6 +3,8 @@
 
 #include "BaseCar.h"
 
+#include <string>
+
 #include "CarWheel.h"
 #include "DriveToSurviveGameModeBase.h"
 #include "WheeledVehicleMovementComponent.h"
@@ -175,6 +177,7 @@ void ABaseCar::WearTyre()
 	{
 		if(CarWheelsArray[i]!=nullptr)
 		{
+			if(GetVehicleMovementComponent()->GetForwardSpeed()/100*3.6>0.0f)
 			CarWheelsArray[i]->Wear(5);
 			if(CarWheelsArray[i]->GetCurrentLife()<0.0f)
 			{
@@ -290,18 +293,18 @@ void ABaseCar::TurnLight()
 {
 	if(bUseLight)
 	{
+		LeftPointLight->SetIntensity(0.0f);
+		RightPointLight->SetIntensity(0.0f);
 		bUseLight=false;
-		LeftPointLight->SetLightBrightness(0.0f);
-		RightPointLight->SetLightBrightness(0.0f);
-		UE_LOG(LogTemp,Warning,TEXT("Close"));
-		UE_LOG(LogTemp,Warning,TEXT("LightIntensity==%f"),LeftPointLight->Intensity);
+		UE_LOG(LogTemp,Warning,TEXT("Off"));
+		UE_LOG(LogTemp,Warning,TEXT("Close Light intensity==%f"),LeftPointLight->Intensity);
 	}
 	else
 	{
+		LeftPointLight->SetIntensity(300000.0f);
+		RightPointLight->SetIntensity(300000.0f);
 		bUseLight=true;
-		LeftPointLight->SetLightBrightness(30000.0f);
-		RightPointLight->SetLightBrightness(30000.0f);
-		UE_LOG(LogTemp,Warning,TEXT("Open"));
-		UE_LOG(LogTemp,Warning,TEXT("LightIntensity==%f"),LeftPointLight->Intensity);
+		UE_LOG(LogTemp,Warning,TEXT("On"));
+		UE_LOG(LogTemp,Warning,TEXT("Open Light intensity==%f"),LeftPointLight->Intensity);
 	}
 }
