@@ -58,8 +58,9 @@ void ABaseCar::BeginPlay()
 	}
 
 	GetWorldTimerManager().SetTimer(Timer,this,&ABaseCar::WearTyre,5,true);
-	UWheeledVehicleMovementComponent4W *MovementComponent4W=Cast<UWheeledVehicleMovementComponent4W>(GetVehicleMovementComponent());
 
+	
+	
 	TurnLight();
 }
 void ABaseCar::Tick(float DeltaSeconds)
@@ -84,7 +85,6 @@ void ABaseCar::Tick(float DeltaSeconds)
 			bCanCarRun=true;
 			bStart=true;
 			LightOut();
-			UE_LOG(LogTemp,Warning,TEXT("Let's Go!"))
 		}
 	}
 }
@@ -112,7 +112,6 @@ void ABaseCar::CancleBrake()
 {
 	float TempSpeed=GetVehicleMovementComponent()->GetForwardSpeed()/100.0f;
 	float DeltaSpeed=CurrentSpeed-TempSpeed;
-	UE_LOG(LogTemp,Warning,TEXT("DeltaSpeed==%f"),DeltaSpeed);
 	GetVehicleMovementComponent()->SetHandbrakeInput(false);
 	for(int i=0;i<CarWheelsArray.Num();i++)
 	{
@@ -177,8 +176,7 @@ void ABaseCar::WearTyre()
 	{
 		if(CarWheelsArray[i]!=nullptr)
 		{
-			if(GetVehicleMovementComponent()->GetForwardSpeed()/100*3.6>0.0f)
-			CarWheelsArray[i]->Wear(5);
+			CarWheelsArray[i]->Wear(GetVehicleMovementComponent()->GetForwardSpeed()/100.0f*3.6f>3.0f?GetVehicleMovementComponent()->GetForwardSpeed()/100.0f*3.6f/10.0f:0.0f);
 			if(CarWheelsArray[i]->GetCurrentLife()<0.0f)
 			{
 				UE_LOG(LogTemp,Warning,TEXT("CarWheelsArray[%d] Destory"),i);
@@ -202,13 +200,11 @@ void ABaseCar::UseERS()
 {
 	if(!bERSCanOpen)
 	{
-		UE_LOG(LogTemp,Warning,TEXT("ERSOn"));
 		GetWorldTimerManager().SetTimer(ERSTimeCount,this,&ABaseCar::ERS,ERSTickTime,true);
 		bERSCanOpen=true;
 	}
 	else
 	{
-		UE_LOG(LogTemp,Warning,TEXT("ERSOff"));
 		bERSCanOpen=false;
 		bUseERS=false;
 		GetWorldTimerManager().ClearTimer(ERSTimeCount);
@@ -296,15 +292,21 @@ void ABaseCar::TurnLight()
 		LeftPointLight->SetIntensity(0.0f);
 		RightPointLight->SetIntensity(0.0f);
 		bUseLight=false;
-		UE_LOG(LogTemp,Warning,TEXT("Off"));
-		UE_LOG(LogTemp,Warning,TEXT("Close Light intensity==%f"),LeftPointLight->Intensity);
 	}
 	else
 	{
 		LeftPointLight->SetIntensity(300000.0f);
 		RightPointLight->SetIntensity(300000.0f);
 		bUseLight=true;
-		UE_LOG(LogTemp,Warning,TEXT("On"));
-		UE_LOG(LogTemp,Warning,TEXT("Open Light intensity==%f"),LeftPointLight->Intensity);
+	}
+}
+
+void ABaseCar::SetSwithGearTime(float Time)
+{
+	UWheeledVehicleMovementComponent4W* WheelMoveComponent=Cast<UWheeledVehicleMovementComponent4W>(GetVehicleMovementComponent());
+	if(WheelMoveComponent!=nullptr)
+	{
+		WheelMoveComponent->TransmissionSetup.GearSwitchTime=Time;
+		UE_LOG(LogTemp,Warning,TEXT("ChangeTime==%f"),WheelMoveComponent->TransmissionSetup.GearSwitchTime);
 	}
 }

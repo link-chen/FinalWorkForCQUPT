@@ -34,4 +34,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ReadGameMessage();
 	ADriveToSurviveGameModeBase();
+	UFUNCTION(BlueprintCallable)
+	void StartCountLight();
 };

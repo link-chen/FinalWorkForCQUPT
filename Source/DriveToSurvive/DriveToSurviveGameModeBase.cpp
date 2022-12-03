@@ -71,6 +71,7 @@ void ADriveToSurviveGameModeBase::ReadGameMessage()
 {
 	if(UDTSSaveGame* Read=Cast<UDTSSaveGame>(UGameplayStatics::LoadGameFromSlot("SaveSlot",0)))
 	{
+		UE_LOG(LogTemp,Warning,TEXT("读取信息"));
 		FinishedCircle=Read->FinishedCircle;
 		Point=Read->Point;
 		PlayerCar->MaxElectronicPower=Read->MaxElectronicPower;
@@ -78,8 +79,11 @@ void ADriveToSurviveGameModeBase::ReadGameMessage()
 		PlayerCar->GetVehicleMovementComponent()->Mass=Read->Mass;
 		PlayerCar->SetDownForceRate(Read->DownForceRate);
 		PlayerCar->SetReChargeRate(Read->ReChargeRate);
-		UWheeledVehicleMovementComponent4W* WheelMoveComponent=Cast<UWheeledVehicleMovementComponent4W>(PlayerCar->GetVehicleMovementComponent());
-		WheelMoveComponent->TransmissionSetup.GearSwitchTime=Read->ChangeGearTime;
-		UE_LOG(LogTemp,Warning,TEXT("ChangeTime==%f"),WheelMoveComponent->TransmissionSetup.GearSwitchTime);
+		PlayerCar->SetGearChangeTime(Read->ChangeGearTime);
 	}
+}
+
+void ADriveToSurviveGameModeBase::StartCountLight()
+{
+	
 }
