@@ -45,6 +45,10 @@ void AStartLine::CheckFinish()
 			GameModeBase->FinishedCircle++;
 		Circle++;
 	}
+	if(Circle+1==TargetCircle)
+	{
+		UE_LOG(LogTemp,Warning,TEXT("This is finally lap of race"));
+	}
 	if(TargetCircle==Circle)
 	{
 		UE_LOG(LogTemp,Warning,TEXT("Finished"));

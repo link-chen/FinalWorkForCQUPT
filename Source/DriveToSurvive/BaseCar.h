@@ -107,7 +107,6 @@ public:
 	float GetReChargeRate();
 	void SetReChargeRate(float Value);
 	float GetGearChangeTime();
-	void SetGearChangeTime(float Value);
 	UFUNCTION()
 	virtual void OnOverlayBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	                            UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
@@ -115,6 +114,6 @@ public:
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent,
 	           FVector NormalImpulse, const FHitResult& Hit);
-	void SetSwithGearTime(float Time);
+	void SetSwitchGearTime(float Time);
 	ABaseCar();
 };

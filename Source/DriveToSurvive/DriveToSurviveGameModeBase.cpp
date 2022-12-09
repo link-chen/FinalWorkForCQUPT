@@ -20,9 +20,7 @@ ADriveToSurviveGameModeBase::ADriveToSurviveGameModeBase()
 void ADriveToSurviveGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp,Warning,TEXT("LightCount"));
 	bCanCarRun=false;
-	GetWorldTimerManager().SetTimer(Time,this,&ADriveToSurviveGameModeBase::CountTime,1,true);
 	PlayerCar=Cast<ABaseCar>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	if(PlayerCar!=nullptr)
 	ReadGameMessage();
@@ -71,7 +69,6 @@ void ADriveToSurviveGameModeBase::ReadGameMessage()
 {
 	if(UDTSSaveGame* Read=Cast<UDTSSaveGame>(UGameplayStatics::LoadGameFromSlot("SaveSlot",0)))
 	{
-		UE_LOG(LogTemp,Warning,TEXT("读取信息"));
 		FinishedCircle=Read->FinishedCircle;
 		Point=Read->Point;
 		PlayerCar->MaxElectronicPower=Read->MaxElectronicPower;
@@ -79,11 +76,11 @@ void ADriveToSurviveGameModeBase::ReadGameMessage()
 		PlayerCar->GetVehicleMovementComponent()->Mass=Read->Mass;
 		PlayerCar->SetDownForceRate(Read->DownForceRate);
 		PlayerCar->SetReChargeRate(Read->ReChargeRate);
-		PlayerCar->SetGearChangeTime(Read->ChangeGearTime);
+		PlayerCar->SetSwitchGearTime(Read->ChangeGearTime);
 	}
 }
 
 void ADriveToSurviveGameModeBase::StartCountLight()
 {
-	
+	GetWorldTimerManager().SetTimer(Time,this,&ADriveToSurviveGameModeBase::CountTime,1,true);
 }

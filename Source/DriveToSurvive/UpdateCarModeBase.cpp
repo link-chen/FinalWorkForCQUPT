@@ -93,7 +93,7 @@ void AUpdateCarModeBase::UpdateElectronic(int Change)
 	{
 		if(Point>=1)
 		{
-			MaxElectronicPower+=10.0f;
+			MaxElectronicPower+=100.0f;
 			Point--;
 			SaveGameMessage();
 		}
@@ -102,7 +102,7 @@ void AUpdateCarModeBase::UpdateElectronic(int Change)
 	}
 	if(Change==-1)
 	{
-		if(MaxElectronicPower-10.0f>=1000.0f)
+		if(MaxElectronicPower-100.0f>=1000.0f)
 		{
 			MaxElectronicPower-=10.0f;
 			Point++;

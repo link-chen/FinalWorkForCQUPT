@@ -100,7 +100,7 @@ void ABaseCar::MoveForward(float Value)
 
 void ABaseCar::MoveRight(float Value)
 {
-	GetVehicleMovementComponent()->SetSteeringInput(Value);
+	GetVehicleMovementComponent()->SetSteeringInput(Value*1.01f);
 }
 
 void ABaseCar::Brake()
@@ -265,13 +265,6 @@ float ABaseCar::GetGearChangeTime()
 {
 	return 0.5f;
 }
-
-void ABaseCar::SetGearChangeTime(float Value)
-{
-	UWheeledVehicleMovementComponent4W *MovementComponent4W=Cast<UWheeledVehicleMovementComponent4W>(GetVehicleMovementComponent());
-	MovementComponent4W->TransmissionSetup.GearSwitchTime=0.1f;	
-}
-
 void ABaseCar::OnOverlayBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if(ABaseCar* Car=Cast<ABaseCar>(OtherActor))
@@ -301,12 +294,12 @@ void ABaseCar::TurnLight()
 	}
 }
 
-void ABaseCar::SetSwithGearTime(float Time)
+void ABaseCar::SetSwitchGearTime(float Time)
 {
+	UE_LOG(LogTemp,Warning,TEXT("SetGearSwitchTime"));
 	UWheeledVehicleMovementComponent4W* WheelMoveComponent=Cast<UWheeledVehicleMovementComponent4W>(GetVehicleMovementComponent());
 	if(WheelMoveComponent!=nullptr)
 	{
-		WheelMoveComponent->TransmissionSetup.GearSwitchTime=Time;
 		UE_LOG(LogTemp,Warning,TEXT("ChangeTime==%f"),WheelMoveComponent->TransmissionSetup.GearSwitchTime);
 	}
 }
