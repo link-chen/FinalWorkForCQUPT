@@ -12,6 +12,7 @@ ASignalLight::ASignalLight()
 	for(int i=0;i<5;i++)
 	{
 		UPointLightComponent* Light=CreateDefaultSubobject<UPointLightComponent>(TEXT("Light"+i));
+		Light->SetupAttachment(StaticMesh);
 		LightArray.Add(Light);
 	}
 }
@@ -20,7 +21,8 @@ ASignalLight::ASignalLight()
 void ASignalLight::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	for(int i=0;i<LightArray.Num();i++)
+		LightArray[i]->SetIntensity(0.0f);
 }
 
 // Called every frame
@@ -29,6 +31,21 @@ void ASignalLight::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
+
+void ASignalLight::CloseLight(int Pivote)
+{
+	if(Pivote>=5&&Pivote<0)
+		return;
+	UE_LOG(LogTemp,Warning,TEXT("LightArray[%d] on"),Pivote);
+	LightArray[Pivote]->SetIntensity(10000.0f);
+}
+
+void ASignalLight::CloseLightSecondPart()
+{
+	for(int i=0;i<LightArray.Num();i++)
+		LightArray[i]->SetIntensity(0.0f);
+}
+
 
 
 

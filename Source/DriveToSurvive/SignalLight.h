@@ -20,6 +20,11 @@ public:
 	// Sets default values for this actor's properties
 	ASignalLight();
 
+	UFUNCTION(BlueprintCallable)
+	void CloseLight(int Pivote);
+	UFUNCTION(BlueprintCallable)
+	void CloseLightSecondPart();
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

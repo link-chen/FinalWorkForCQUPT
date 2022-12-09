@@ -33,7 +33,11 @@ void ADriveToSurviveGameModeBase::BeginPlay()
 void ADriveToSurviveGameModeBase::CountTime()
 {
 	if(LeftTime!=0)
+	{
 		LeftTime--;
+		Signal();
+		UE_LOG(LogTemp,Warning,TEXT("Time==%d"),LeftTime);
+	}
 	else
 	{
 		bCanCarRun=true;

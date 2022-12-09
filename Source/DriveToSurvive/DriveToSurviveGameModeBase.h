@@ -36,4 +36,6 @@ public:
 	ADriveToSurviveGameModeBase();
 	UFUNCTION(BlueprintCallable)
 	void StartCountLight();
+	UFUNCTION(BlueprintImplementableEvent)
+	void Signal();
 };
