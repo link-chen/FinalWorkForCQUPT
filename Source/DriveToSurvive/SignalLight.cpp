@@ -13,6 +13,7 @@ ASignalLight::ASignalLight()
 	{
 		UPointLightComponent* Light=CreateDefaultSubobject<UPointLightComponent>(TEXT("Light"+i));
 		Light->SetupAttachment(StaticMesh);
+		Light->SetLightColor(FLinearColor(255.0f,0.0f,0.0f));
 		LightArray.Add(Light);
 	}
 }

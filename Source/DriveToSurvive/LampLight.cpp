@@ -14,6 +14,8 @@ ALampLight::ALampLight()
 	LightComponent1=CreateDefaultSubobject<UPointLightComponent>(TEXT("Light1"));
 	LightComponent->SetupAttachment(Lamp);
 	LightComponent->SetRelativeLocation(Lamp->GetRelativeLocation());
+	LightComponent1->SetupAttachment(Lamp);
+	LightComponent1->SetRelativeLocation(Lamp->GetRelativeLocation());
 }
 
 // Called when the game starts or when spawned
