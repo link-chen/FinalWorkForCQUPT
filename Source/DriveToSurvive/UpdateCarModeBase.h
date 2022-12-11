@@ -53,4 +53,6 @@ public:
 	void MinLevle();
 	UFUNCTION(BlueprintImplementableEvent)
 	void MaxLevel();
+	UFUNCTION(BlueprintImplementableEvent)
+	void CreateFirstIntroduce();
 };
