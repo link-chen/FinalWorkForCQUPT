@@ -48,7 +48,6 @@ void AUpdateCarModeBase::ReadGameMessage()
 		Mass=Read->Mass;
 		ReChargeRate=Read->ReChargeRate;
 		ChangeGearTime=Read->ChangeGearTime;
-		CreateFirstIntroduce();
 	}else
 	{
 		ERSRate=BaseCar->GetERSRate();
@@ -60,6 +59,7 @@ void AUpdateCarModeBase::ReadGameMessage()
 		ReChargeRate=0.00005f;
 		UE_LOG(LogTemp,Warning,TEXT("FirstComing"));
 		CreateFirstIntroduce();
+		SaveGameMessage();
 	}
 }
 
