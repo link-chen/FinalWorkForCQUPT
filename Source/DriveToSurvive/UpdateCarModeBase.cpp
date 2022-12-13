@@ -83,6 +83,7 @@ void AUpdateCarModeBase::UpdateERS(int Change)
 		{
 			ERSRate-=0.5;
 			Point++;
+			
 			SaveGameMessage();
 		}
 		else

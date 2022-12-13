@@ -59,7 +59,7 @@ void ABaseCar::BeginPlay()
 
 	GetWorldTimerManager().SetTimer(Timer,this,&ABaseCar::WearTyre,5,true);
 
-	
+	CarMess=GetVehicleMovementComponent()->Mass;
 	
 	TurnLight();
 }
@@ -77,7 +77,7 @@ void ABaseCar::Tick(float DeltaSeconds)
 	}
 	FVector Down=-GetActorUpVector();
 	float Speed=fabs(GetVehicleMovementComponent()->GetForwardSpeed()/100*3.6);
-	GetMesh()->AddForce(Down*BaseRate*DownForceRate*Speed);
+	GetMesh()->AddForce(Down*CarMess*DownForceRate*Speed);
 	if(GameModeBase!=nullptr)
 	{
 		if(GameModeBase->GetCarRunable()&&!bStart)

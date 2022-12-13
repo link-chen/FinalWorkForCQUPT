@@ -21,6 +21,7 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	GENERATED_BODY()
 
 	int BaseRate = 100000;
+	float CarMess;
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* ExternalCamera;
 	UPROPERTY(EditAnywhere)
