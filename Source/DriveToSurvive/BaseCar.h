@@ -64,6 +64,9 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	FTimerHandle Timer;
 
 	UPROPERTY(EditAnywhere)
+	UMaterial* Material;
+
+	UPROPERTY(EditAnywhere)
 	USpotLightComponent* LeftPointLight;
 	UPROPERTY(EditAnywhere)
 	USpotLightComponent* RightPointLight;
@@ -116,5 +119,8 @@ public:
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent,
 	           FVector NormalImpulse, const FHitResult& Hit);
 	void SetSwitchGearTime(float Time);
+	UFUNCTION()
+	virtual void NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,
+		bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
 	ABaseCar();
 };

@@ -10,6 +10,7 @@
 #include "WheeledVehicleMovementComponent.h"
 #include "WheeledVehicleMovementComponent4W.h"
 #include "Components/AudioComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 ABaseCar::ABaseCar()
 {
@@ -30,10 +31,16 @@ ABaseCar::ABaseCar()
 	LeftPointLight->SetupAttachment(GetMesh());
 	RightPointLight->SetupAttachment(GetMesh());
 	bUseLight=true;
+
+	Material=CreateDefaultSubobject<UMaterial>(TEXT("CrashedMaterialRender"));
 	
 	FScriptDelegate Crash;
 	Crash.BindUFunction(this,"OnHit");
 	GetMesh()->OnComponentHit.Add(Crash);
+
+	FScriptDelegate HitOn;
+	HitOn.BindUFunction(this,"NotifyHit");
+	GetMesh()->OnComponentHit.Add(HitOn);
 	
 }
 void ABaseCar::BeginPlay()
@@ -275,7 +282,7 @@ void ABaseCar::OnOverlayBegin(UPrimitiveComponent* OverlappedComponent, AActor* 
 
 void ABaseCar::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
-		UE_LOG(LogTemp,Warning,TEXT("Crashed!"));
+	UE_LOG(LogTemp,Warning,TEXT("Crashed!"));
 }
 
 void ABaseCar::TurnLight()
@@ -302,4 +309,11 @@ void ABaseCar::SetSwitchGearTime(float Time)
 	{
 		UE_LOG(LogTemp,Warning,TEXT("ChangeTime==%f"),WheelMoveComponent->TransmissionSetup.GearSwitchTime);
 	}
+}
+
+void ABaseCar::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
+{
+	UE_LOG(LogTemp,Warning,TEXT("OnHit"));
+	if(Material)
+		UGameplayStatics::SpawnDecalAtLocation(Other,Material,FVector(30.0f,30.0f,30.f),HitLocation);
 }
