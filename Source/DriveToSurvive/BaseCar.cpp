@@ -114,6 +114,8 @@ void ABaseCar::Brake()
 {
 	CurrentSpeed=GetVehicleMovementComponent()->GetForwardSpeed()/100.0f;
 	GetVehicleMovementComponent()->SetHandbrakeInput(true);
+	for(int i=0;i<CarWheelsArray.Num();i++)
+		CarWheelsArray[i]->CreateMaterial();
 }
 void ABaseCar::CancleBrake()
 {
@@ -126,6 +128,8 @@ void ABaseCar::CancleBrake()
 	}
 	float EPower=GetVehicleMovementComponent()->Mass*DeltaSpeed*DeltaSpeed*ReChargeRate;
 	ElectronicPower=ElectronicPower+EPower<=MaxElectronicPower?ElectronicPower+EPower:MaxElectronicPower;
+	for(int i=0;i<CarWheelsArray.Num();i++)
+		CarWheelsArray[i]->StopDraw();
 }
 
 void ABaseCar::PlayEngineSound()

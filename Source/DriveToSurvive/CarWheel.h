@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "VehicleWheel.h"
+#include "Tickable.h"
 #include "CarWheel.generated.h"
 
 /**
@@ -11,11 +12,13 @@
  */
 UCLASS()
 class DRIVETOSURVIVE_API UCarWheel : public UVehicleWheel
+
 {
 	GENERATED_BODY()
 private:
 	float MaxLife;
 	float CurrentLife;
+	bool bDraw;
 public:
 	UCarWheel();
 	virtual void Tick(float DeltaSeconds) override;
@@ -23,4 +26,6 @@ public:
 	float GetLifeRate();
 	float GetCurrentLife();
 	void ReCoverTyre();
+	void CreateMaterial();
+	void StopDraw();
 };
