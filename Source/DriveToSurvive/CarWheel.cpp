@@ -11,7 +11,10 @@ UCarWheel::UCarWheel()
 {
 	MaxLife=1000.0f;
 	CurrentLife=MaxLife;
-	bDraw=false;
+
+	FScriptDelegate Scr;
+	Scr.BindUFunction(this,"OnCompHit");
+	CollisionMesh;
 }
 
 float UCarWheel::GetLifeRate()
@@ -25,8 +28,6 @@ void UCarWheel::Tick(float DeltaSeconds)
 	{
 		
 	}
-	if(bDraw)
-		UE_LOG(LogTemp,Warning,TEXT("HHHHHH"));
 }
 void UCarWheel::Wear(float Value)
 {
@@ -42,15 +43,5 @@ float UCarWheel::GetCurrentLife()
 void UCarWheel::ReCoverTyre()
 {
 	CurrentLife=MaxLife;
-}
-
-void UCarWheel::CreateMaterial()
-{
-	bDraw=true;
-}
-
-void UCarWheel::StopDraw()
-{
-	bDraw=false;
 }
 

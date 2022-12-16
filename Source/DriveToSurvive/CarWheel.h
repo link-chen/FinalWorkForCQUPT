@@ -18,7 +18,6 @@ class DRIVETOSURVIVE_API UCarWheel : public UVehicleWheel
 private:
 	float MaxLife;
 	float CurrentLife;
-	bool bDraw;
 public:
 	UCarWheel();
 	virtual void Tick(float DeltaSeconds) override;
@@ -26,6 +25,4 @@ public:
 	float GetLifeRate();
 	float GetCurrentLife();
 	void ReCoverTyre();
-	void CreateMaterial();
-	void StopDraw();
 };

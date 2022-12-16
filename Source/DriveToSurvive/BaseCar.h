@@ -64,7 +64,14 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	FTimerHandle Timer;
 
 	UPROPERTY(EditAnywhere)
-	UMaterial* Material;
+	UMaterial* CrashedMaterial;
+	UPROPERTY(EditAnywhere)
+	UMaterial* CarWheelMaterial;
+
+	UPROPERTY(EditAnywhere)
+	TArray<FName> CarWheelBoneName;
+
+	bool bDraw;
 
 	UPROPERTY(EditAnywhere)
 	USpotLightComponent* LeftPointLight;

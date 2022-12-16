@@ -32,7 +32,7 @@ ABaseCar::ABaseCar()
 	RightPointLight->SetupAttachment(GetMesh());
 	bUseLight=true;
 
-	Material=CreateDefaultSubobject<UMaterial>(TEXT("CrashedMaterialRender"));
+	CrashedMaterial=CreateDefaultSubobject<UMaterial>(TEXT("CrashedMaterialRender"));
 	
 	FScriptDelegate Crash;
 	Crash.BindUFunction(this,"OnHit");
@@ -69,6 +69,8 @@ void ABaseCar::BeginPlay()
 	CarMess=GetVehicleMovementComponent()->Mass;
 	
 	TurnLight();
+
+	bDraw=false;
 }
 void ABaseCar::Tick(float DeltaSeconds)
 {
@@ -94,6 +96,13 @@ void ABaseCar::Tick(float DeltaSeconds)
 			LightOut();
 		}
 	}
+	if(bDraw)
+	{
+		for(int i=0;i<CarWheelBoneName.Num();i++)
+		{
+			UGameplayStatics::SpawnDecalAtLocation(this,CrashedMaterial,FVector(30.0f,30.0f,30.0f),GetMesh()->GetSocketLocation(CarWheelBoneName[i]),FRotator(0.0f,0.0f,0.0f));
+		}
+	}
 }
 
 void ABaseCar::MoveForward(float Value)
@@ -114,8 +123,7 @@ void ABaseCar::Brake()
 {
 	CurrentSpeed=GetVehicleMovementComponent()->GetForwardSpeed()/100.0f;
 	GetVehicleMovementComponent()->SetHandbrakeInput(true);
-	for(int i=0;i<CarWheelsArray.Num();i++)
-		CarWheelsArray[i]->CreateMaterial();
+	bDraw=true;
 }
 void ABaseCar::CancleBrake()
 {
@@ -128,8 +136,7 @@ void ABaseCar::CancleBrake()
 	}
 	float EPower=GetVehicleMovementComponent()->Mass*DeltaSpeed*DeltaSpeed*ReChargeRate;
 	ElectronicPower=ElectronicPower+EPower<=MaxElectronicPower?ElectronicPower+EPower:MaxElectronicPower;
-	for(int i=0;i<CarWheelsArray.Num();i++)
-		CarWheelsArray[i]->StopDraw();
+	bDraw=false;
 }
 
 void ABaseCar::PlayEngineSound()
@@ -318,6 +325,6 @@ void ABaseCar::SetSwitchGearTime(float Time)
 void ABaseCar::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
 {
 	UE_LOG(LogTemp,Warning,TEXT("OnHit"));
-	if(Material)
-		UGameplayStatics::SpawnDecalAtLocation(Other,Material,FVector(30.0f,30.0f,30.f),HitLocation);
+	if(CrashedMaterial)
+		UGameplayStatics::SpawnDecalAtLocation(Other,CrashedMaterial,FVector(30.0f,30.0f,30.f),HitLocation,FRotator(0.0f,0.0f,0.0f));
 }
