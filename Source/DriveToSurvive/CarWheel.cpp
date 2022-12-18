@@ -45,3 +45,9 @@ void UCarWheel::ReCoverTyre()
 	CurrentLife=MaxLife;
 }
 
+float UCarWheel::GetWheelSize()
+{
+	return 30.0f;
+}
+
+

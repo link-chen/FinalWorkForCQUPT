@@ -100,7 +100,8 @@ void ABaseCar::Tick(float DeltaSeconds)
 	{
 		for(int i=0;i<CarWheelBoneName.Num();i++)
 		{
-			UGameplayStatics::SpawnDecalAtLocation(this,CrashedMaterial,FVector(30.0f,30.0f,30.0f),GetMesh()->GetSocketLocation(CarWheelBoneName[i]),FRotator(0.0f,0.0f,0.0f));
+			
+			UGameplayStatics::SpawnDecalAtLocation(this,CarWheelMaterial,FVector(30.0f,30.0f,30.0f),GetMesh()->GetSocketLocation(CarWheelBoneName[i]),FRotator(0.0f,0.0f,0.0f));
 		}
 	}
 }

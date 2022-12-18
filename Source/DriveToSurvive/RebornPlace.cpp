@@ -13,6 +13,7 @@ ARebornPlace::ARebornPlace()
 	Box=CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
 
 	MeshComponent=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	MeshComponent->SetupAttachment(Box);
 	
 	FScriptDelegate Del;
 	Del.BindUFunction(this,"BeginOverLap");
