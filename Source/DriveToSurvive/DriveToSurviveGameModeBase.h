@@ -24,6 +24,7 @@ class DRIVETOSURVIVE_API ADriveToSurviveGameModeBase : public AGameModeBase
 	CarUpdateMessage* CarMessage;
 	ABaseCar* PlayerCar;
 	AStartLine* StartLine;
+	ASignalLight* SignalLight;
 public:
 	UPROPERTY(BlueprintReadOnly)
 	int LeftTime;

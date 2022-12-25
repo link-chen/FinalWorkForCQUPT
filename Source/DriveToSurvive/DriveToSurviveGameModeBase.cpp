@@ -45,6 +45,7 @@ void ADriveToSurviveGameModeBase::BeginPlay()
 		if(ASignalLight* Signal=Cast<ASignalLight>(Actor))
 		{
 			UE_LOG(LogTemp,Warning,TEXT("SignalLight"));
+			SignalLight=Signal;
 		}
 	}
 }
@@ -54,12 +55,18 @@ void ADriveToSurviveGameModeBase::CountTime()
 	{
 		LeftTime--;
 		Signal();
-		StartLine->SetCrossTime();
+		if(SignalLight)
+		{
+			SignalLight->CloseLight(LeftTime);
+		}
 		UE_LOG(LogTemp,Warning,TEXT("Time==%d"),LeftTime);
 	}
 	else
 	{
 		bCanCarRun=true;
+		StartLine->SetCrossTime();
+		if(SignalLight)
+			SignalLight->CloseLightSecondPart();
 		GetWorldTimerManager().ClearTimer(Time);
 	}
 }
