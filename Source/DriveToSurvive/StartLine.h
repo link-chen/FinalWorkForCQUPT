@@ -27,6 +27,8 @@ class DRIVETOSURVIVE_API AStartLine : public AActor
 	TArray<AFireWorkSpawnSpace*> FireWorkSpawnSpacesArray;
 
 	void CheckFinish();
+
+	float RacingTime;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -43,4 +45,5 @@ public:
 	void BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	UFUNCTION(BlueprintImplementableEvent)
 	void FinishGame();
+	void SetCrossTime();
 };

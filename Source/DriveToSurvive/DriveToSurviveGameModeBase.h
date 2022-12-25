@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "CarUpdateMessage.h"
+#include "SignalLight.h"
+#include "StartLine.h"
 #include "GameFramework/GameModeBase.h"
 #include "DriveToSurviveGameModeBase.generated.h"
 
@@ -21,6 +23,7 @@ class DRIVETOSURVIVE_API ADriveToSurviveGameModeBase : public AGameModeBase
 	bool bCanCarRun;
 	CarUpdateMessage* CarMessage;
 	ABaseCar* PlayerCar;
+	AStartLine* StartLine;
 public:
 	UPROPERTY(BlueprintReadOnly)
 	int LeftTime;

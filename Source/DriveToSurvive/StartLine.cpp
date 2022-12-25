@@ -26,11 +26,13 @@ AStartLine::AStartLine()
 void AStartLine::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 void AStartLine::CheckFinish()
 {
 	bool flag=true;
+	float LapTime=GetWorld()->GetTimeSeconds()-RacingTime;
+	RacingTime=GetWorld()->GetTimeSeconds();
+	UE_LOG(LogTemp,Warning,TEXT("LapTime==%f"),LapTime);
 	for(int i=0;i<RebornArray.Num();i++)
 	{
 		if(!RebornArray[i]->bCross)
@@ -76,3 +78,7 @@ void AStartLine::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 	}
 }
 
+void AStartLine::SetCrossTime()
+{
+	RacingTime=GetWorld()->GetTimeSeconds();
+}

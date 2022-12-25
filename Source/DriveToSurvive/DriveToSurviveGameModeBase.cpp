@@ -5,6 +5,8 @@
 
 #include "BaseCar.h"
 #include "DTSSaveGame.h"
+#include "SignalLight.h"
+#include "StartLine.h"
 #include "WheeledVehicleMovementComponent.h"
 #include "WheeledVehicleMovementComponent4W.h"
 #include "GameFramework/GameSession.h"
@@ -29,6 +31,22 @@ void ADriveToSurviveGameModeBase::BeginPlay()
 	UE_LOG(LogTemp,Warning,TEXT("ElectronicPower==%f"),PlayerCar->MaxElectronicPower);
 	UE_LOG(LogTemp,Warning,TEXT("Mass==%f"),PlayerCar->GetVehicleMovementComponent()->Mass);
 	UE_LOG(LogTemp,Warning,TEXT("ReChargeRate%f"),PlayerCar->GetReChargeRate());
+ 
+	TArray<AActor*> Actors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AActor::StaticClass(), Actors);
+ 
+	for (AActor* Actor : Actors)
+	{
+		if(AStartLine* Line=Cast<AStartLine>(Actor))
+		{
+			UE_LOG(LogTemp,Warning,TEXT("Find!"));
+			StartLine=Line;
+		}
+		if(ASignalLight* Signal=Cast<ASignalLight>(Actor))
+		{
+			UE_LOG(LogTemp,Warning,TEXT("SignalLight"));
+		}
+	}
 }
 void ADriveToSurviveGameModeBase::CountTime()
 {
@@ -36,6 +54,7 @@ void ADriveToSurviveGameModeBase::CountTime()
 	{
 		LeftTime--;
 		Signal();
+		StartLine->SetCrossTime();
 		UE_LOG(LogTemp,Warning,TEXT("Time==%d"),LeftTime);
 	}
 	else
