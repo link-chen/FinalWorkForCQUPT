@@ -164,7 +164,10 @@ void ABaseCar::ChangeCamera()
 }
 void ABaseCar::QuitGame()
 {
-	GetWorld()->GetFirstPlayerController()->ConsoleCommand("QUIT");
+	if(Cast<ADriveToSurviveGameModeBase>(GetWorld()->GetAuthGameMode()))
+	{
+		PausedGame();
+	}
 }
 
 void ABaseCar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

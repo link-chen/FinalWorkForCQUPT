@@ -32,6 +32,8 @@ void AStartLine::CheckFinish()
 	bool flag=true;
 	float LapTime=GetWorld()->GetTimeSeconds()-RacingTime;
 	RacingTime=GetWorld()->GetTimeSeconds();
+	int Minutes=LapTime/60;
+	float Seconds=LapTime-Minutes*60.0f;
 	UE_LOG(LogTemp,Warning,TEXT("LapTime==%f"),LapTime);
 	for(int i=0;i<RebornArray.Num();i++)
 	{

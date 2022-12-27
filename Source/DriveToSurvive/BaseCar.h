@@ -118,6 +118,8 @@ public:
 	float GetReChargeRate();
 	void SetReChargeRate(float Value);
 	float GetGearChangeTime();
+	UFUNCTION(BlueprintImplementableEvent)
+	void PausedGame();
 	UFUNCTION()
 	virtual void OnOverlayBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	                            UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
