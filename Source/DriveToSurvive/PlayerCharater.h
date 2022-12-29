@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Gun.h"
 #include "GameFramework/Character.h"
 #include "PlayerCharater.generated.h"
 
@@ -14,9 +15,13 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 	void MoveForward(float Value);
 	void MoveRight(float Value);
 
-	void UseGun();
-	void GunFire();
+	FTimerHandle Timer;
 	
+	void UseGun();
+	void StopGun();
+	void GunFire();
+
+	AGun* Gun;
 public:
 	// Sets default values for this character's properties
 	APlayerCharater();

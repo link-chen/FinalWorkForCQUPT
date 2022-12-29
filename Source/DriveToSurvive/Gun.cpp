@@ -19,6 +19,22 @@ void AGun::BeginPlay()
 	
 }
 
+void AGun::Fire()
+{
+	UWorld* World=GetWorld();
+	if(World)
+	{
+		World->SpawnActor<AGunBullte>(Bullte,GetActorLocation(),GetActorRotation());
+	}
+}
+
+float AGun::GetShotTime()
+{
+	return ShotTime;
+}
+
+
+
 // Called every frame
 void AGun::Tick(float DeltaTime)
 {

@@ -13,7 +13,7 @@ class DRIVETOSURVIVE_API AGunBullte : public AActor
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* Mesh;
-	
+
 public:	
 	// Sets default values for this actor's properties
 	AGunBullte();

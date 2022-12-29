@@ -19,6 +19,7 @@ void AGunBullte::BeginPlay()
 	
 }
 
+
 // Called every frame
 void AGunBullte::Tick(float DeltaTime)
 {

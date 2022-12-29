@@ -39,12 +39,24 @@ void APlayerCharater::MoveRight(float Value)
 
 void APlayerCharater::UseGun()
 {
-	
+	if(Gun)
+		GetWorld()->GetTimerManager().SetTimer(Timer,this,&APlayerCharater::GunFire,Gun->GetShotTime(),true);
+	else
+	{
+		
+	}
 }
+
+void APlayerCharater::StopGun()
+{
+	GetWorld()->GetTimerManager().ClearTimer(Timer);
+}
+
 
 void APlayerCharater::GunFire()
 {
-	
+	if(Gun)
+		Gun->Fire();
 }
 
 

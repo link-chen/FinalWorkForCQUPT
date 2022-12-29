@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GunBullte.h"
 #include "GameFramework/Actor.h"
 #include "Gun.generated.h"
 
@@ -13,9 +14,22 @@ class DRIVETOSURVIVE_API AGun : public AActor
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* GunMesh;
+	
+	UPROPERTY(EditAnywhere)
+	float ShotTime;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AGunBullte> Bullte;
+
+	UPROPERTY(EditAnywhere)
+	FString GunName;
+	
 public:	
 	// Sets default values for this actor's properties
 	AGun();
+
+	void Fire();
+	float GetShotTime();
 
 protected:
 	// Called when the game starts or when spawned
