@@ -23,6 +23,15 @@ class DRIVETOSURVIVE_API AGun : public AActor
 
 	UPROPERTY(EditAnywhere)
 	FString GunName;
+
+	UPROPERTY(EditAnywhere)
+	UAudioComponent* Audio;
+
+	UPROPERTY(EditAnywhere)
+	int GunBullte;
+
+	UPROPERTY(EditAnywhere)
+	int LeftGunBullte;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -30,6 +39,8 @@ public:
 
 	void Fire();
 	float GetShotTime();
+
+	void ReLoadBullte();
 
 protected:
 	// Called when the game starts or when spawned

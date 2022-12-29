@@ -11,7 +11,7 @@ UCLASS()
 class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 {
 	GENERATED_BODY()
-
+	
 	void MoveForward(float Value);
 	void MoveRight(float Value);
 
@@ -21,7 +21,16 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 	void StopGun();
 	void GunFire();
 
-	AGun* Gun;
+	AGun* PlayerGun;
+
+	TArray<AGun*> GunList;
+
+	void DisCardGun();
+	void ReLoad();
+	
+	UFUNCTION()
+	virtual void NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,
+	bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
 public:
 	// Sets default values for this character's properties
 	APlayerCharater();

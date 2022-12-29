@@ -3,6 +3,8 @@
 
 #include "PlayerCharater.h"
 
+#include "GeomUtils/GuContactBuffer.h"
+
 // Sets default values
 APlayerCharater::APlayerCharater()
 {
@@ -39,8 +41,8 @@ void APlayerCharater::MoveRight(float Value)
 
 void APlayerCharater::UseGun()
 {
-	if(Gun)
-		GetWorld()->GetTimerManager().SetTimer(Timer,this,&APlayerCharater::GunFire,Gun->GetShotTime(),true);
+	if(PlayerGun)
+		GetWorld()->GetTimerManager().SetTimer(Timer,this,&APlayerCharater::GunFire,PlayerGun->GetShotTime(),true);
 	else
 	{
 		
@@ -55,10 +57,24 @@ void APlayerCharater::StopGun()
 
 void APlayerCharater::GunFire()
 {
-	if(Gun)
-		Gun->Fire();
+	if(PlayerGun)
+		PlayerGun->Fire();
 }
 
+void APlayerCharater::DisCardGun()
+{
+	//解除绑定并扔出枪支
+	PlayerGun=nullptr;
+}
+
+
+void APlayerCharater::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if(AGun* Gun=Cast<AGun>(Other))
+	{
+		GunList.Add(Gun);
+	}	
+}
 
 // Called to bind functionality to input
 void APlayerCharater::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

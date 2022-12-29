@@ -10,13 +10,22 @@ AGunBullte::AGunBullte()
 	PrimaryActorTick.bCanEverTick = true;
 
 	Mesh=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	ProjectileMovementComponent=CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComponent"));
 }
 
 // Called when the game starts or when spawned
 void AGunBullte::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	FScriptDelegate Del;
+	Del.BindUFunction(this,"NotifyHit");
+	Mesh->OnComponentHit.Add(Del);
+}
+
+void AGunBullte::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
+{
+	UE_LOG(LogTemp,Warning,TEXT("HitOn"));
 }
 
 

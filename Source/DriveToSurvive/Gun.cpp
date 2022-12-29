@@ -2,6 +2,7 @@
 
 
 #include "Gun.h"
+#include "Components/AudioComponent.h"
 
 // Sets default values
 AGun::AGun()
@@ -10,6 +11,7 @@ AGun::AGun()
 	PrimaryActorTick.bCanEverTick = true;
 
 	GunMesh=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	Audio=CreateDefaultSubobject<UAudioComponent>(TEXT("AudiComponent"));
 }
 
 // Called when the game starts or when spawned
@@ -25,12 +27,18 @@ void AGun::Fire()
 	if(World)
 	{
 		World->SpawnActor<AGunBullte>(Bullte,GetActorLocation(),GetActorRotation());
+		Audio->Play();
 	}
 }
 
 float AGun::GetShotTime()
 {
 	return ShotTime;
+}
+
+void AGun::ReLoadBullte()
+{
+	
 }
 
 
