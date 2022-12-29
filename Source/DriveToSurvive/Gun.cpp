@@ -18,7 +18,8 @@ AGun::AGun()
 void AGun::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	GunBullte=MaxBullte;
 }
 
 void AGun::Fire()
@@ -26,8 +27,11 @@ void AGun::Fire()
 	UWorld* World=GetWorld();
 	if(World)
 	{
-		World->SpawnActor<AGunBullte>(Bullte,GetActorLocation(),GetActorRotation());
-		Audio->Play();
+		if(GunBullte)
+		{
+			World->SpawnActor<AGunBullte>(Bullte,GetActorLocation(),GetActorRotation());
+			Audio->Play();
+		}
 	}
 }
 
@@ -38,7 +42,27 @@ float AGun::GetShotTime()
 
 void AGun::ReLoadBullte()
 {
-	
+	if(LeftGunBullte>=MaxBullte)
+	{
+		if(GunBullte!=0)
+			LeftGunBullte-=(MaxBullte-GunBullte);	
+		else
+			LeftGunBullte-=MaxBullte;
+		GunBullte=MaxBullte;
+	}
+	else
+	{
+		if(LeftGunBullte+GunBullte<=MaxBullte)
+		{
+			GunBullte+=LeftGunBullte;
+			LeftGunBullte=0;
+		}
+		else
+		{
+			LeftGunBullte=(GunBullte+LeftGunBullte)-MaxBullte;
+			GunBullte=MaxBullte;
+		}
+	}
 }
 
 

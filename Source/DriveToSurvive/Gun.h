@@ -26,9 +26,11 @@ class DRIVETOSURVIVE_API AGun : public AActor
 
 	UPROPERTY(EditAnywhere)
 	UAudioComponent* Audio;
+	
+	int GunBullte;
 
 	UPROPERTY(EditAnywhere)
-	int GunBullte;
+	int MaxBullte;
 
 	UPROPERTY(EditAnywhere)
 	int LeftGunBullte;
