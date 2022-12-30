@@ -17,6 +17,7 @@ APlayerCharater::APlayerCharater()
 void APlayerCharater::BeginPlay()
 {
 	Super::BeginPlay();
+
 	
 }
 
@@ -64,6 +65,8 @@ void APlayerCharater::GunFire()
 void APlayerCharater::DisCardGun()
 {
 	//解除绑定并扔出枪支
+	if(PlayerGun)
+		PlayerGun->AddActorLocalOffset(FVector(10.0f,0.0f,0.0f));
 	PlayerGun=nullptr;
 }
 
@@ -75,6 +78,12 @@ void APlayerCharater::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPri
 		GunList.Add(Gun);
 	}	
 }
+
+void APlayerCharater::ActiveMode()
+{
+	
+}
+
 
 // Called to bind functionality to input
 void APlayerCharater::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

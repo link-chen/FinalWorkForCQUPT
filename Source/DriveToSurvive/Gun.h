@@ -34,6 +34,12 @@ class DRIVETOSURVIVE_API AGun : public AActor
 
 	UPROPERTY(EditAnywhere)
 	int LeftGunBullte;
+
+	UPROPERTY(EditAnywhere)
+	FVector FireLocation;
+
+	UPROPERTY(EditAnywhere)
+	FRotator FireRotator;
 	
 public:	
 	// Sets default values for this actor's properties

@@ -27,6 +27,10 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 
 	void DisCardGun();
 	void ReLoad();
+
+	bool bRun;
+
+	void ActiveMode();
 	
 	UFUNCTION()
 	virtual void NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,

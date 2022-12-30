@@ -2,6 +2,9 @@
 
 
 #include "Gun.h"
+
+#include <GeomUtils/GuContactBuffer.h>
+
 #include "Components/AudioComponent.h"
 
 // Sets default values
@@ -20,6 +23,8 @@ void AGun::BeginPlay()
 	Super::BeginPlay();
 
 	GunBullte=MaxBullte;
+
+	GunMesh->AddForce(GunMesh->GetForwardVector()*100000.0f);
 }
 
 void AGun::Fire()
