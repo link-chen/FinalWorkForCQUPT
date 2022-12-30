@@ -79,6 +79,18 @@ void APlayerCharater::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPri
 	}	
 }
 
+void APlayerCharater::StartJump()
+{
+	bPressedJump=true;
+}
+
+void APlayerCharater::StopJump()
+{
+	bPressedJump=false;
+}
+
+
+
 void APlayerCharater::ActiveMode()
 {
 	
@@ -92,5 +104,11 @@ void APlayerCharater::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 	PlayerInputComponent->BindAxis("MoveForward",this,&APlayerCharater::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight",this,&APlayerCharater::MoveRight);
+
+	PlayerInputComponent->BindAxis("Turn", this, &APlayerCharater::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("LookUp", this, &APlayerCharater::AddControllerPitchInput);
+
+	PlayerInputComponent->BindAction("Jump",IE_Pressed,this,&APlayerCharater::StartJump);
+	PlayerInputComponent->BindAction("Jump",IE_Released,this,&APlayerCharater::StartJump);
 }
 

@@ -30,6 +30,14 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 
 	bool bRun;
 
+	// 按下键时，设置跳跃标记。
+	UFUNCTION()
+	void StartJump();
+
+	// 释放键时，清除跳跃标记。
+	UFUNCTION()
+	void StopJump();
+	
 	void ActiveMode();
 	
 	UFUNCTION()
