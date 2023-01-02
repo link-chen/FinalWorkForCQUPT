@@ -3,6 +3,8 @@
 
 #include "PlayerCharater.h"
 
+#include <corecrt_io.h>
+
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GeomUtils/GuContactBuffer.h"
@@ -13,6 +15,10 @@ APlayerCharater::APlayerCharater()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	SpringArm=CreateDefaultSubobject<USpringArmComponent>(TEXT("Arm"));
+	SpringArm->SetupAttachment(GetMesh());
+	Camera=CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	Camera->SetupAttachment(SpringArm);
 }
 
 // Called when the game starts or when spawned

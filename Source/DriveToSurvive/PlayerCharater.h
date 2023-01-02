@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Gun.h"
+#include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "PlayerCharater.generated.h"
 
 UCLASS()
@@ -23,6 +25,11 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 
 	AGun* PlayerGun;
 	AGun* PlayerGun1;
+
+	UPROPERTY(EditAnywhere)
+	UCameraComponent* Camera;
+	UPROPERTY(EditAnywhere)
+	USpringArmComponent* SpringArm;
 
 	TArray<AGun*> GunList;
 
