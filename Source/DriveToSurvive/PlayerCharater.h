@@ -22,6 +22,7 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 	void GunFire();
 
 	AGun* PlayerGun;
+	AGun* PlayerGun1;
 
 	TArray<AGun*> GunList;
 
@@ -39,6 +40,12 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 	void StopJump();
 	
 	void ActiveMode();
+	void CanncelActiveMode();
+
+	void TakeWeaponOne();
+	void TakeWeaponTwo();
+
+	void TakeWeaponRelease();
 	
 	UFUNCTION()
 	virtual void NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,

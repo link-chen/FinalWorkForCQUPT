@@ -3,6 +3,8 @@
 
 #include "PlayerCharater.h"
 
+#include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GeomUtils/GuContactBuffer.h"
 
 // Sets default values
@@ -18,7 +20,11 @@ void APlayerCharater::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
+	FScriptDelegate Del;
+	Del.BindUFunction(this,"NotifyHit");
+	GetCapsuleComponent()->OnComponentHit.Add(Del);
+
+	GetCharacterMovement()->MaxWalkSpeed=300.0f;
 }
 
 // Called every frame
@@ -76,7 +82,17 @@ void APlayerCharater::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPri
 	if(AGun* Gun=Cast<AGun>(Other))
 	{
 		GunList.Add(Gun);
-	}	
+		if(PlayerGun==nullptr)
+		{
+			PlayerGun=Gun;
+			TakeWeaponRelease();
+		}
+		if(PlayerGun1==nullptr)
+		{
+			PlayerGun1=Gun;
+			TakeWeaponRelease();
+		}
+	}
 }
 
 void APlayerCharater::StartJump()
@@ -92,6 +108,26 @@ void APlayerCharater::StopJump()
 
 
 void APlayerCharater::ActiveMode()
+{
+	GetCharacterMovement()->MaxWalkSpeed=600.0f;
+}
+
+void APlayerCharater::CanncelActiveMode()
+{
+	GetCharacterMovement()->MaxWalkSpeed=300.0f;
+}
+
+void APlayerCharater::TakeWeaponOne()
+{
+	
+}
+
+void APlayerCharater::TakeWeaponTwo()
+{
+	
+}
+
+void APlayerCharater::TakeWeaponRelease()
 {
 	
 }
@@ -110,5 +146,11 @@ void APlayerCharater::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 	PlayerInputComponent->BindAction("Jump",IE_Pressed,this,&APlayerCharater::StartJump);
 	PlayerInputComponent->BindAction("Jump",IE_Released,this,&APlayerCharater::StartJump);
+
+	PlayerInputComponent->BindAction("TakeERS",IE_Pressed,this,&APlayerCharater::ActiveMode);
+	PlayerInputComponent->BindAction("TakeERS",IE_Released,this,&APlayerCharater::CanncelActiveMode);
+
+	PlayerInputComponent->BindAction("WeaponOne",IE_Pressed,this,&APlayerCharater::TakeWeaponOne);
+	PlayerInputComponent->BindAction("WeaponTwo",IE_Pressed,this,&APlayerCharater::TakeWeaponTwo);
 }
 
