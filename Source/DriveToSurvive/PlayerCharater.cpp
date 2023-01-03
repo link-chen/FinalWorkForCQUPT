@@ -19,6 +19,8 @@ APlayerCharater::APlayerCharater()
 	SpringArm->SetupAttachment(GetMesh());
 	Camera=CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
+	WalkSpeed=300.0f;
+	RunSpeed=600.0f;
 }
 
 // Called when the game starts or when spawned
@@ -30,7 +32,7 @@ void APlayerCharater::BeginPlay()
 	Del.BindUFunction(this,"NotifyHit");
 	GetCapsuleComponent()->OnComponentHit.Add(Del);
 
-	GetCharacterMovement()->MaxWalkSpeed=300.0f;
+	GetCharacterMovement()->MaxWalkSpeed=WalkSpeed;
 }
 
 // Called every frame
@@ -42,6 +44,10 @@ void APlayerCharater::Tick(float DeltaTime)
 
 void APlayerCharater::MoveForward(float Value)
 {
+	Controller->GetControlRotation().Roll;
+	const FRotator YawRotation(0.0f,Controller->GetControlRotation().Yaw,0.0f);
+	const FVector Direction(FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X));
+	AddMovementInput(Direction,Value);
 	/*
 	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
 	AddMovementInput(Direction, Value);
@@ -50,6 +56,9 @@ void APlayerCharater::MoveForward(float Value)
 
 void APlayerCharater::MoveRight(float Value)
 {
+	const FRotator YawRotation(0.0f,Controller->GetControlRotation().Yaw,0.0f);
+	const FVector Direction(FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y));
+	AddMovementInput(Direction,Value);
 	/*
 	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
 	AddMovementInput(Direction, Value);
@@ -122,12 +131,12 @@ void APlayerCharater::StopJump()
 
 void APlayerCharater::ActiveMode()
 {
-	GetCharacterMovement()->MaxWalkSpeed=600.0f;
+	GetCharacterMovement()->MaxWalkSpeed=RunSpeed;
 }
 
 void APlayerCharater::CanncelActiveMode()
 {
-	GetCharacterMovement()->MaxWalkSpeed=300.0f;
+	GetCharacterMovement()->MaxWalkSpeed=WalkSpeed;
 }
 
 void APlayerCharater::TakeWeaponOne()
@@ -164,7 +173,7 @@ void APlayerCharater::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 	PlayerInputComponent->BindAxis("MoveForward",this,&APlayerCharater::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight",this,&APlayerCharater::MoveRight);
-
+	
 	PlayerInputComponent->BindAxis("Turn", this, &APlayerCharater::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("LookUp", this, &APlayerCharater::AddControllerPitchInput);
 

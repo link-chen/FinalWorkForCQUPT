@@ -33,6 +33,11 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 
 	TArray<AGun*> GunList;
 
+	UPROPERTY(EditAnywhere)
+	float WalkSpeed;
+	UPROPERTY(EditAnywhere)
+	float RunSpeed;
+	
 	void DisCardGun();
 	void ReLoad();
 
