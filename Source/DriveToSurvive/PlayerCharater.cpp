@@ -42,14 +42,18 @@ void APlayerCharater::Tick(float DeltaTime)
 
 void APlayerCharater::MoveForward(float Value)
 {
+	/*
 	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
 	AddMovementInput(Direction, Value);
+	*/
 }
 
 void APlayerCharater::MoveRight(float Value)
 {
+	/*
 	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
 	AddMovementInput(Direction, Value);
+	*/
 }
 
 void APlayerCharater::UseGun()
@@ -78,7 +82,10 @@ void APlayerCharater::DisCardGun()
 {
 	//解除绑定并扔出枪支
 	if(PlayerGun)
+	{
 		PlayerGun->AddActorLocalOffset(FVector(10.0f,0.0f,0.0f));
+		PlayerGun->GiveUp();
+	}
 	PlayerGun=nullptr;
 }
 
@@ -135,7 +142,18 @@ void APlayerCharater::TakeWeaponTwo()
 
 void APlayerCharater::TakeWeaponRelease()
 {
-	
+	if(PlayerGun==nullptr)
+	{
+		
+	}
+	if(PlayerGun1==nullptr)
+	{
+		
+	}
+	else
+	{
+		UE_LOG(LogTemp,Warning,TEXT("Can not get any weapon"));
+	}
 }
 
 

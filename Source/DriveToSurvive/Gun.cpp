@@ -70,6 +70,10 @@ void AGun::ReLoadBullte()
 	}
 }
 
+void AGun::GiveUp()
+{
+	GunMesh->AddForce(FVector(10.0f,10.0f,10.0f));
+}
 
 
 // Called every frame

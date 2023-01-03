@@ -54,6 +54,7 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 
 	void TakeWeaponRelease();
 	
+	
 	UFUNCTION()
 	virtual void NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,
 	bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
@@ -61,6 +62,7 @@ public:
 	// Sets default values for this character's properties
 	APlayerCharater();
 
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
