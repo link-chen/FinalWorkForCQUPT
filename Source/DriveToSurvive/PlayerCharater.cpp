@@ -103,16 +103,24 @@ void APlayerCharater::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPri
 {
 	if(AGun* Gun=Cast<AGun>(Other))
 	{
-		GunList.Add(Gun);
-		if(PlayerGun==nullptr)
+		// GunList.Add(Gun);
+		// if(PlayerGun==nullptr)
+		// {
+		// 	PlayerGun=Gun;
+		// 	TakeWeaponRelease();
+		// }
+		// if(PlayerGun1==nullptr)
+		// {
+		// 	PlayerGun1=Gun;
+		// 	TakeWeaponRelease();
+		// }
+		if(Gun)
 		{
 			PlayerGun=Gun;
-			TakeWeaponRelease();
-		}
-		if(PlayerGun1==nullptr)
-		{
-			PlayerGun1=Gun;
-			TakeWeaponRelease();
+			UE_LOG(LogTemp,Warning,TEXT("GunCollision"));
+		
+			PlayerGun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,"WeaponOne");
+			UE_LOG(LogTemp,Warning,TEXT("Add the weapon one"));
 		}
 	}
 }
