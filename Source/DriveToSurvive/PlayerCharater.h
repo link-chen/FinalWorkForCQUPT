@@ -58,11 +58,17 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 	void TakeWeaponTwo();
 
 	void TakeWeaponRelease();
+
+	UPROPERTY(EditAnywhere)
+	FVector GunLocation;
 	
 	
 	UFUNCTION()
 	virtual void NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,
 	bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
+
+	UFUNCTION()
+	virtual  void OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit);
 public:
 	// Sets default values for this character's properties
 	APlayerCharater();

@@ -17,6 +17,8 @@ AGun::AGun()
 	GunMesh->SetupAttachment(RootComponent);
 	Audio=CreateDefaultSubobject<UAudioComponent>(TEXT("AudiComponent"));
 	Audio->SetupAttachment(GunMesh);
+	FireMesh=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FireMesh"));
+	FireMesh->SetupAttachment(GunMesh);
 }
 
 // Called when the game starts or when spawned
@@ -76,6 +78,17 @@ void AGun::GiveUp()
 {
 	GunMesh->AddForce(FVector(10.0f,10.0f,10.0f));
 }
+
+FVector AGun::GetFireLocation()
+{
+	return FireMesh->GetComponentLocation();
+}
+
+FRotator AGun::GetFireRotator()
+{
+	return FireMesh->GetComponentRotation();
+}
+
 
 
 // Called every frame

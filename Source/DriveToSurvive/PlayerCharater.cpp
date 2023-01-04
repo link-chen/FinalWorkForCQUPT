@@ -33,6 +33,10 @@ void APlayerCharater::BeginPlay()
 	GetCapsuleComponent()->OnComponentHit.Add(Del);
 
 	GetCharacterMovement()->MaxWalkSpeed=WalkSpeed;
+
+	FScriptDelegate UDel;
+	UDel.BindUFunction(this,"OnOverlayBegin");
+	GetCapsuleComponent()->OnComponentBeginOverlap.Add(UDel);
 }
 
 // Called every frame
@@ -101,32 +105,87 @@ void APlayerCharater::DisCardGun()
 
 void APlayerCharater::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
 {
+	// if(AGun* Gun=Cast<AGun>(Other))
+	// {
+	// 	// GunList.Add(Gun);
+	// 	// if(PlayerGun==nullptr)
+	// 	// {
+	// 	// 	PlayerGun=Gun;
+	// 	// 	TakeWeaponRelease();
+	// 	// }
+	// 	// if(PlayerGun1==nullptr)
+	// 	// {
+	// 	// 	PlayerGun1=Gun;
+	// 	// 	TakeWeaponRelease();
+	// 	// }
+	// 	if(Gun)
+	// 	{
+	// 		if(!PlayerGun&&!PlayerGun1)
+	// 		{
+	// 			PlayerGun=Gun;
+	// 			UE_LOG(LogTemp,Warning,TEXT("GunCollision"));
+	// 	
+	// 			PlayerGun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,"WeaponOne");
+	// 			PlayerGun->SetActorRelativeLocation(GunLocation);
+	// 			UE_LOG(LogTemp,Warning,TEXT("Add the weapon one"));
+	// 			goto even;
+	// 		}
+	// 		if(PlayerGun&&!PlayerGun1)
+	// 		{
+	// 			goto even;
+	// 		}
+	// 		if(!PlayerGun&&PlayerGun1)
+	// 		{
+	// 			goto even;
+	// 		}
+	// 		if(PlayerGun&&PlayerGun1)
+	// 		{
+	// 			goto even;
+	// 		}
+	// 		even:
+	// 			;
+	// 	}
+	// }
+}
+
+void APlayerCharater::OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
+{
 	if(AGun* Gun=Cast<AGun>(Other))
 	{
-		// GunList.Add(Gun);
-		// if(PlayerGun==nullptr)
-		// {
-		// 	PlayerGun=Gun;
-		// 	TakeWeaponRelease();
-		// }
-		// if(PlayerGun1==nullptr)
-		// {
-		// 	PlayerGun1=Gun;
-		// 	TakeWeaponRelease();
-		// }
 		if(Gun)
 		{
-			PlayerGun=Gun;
-			UE_LOG(LogTemp,Warning,TEXT("GunCollision"));
+			if(!PlayerGun&&!PlayerGun1)
+			{
+				PlayerGun=Gun;
+				UE_LOG(LogTemp,Warning,TEXT("GunCollision"));
 		
-			PlayerGun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,"WeaponOne");
-			UE_LOG(LogTemp,Warning,TEXT("Add the weapon one"));
+				PlayerGun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,"WeaponOne");
+				PlayerGun->SetActorRelativeLocation(GunLocation);
+				UE_LOG(LogTemp,Warning,TEXT("Add the weapon one"));
+				goto even;
+			}
+			if(PlayerGun&&!PlayerGun1)
+			{
+				goto even;
+			}
+			if(!PlayerGun&&PlayerGun1)
+			{
+				goto even;
+			}
+			if(PlayerGun&&PlayerGun1)
+			{
+				goto even;
+			}
+			even:
+				;
 		}
 	}
 }
 
+
 void APlayerCharater::StartJump()
 {
+	bPressedJump=true;
 	bPressedJump=true;
 }
 
