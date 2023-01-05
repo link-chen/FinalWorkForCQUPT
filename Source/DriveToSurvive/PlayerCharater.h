@@ -60,7 +60,12 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 	void TakeWeaponRelease();
 
 	UPROPERTY(EditAnywhere)
-	FVector GunLocation;
+	FVector GunAttachLocationOne;
+	UPROPERTY(EditAnywhere)
+	FVector GunAttachLocationTwo;
+
+	UPROPERTY(EditAnywhere)
+	FVector FightGunAttachLocation;
 	
 	
 	UFUNCTION()

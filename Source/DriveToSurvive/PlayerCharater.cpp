@@ -160,16 +160,21 @@ void APlayerCharater::OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other,
 				UE_LOG(LogTemp,Warning,TEXT("GunCollision"));
 		
 				PlayerGun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,"WeaponOne");
-				PlayerGun->SetActorRelativeLocation(GunLocation);
+				PlayerGun->SetActorRelativeLocation(GunAttachLocationOne);
 				UE_LOG(LogTemp,Warning,TEXT("Add the weapon one"));
 				goto even;
 			}
 			if(PlayerGun&&!PlayerGun1)
 			{
+				PlayerGun1=Gun;
+
+				PlayerGun1->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,"WeaponTwo");
+				PlayerGun1->SetActorRelativeLocation(GunAttachLocationTwo);
 				goto even;
 			}
 			if(!PlayerGun&&PlayerGun1)
 			{
+				PlayerGun=Gun;
 				goto even;
 			}
 			if(PlayerGun&&PlayerGun1)
