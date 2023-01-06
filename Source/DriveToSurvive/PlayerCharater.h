@@ -27,7 +27,7 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 	AGun* PlayerGun1;
 	
 
-	bool IsGunAvailable();
+	bool IsGun1Available();
 	bool IsGun0Available();
 	
 	UPROPERTY(EditAnywhere)
@@ -41,6 +41,13 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 	float WalkSpeed;
 	UPROPERTY(EditAnywhere)
 	float RunSpeed;
+
+	UPROPERTY(EditAnywhere)
+	UAnimMontage* ReLoadAnimMontage;
+	UPROPERTY(EditAnywhere)
+	UAnimMontage* FireAnimMontage;
+	UPROPERTY(EditAnywhere)
+	UAnimMontage* PlayerDieAnimMontage;
 	
 	void DisCardGun();
 	void ReLoad();
@@ -66,9 +73,7 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 	void ChangeGun();
 
 	UPROPERTY(EditAnywhere)
-	FVector GunAttachLocationOne;
-	UPROPERTY(EditAnywhere)
-	FVector GunAttachLocationTwo;
+	FVector GunAttachLocation;
 
 	UPROPERTY(EditAnywhere)
 	FVector FightGunAttachLocation;
@@ -85,7 +90,7 @@ public:
 	APlayerCharater();
 
 	UPROPERTY(BlueprintReadOnly)
-	bool bGun;
+	bool bGun0;
 	UPROPERTY(BlueprintReadOnly)
 	bool bGun1;
 	

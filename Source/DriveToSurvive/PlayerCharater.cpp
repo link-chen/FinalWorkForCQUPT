@@ -27,10 +27,7 @@ APlayerCharater::APlayerCharater()
 void APlayerCharater::BeginPlay()
 {
 	Super::BeginPlay();
-
-	FScriptDelegate Del;
-	Del.BindUFunction(this,"NotifyHit");
-	GetCapsuleComponent()->OnComponentHit.Add(Del);
+	
 
 	GetCharacterMovement()->MaxWalkSpeed=WalkSpeed;
 
@@ -72,21 +69,22 @@ void APlayerCharater::MoveRight(float Value)
 void APlayerCharater::UseGun()
 {
 	if(PlayerGun)
-		GetWorld()->GetTimerManager().SetTimer(Timer,this,&APlayerCharater::GunFire,PlayerGun->GetShotTime(),true);
-	else
 	{
-		
+		UE_LOG(LogTemp,Warning,TEXT("StartFire,shot time==%f"),PlayerGun->GetShotTime());
+		GunFire();
+		GetWorldTimerManager().SetTimer(Timer,this,&APlayerCharater::GunFire,PlayerGun->GetShotTime(),true);
 	}
 }
 
 void APlayerCharater::StopGun()
 {
-	GetWorld()->GetTimerManager().ClearTimer(Timer);
+	GetWorldTimerManager().ClearTimer(Timer);
 }
 
 
 void APlayerCharater::GunFire()
 {
+	UE_LOG(LogTemp,Warning,TEXT("Using Gun"));
 	if(PlayerGun)
 		PlayerGun->Fire();
 }
@@ -105,88 +103,36 @@ void APlayerCharater::DisCardGun()
 
 void APlayerCharater::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
 {
-	// if(AGun* Gun=Cast<AGun>(Other))
-	// {
-	// 	// GunList.Add(Gun);
-	// 	// if(PlayerGun==nullptr)
-	// 	// {
-	// 	// 	PlayerGun=Gun;
-	// 	// 	TakeWeaponRelease();
-	// 	// }
-	// 	// if(PlayerGun1==nullptr)
-	// 	// {
-	// 	// 	PlayerGun1=Gun;
-	// 	// 	TakeWeaponRelease();
-	// 	// }
-	// 	if(Gun)
-	// 	{
-	// 		if(!PlayerGun&&!PlayerGun1)
-	// 		{
-	// 			PlayerGun=Gun;
-	// 			UE_LOG(LogTemp,Warning,TEXT("GunCollision"));
-	// 	
-	// 			PlayerGun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,"WeaponOne");
-	// 			PlayerGun->SetActorRelativeLocation(GunLocation);
-	// 			UE_LOG(LogTemp,Warning,TEXT("Add the weapon one"));
-	// 			goto even;
-	// 		}
-	// 		if(PlayerGun&&!PlayerGun1)
-	// 		{
-	// 			goto even;
-	// 		}
-	// 		if(!PlayerGun&&PlayerGun1)
-	// 		{
-	// 			goto even;
-	// 		}
-	// 		if(PlayerGun&&PlayerGun1)
-	// 		{
-	// 			goto even;
-	// 		}
-	// 		even:
-	// 			;
-	// 	}
-	// }
+	
 }
 
 void APlayerCharater::OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
 {
 	if(AGun* Gun=Cast<AGun>(Other))
 	{
-		if(Gun)
+		if(!IsGun0Available()&&!IsGun1Available())
 		{
-			if(!PlayerGun&&!PlayerGun1)
-			{
-				PlayerGun=Gun;
-				UE_LOG(LogTemp,Warning,TEXT("GunCollision"));
-		
-				PlayerGun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,"WeaponOne");
-				PlayerGun->SetActorRelativeLocation(GunAttachLocationOne);
-				UE_LOG(LogTemp,Warning,TEXT("Add the weapon one"));
-				return;
-			}
-			if(PlayerGun&&!PlayerGun1)
-			{
-				/*
-				PlayerGun1=Gun;
-				UE_LOG(LogTemp,Warning,TEXT("Add the weapon Two"));
-				PlayerGun1->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,"WeaponTwo");
-				PlayerGun1->SetActorRelativeLocation(GunAttachLocationTwo);
-				return;
-				*/
-			}
-			if(!PlayerGun&&PlayerGun1)
-			{
-				/*
-				PlayerGun=Gun;
-				PlayerGun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,"WeaponOne");
-				PlayerGun->SetActorRelativeLocation(GunAttachLocationTwo);
-				return;
-				*/
-			}
-			if(PlayerGun&&PlayerGun1)
-			{
-				return;
-			}
+			UE_LOG(LogTemp,Warning,TEXT("1"));
+			PlayerGun=Gun;
+			PlayerGun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,"Weapon");
+			PlayerGun->SetActorRelativeLocation(FightGunAttachLocation);
+			bGun0=true;
+		}
+		else if(IsGun0Available()&&!IsGun1Available())
+		{
+			UE_LOG(LogTemp,Warning,TEXT("2"));
+			PlayerGun1=Gun;
+			PlayerGun1->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,"ReleaseWeapon");
+			PlayerGun1->SetActorRelativeLocation(GunAttachLocation);
+			bGun1=true;
+		}
+		else if(!IsGun0Available()&&IsGun1Available())
+		{
+			UE_LOG(LogTemp,Warning,TEXT("3"));
+			PlayerGun=Gun;
+			PlayerGun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,"Weapon");
+			PlayerGun->SetActorRelativeLocation(GunAttachLocation);
+			bGun0=true;
 		}
 	}
 }
@@ -241,9 +187,9 @@ void APlayerCharater::TakeWeaponRelease()
 	}
 }
 
-bool APlayerCharater::IsGunAvailable()
+bool APlayerCharater::IsGun1Available()
 {
-	return bGun;
+	return bGun0;
 }
 
 bool APlayerCharater::IsGun0Available()
@@ -277,5 +223,8 @@ void APlayerCharater::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 	PlayerInputComponent->BindAction("WeaponOne",IE_Pressed,this,&APlayerCharater::TakeWeaponOne);
 	PlayerInputComponent->BindAction("WeaponTwo",IE_Pressed,this,&APlayerCharater::TakeWeaponTwo);
+
+	PlayerInputComponent->BindAction("Fire",IE_Pressed,this,&APlayerCharater::UseGun);
+	PlayerInputComponent->BindAction("Fire",IE_Released,this,&APlayerCharater::StopGun);
 }
 

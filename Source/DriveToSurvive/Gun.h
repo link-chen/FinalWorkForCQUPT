@@ -40,6 +40,8 @@ class DRIVETOSURVIVE_API AGun : public AActor
 
 	FVector GetFireLocation();
 	FRotator GetFireRotator();
+
+	void UseBullte();
 	
 public:	
 	// Sets default values for this actor's properties

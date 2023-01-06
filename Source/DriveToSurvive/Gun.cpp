@@ -38,6 +38,7 @@ void AGun::Fire()
 	{
 		if(GunBullte)
 		{
+			UE_LOG(LogTemp,Warning,TEXT("GunFire"));
 			World->SpawnActor<AGunBullte>(Bullte,GetActorLocation(),GetActorRotation());
 			Audio->Play();
 		}
@@ -89,6 +90,10 @@ FRotator AGun::GetFireRotator()
 	return FireMesh->GetComponentRotation();
 }
 
+void AGun::UseBullte()
+{
+	
+}
 
 
 // Called every frame
