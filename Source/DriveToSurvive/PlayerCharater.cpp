@@ -162,27 +162,31 @@ void APlayerCharater::OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other,
 				PlayerGun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,"WeaponOne");
 				PlayerGun->SetActorRelativeLocation(GunAttachLocationOne);
 				UE_LOG(LogTemp,Warning,TEXT("Add the weapon one"));
-				goto even;
+				return;
 			}
 			if(PlayerGun&&!PlayerGun1)
 			{
+				/*
 				PlayerGun1=Gun;
-
+				UE_LOG(LogTemp,Warning,TEXT("Add the weapon Two"));
 				PlayerGun1->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,"WeaponTwo");
 				PlayerGun1->SetActorRelativeLocation(GunAttachLocationTwo);
-				goto even;
+				return;
+				*/
 			}
 			if(!PlayerGun&&PlayerGun1)
 			{
+				/*
 				PlayerGun=Gun;
-				goto even;
+				PlayerGun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,"WeaponOne");
+				PlayerGun->SetActorRelativeLocation(GunAttachLocationTwo);
+				return;
+				*/
 			}
 			if(PlayerGun&&PlayerGun1)
 			{
-				goto even;
+				return;
 			}
-			even:
-				;
 		}
 	}
 }
@@ -236,6 +240,22 @@ void APlayerCharater::TakeWeaponRelease()
 		UE_LOG(LogTemp,Warning,TEXT("Can not get any weapon"));
 	}
 }
+
+bool APlayerCharater::IsGunAvailable()
+{
+	return bGun;
+}
+
+bool APlayerCharater::IsGun0Available()
+{
+	return  bGun1;
+}
+
+void APlayerCharater::ChangeGun()
+{
+	
+}
+
 
 
 // Called to bind functionality to input

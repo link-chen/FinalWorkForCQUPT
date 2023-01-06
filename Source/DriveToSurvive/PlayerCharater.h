@@ -22,10 +22,14 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 	void UseGun();
 	void StopGun();
 	void GunFire();
-
+	
 	AGun* PlayerGun;
 	AGun* PlayerGun1;
+	
 
+	bool IsGunAvailable();
+	bool IsGun0Available();
+	
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* Camera;
 	UPROPERTY(EditAnywhere)
@@ -59,6 +63,8 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 
 	void TakeWeaponRelease();
 
+	void ChangeGun();
+
 	UPROPERTY(EditAnywhere)
 	FVector GunAttachLocationOne;
 	UPROPERTY(EditAnywhere)
@@ -78,6 +84,10 @@ public:
 	// Sets default values for this character's properties
 	APlayerCharater();
 
+	UPROPERTY(BlueprintReadOnly)
+	bool bGun;
+	UPROPERTY(BlueprintReadOnly)
+	bool bGun1;
 	
 protected:
 	// Called when the game starts or when spawned
