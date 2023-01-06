@@ -39,7 +39,7 @@ void AGun::Fire()
 		if(GunBullte)
 		{
 			UE_LOG(LogTemp,Warning,TEXT("GunFire"));
-			World->SpawnActor<AGunBullte>(Bullte,GetActorLocation(),GetActorRotation());
+			World->SpawnActor<AGunBullte>(Bullte,GetFireLocation(),GetFireRotator());
 			Audio->Play();
 		}
 	}

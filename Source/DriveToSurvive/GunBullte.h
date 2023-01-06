@@ -14,6 +14,11 @@ class DRIVETOSURVIVE_API AGunBullte : public AActor
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* Mesh;
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* Scene;
+
+	UPROPERTY(EditAnywhere)
+	FRotator BullteRotator;
 
 	UPROPERTY(EditAnywhere)
 	USkeletalMeshComponent* SkeletalMesh;

@@ -8,7 +8,7 @@ AGunBullte::AGunBullte()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	
 	Mesh=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	ProjectileMovementComponent=CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComponent"));
 }
@@ -21,6 +21,8 @@ void AGunBullte::BeginPlay()
 	FScriptDelegate Del;
 	Del.BindUFunction(this,"NotifyHit");
 	Mesh->OnComponentHit.Add(Del);
+
+	AddActorLocalRotation(BullteRotator);
 }
 
 void AGunBullte::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
