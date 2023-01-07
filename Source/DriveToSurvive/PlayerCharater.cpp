@@ -98,8 +98,10 @@ void APlayerCharater::DisCardGun()
 	{
 		PlayerGun->AddActorLocalOffset(FVector(10.0f,0.0f,0.0f));
 		PlayerGun->GiveUp();
+		bGun0=false;
 	}
 	PlayerGun=nullptr;
+	ChangeGun();
 }
 
 
@@ -115,23 +117,30 @@ void APlayerCharater::OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other,
 
 		if(IsGun0Available()&&!IsGun1Available())
 		{
-			UE_LOG(LogTemp,Warning,TEXT("TakeGun1"));
 			PlayerGun1=Gun;
+			if(PlayerGun1==PlayerGun)
+			{
+				PlayerGun1=nullptr;
+				return;
+			}
 			PlayerGun1->SetActorRelativeLocation(GunAttachLocation);
 			PlayerGun1->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,ReleaseSocket);
 			bGun1=true;
 		}
 		if(!IsGun0Available()&&IsGun1Available())
 		{
-			UE_LOG(LogTemp,Warning,TEXT("TakeGun2"));
 			PlayerGun=Gun;
+			if(PlayerGun1==PlayerGun)
+			{
+				PlayerGun=nullptr;
+				return;
+			}
 			PlayerGun->SetActorRelativeLocation(FightGunAttachLocation);
 			PlayerGun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,FightSocket);
 			bGun0=true;
 		}
 		else if(!IsGun0Available()&&!IsGun1Available())
 		{
-			UE_LOG(LogTemp,Warning,TEXT("TakeGun3"));
 			PlayerGun=Gun;
 			PlayerGun->SetActorRelativeLocation(FightGunAttachLocation);
 			PlayerGun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,FightSocket);
@@ -139,7 +148,6 @@ void APlayerCharater::OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other,
 		}
 	}
 }
-
 
 void APlayerCharater::StartJump()
 {
@@ -150,8 +158,6 @@ void APlayerCharater::StopJump()
 {
 	bPressedJump=false;
 }
-
-
 
 void APlayerCharater::ActiveMode()
 {
@@ -276,5 +282,7 @@ void APlayerCharater::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	PlayerInputComponent->BindAction("ResetVR",IE_Pressed,this,&APlayerCharater::PlayReLoadAnimation);
 
 	PlayerInputComponent->BindAction("ChangeCamera",IE_Pressed,this,&APlayerCharater::ChangeGun);
+
+	PlayerInputComponent->BindAction("GiveUpGun",IE_Pressed,this,&APlayerCharater::DisCardGun);
 }
 

@@ -19,6 +19,10 @@ AGun::AGun()
 	Audio->SetupAttachment(GunMesh);
 	FireMesh=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FireMesh"));
 	FireMesh->SetupAttachment(GunMesh);
+	LeftBullteMesh=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("抛弹壳区域"));
+	LeftBullteMesh->SetupAttachment(GunMesh);
+	GunFireNiagaraComponent=CreateDefaultSubobject<UNiagaraComponent>(TEXT("GunFire"));
+	GunFireNiagaraComponent->SetupAttachment(FireMesh);
 }
 
 // Called when the game starts or when spawned

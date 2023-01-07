@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GunBullte.h"
+#include "NiagaraComponent.h"
 #include "GameFramework/Actor.h"
 #include "Gun.generated.h"
 
@@ -17,6 +18,10 @@ class DRIVETOSURVIVE_API AGun : public AActor
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* FireMesh;
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* LeftBullteMesh;
+	UPROPERTY(EditAnywhere)
+	UNiagaraComponent* GunFireNiagaraComponent;
 	
 	UPROPERTY(EditAnywhere)
 	float ShotTime;
