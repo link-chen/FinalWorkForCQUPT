@@ -29,6 +29,8 @@ void AGun::BeginPlay()
 	GunBullte=MaxBullte;
 
 	GunMesh->AddForce(GunMesh->GetForwardVector()*100000.0f);
+
+	bCanUse=true;
 }
 
 void AGun::Fire()
@@ -36,7 +38,7 @@ void AGun::Fire()
 	UWorld* World=GetWorld();
 	if(World)
 	{
-		if(GunBullte)
+		if(GunBullte&&bCanUse)
 		{
 			UE_LOG(LogTemp,Warning,TEXT("GunFire"));
 			World->SpawnActor<AGunBullte>(Bullte,GetFireLocation(),GetFireRotator());

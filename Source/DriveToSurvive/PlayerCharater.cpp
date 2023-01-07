@@ -34,6 +34,9 @@ void APlayerCharater::BeginPlay()
 	FScriptDelegate UDel;
 	UDel.BindUFunction(this,"OnOverlayBegin");
 	GetCapsuleComponent()->OnComponentBeginOverlap.Add(UDel);
+
+	bGun0=false;
+	bGun1=false;
 }
 
 // Called every frame
@@ -70,7 +73,6 @@ void APlayerCharater::UseGun()
 {
 	if(PlayerGun)
 	{
-		UE_LOG(LogTemp,Warning,TEXT("StartFire,shot time==%f"),PlayerGun->GetShotTime());
 		GunFire();
 		GetWorldTimerManager().SetTimer(Timer,this,&APlayerCharater::GunFire,PlayerGun->GetShotTime(),true);
 	}
@@ -110,28 +112,29 @@ void APlayerCharater::OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other,
 {
 	if(AGun* Gun=Cast<AGun>(Other))
 	{
-		if(!IsGun0Available()&&!IsGun1Available())
+
+		if(IsGun0Available()&&!IsGun1Available())
 		{
-			UE_LOG(LogTemp,Warning,TEXT("1"));
-			PlayerGun=Gun;
-			PlayerGun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,"Weapon");
-			PlayerGun->SetActorRelativeLocation(FightGunAttachLocation);
-			bGun0=true;
-		}
-		else if(IsGun0Available()&&!IsGun1Available())
-		{
-			UE_LOG(LogTemp,Warning,TEXT("2"));
+			UE_LOG(LogTemp,Warning,TEXT("TakeGun1"));
 			PlayerGun1=Gun;
-			PlayerGun1->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,"ReleaseWeapon");
 			PlayerGun1->SetActorRelativeLocation(GunAttachLocation);
+			PlayerGun1->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,ReleaseSocket);
 			bGun1=true;
 		}
-		else if(!IsGun0Available()&&IsGun1Available())
+		if(!IsGun0Available()&&IsGun1Available())
 		{
-			UE_LOG(LogTemp,Warning,TEXT("3"));
+			UE_LOG(LogTemp,Warning,TEXT("TakeGun2"));
 			PlayerGun=Gun;
-			PlayerGun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,"Weapon");
-			PlayerGun->SetActorRelativeLocation(GunAttachLocation);
+			PlayerGun->SetActorRelativeLocation(FightGunAttachLocation);
+			PlayerGun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,FightSocket);
+			bGun0=true;
+		}
+		else if(!IsGun0Available()&&!IsGun1Available())
+		{
+			UE_LOG(LogTemp,Warning,TEXT("TakeGun3"));
+			PlayerGun=Gun;
+			PlayerGun->SetActorRelativeLocation(FightGunAttachLocation);
+			PlayerGun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,FightSocket);
 			bGun0=true;
 		}
 	}
@@ -140,7 +143,6 @@ void APlayerCharater::OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other,
 
 void APlayerCharater::StartJump()
 {
-	bPressedJump=true;
 	bPressedJump=true;
 }
 
@@ -154,11 +156,15 @@ void APlayerCharater::StopJump()
 void APlayerCharater::ActiveMode()
 {
 	GetCharacterMovement()->MaxWalkSpeed=RunSpeed;
+	if(PlayerGun)
+		PlayerGun->bCanUse=false;
 }
 
 void APlayerCharater::CanncelActiveMode()
 {
 	GetCharacterMovement()->MaxWalkSpeed=WalkSpeed;
+	if(PlayerGun)
+		PlayerGun->bCanUse=true;
 }
 
 void APlayerCharater::TakeWeaponOne()
@@ -189,19 +195,59 @@ void APlayerCharater::TakeWeaponRelease()
 
 bool APlayerCharater::IsGun1Available()
 {
-	return bGun0;
+	return bGun1;
 }
 
 bool APlayerCharater::IsGun0Available()
 {
-	return  bGun1;
+	return  bGun0;
 }
 
 void APlayerCharater::ChangeGun()
 {
-	
+	AGun* TempGun;
+	if(IsGun0Available()&&IsGun1Available())
+	{
+		UE_LOG(LogTemp,Warning,TEXT("ChangeGun1"));
+		TempGun=PlayerGun;
+		PlayerGun=PlayerGun1;
+		PlayerGun1=TempGun;
+
+		PlayerGun->SetActorRelativeLocation(FightGunAttachLocation);
+		PlayerGun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,FightSocket);
+		PlayerGun1->SetActorRelativeLocation(GunAttachLocation);
+		PlayerGun1->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,ReleaseSocket);
+	}
+	else if(!IsGun0Available()&&IsGun1Available())
+	{
+		UE_LOG(LogTemp,Warning,TEXT("ChangeGun2"));
+		PlayerGun=PlayerGun1;
+		PlayerGun1=nullptr;
+
+		PlayerGun->SetActorRelativeLocation(FightGunAttachLocation);
+		PlayerGun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,FightSocket);
+		
+		bGun0=true;
+		bGun1=false;
+	}
+	else if(!IsGun0Available()&&IsGun1Available())
+	{
+		UE_LOG(LogTemp,Warning,TEXT("ChangeGun3"));
+		PlayerGun1=PlayerGun;
+		PlayerGun=nullptr;
+
+		PlayerGun1->SetActorRelativeLocation(GunAttachLocation);
+		PlayerGun1->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,ReleaseSocket);
+		
+		bGun0=false;
+		bGun1=true;
+	}
 }
 
+void APlayerCharater::PlayReLoadAnimation()
+{
+	PlayAnimMontage(ReLoadAnimMontage);
+}
 
 
 // Called to bind functionality to input
@@ -226,5 +272,9 @@ void APlayerCharater::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 	PlayerInputComponent->BindAction("Fire",IE_Pressed,this,&APlayerCharater::UseGun);
 	PlayerInputComponent->BindAction("Fire",IE_Released,this,&APlayerCharater::StopGun);
+
+	PlayerInputComponent->BindAction("ResetVR",IE_Pressed,this,&APlayerCharater::PlayReLoadAnimation);
+
+	PlayerInputComponent->BindAction("ChangeCamera",IE_Pressed,this,&APlayerCharater::ChangeGun);
 }
 

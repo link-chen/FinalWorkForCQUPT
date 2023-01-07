@@ -74,10 +74,20 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 
 	UPROPERTY(EditAnywhere)
 	FVector GunAttachLocation;
-
+	UPROPERTY(EditAnywhere)
+	FRotator GunAttachRotator;
+	
 	UPROPERTY(EditAnywhere)
 	FVector FightGunAttachLocation;
+	UPROPERTY(EditAnywhere)
+	FRotator FightGunAttachRotator;
 	
+	UPROPERTY(EditAnywhere)
+	FName FightSocket;
+	UPROPERTY(EditAnywhere)
+	FName ReleaseSocket;
+
+	void PlayReLoadAnimation();
 	
 	UFUNCTION()
 	virtual void NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,
