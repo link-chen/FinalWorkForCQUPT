@@ -36,5 +36,7 @@ public:
 	float ReChargeRate;
 	UPROPERTY()
 	float ChangeGearTime;
+	UPROPERTY()
+	bool bFinish;
 	UDTSSaveGame();
 };

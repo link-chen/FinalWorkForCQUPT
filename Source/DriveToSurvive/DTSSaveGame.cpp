@@ -7,5 +7,6 @@ UDTSSaveGame::UDTSSaveGame()
 {
 	SaveSlotName=TEXT("SaveSlot");
 	UserIndex=0;
+	bFinish=false;
 }
 

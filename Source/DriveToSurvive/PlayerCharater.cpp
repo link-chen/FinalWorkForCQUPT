@@ -96,7 +96,7 @@ void APlayerCharater::DisCardGun()
 	//解除绑定并扔出枪支
 	if(PlayerGun)
 	{
-		PlayerGun->AddActorLocalOffset(FVector(10.0f,0.0f,0.0f));
+		PlayerGun->AddActorLocalOffset(FVector(-100.0f,0.0f,0.0f));
 		PlayerGun->GiveUp();
 		bGun0=false;
 	}

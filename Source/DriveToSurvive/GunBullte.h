@@ -26,9 +26,15 @@ class DRIVETOSURVIVE_API AGunBullte : public AActor
 	UPROPERTY(EditAnywhere)
 	UProjectileMovementComponent* ProjectileMovementComponent;
 
+	UPROPERTY(EditAnywhere)
+	UMaterial* Material;
+
 	UFUNCTION()
 	virtual void NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,
 	bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
+
+	UFUNCTION()
+	virtual  void OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit);
 	
 public:	
 	// Sets default values for this actor's properties
