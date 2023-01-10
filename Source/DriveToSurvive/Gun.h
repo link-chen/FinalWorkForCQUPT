@@ -60,6 +60,8 @@ public:
 	void GiveUp();
 
 	bool bCanUse;
+
+	void SetPhysic(bool Simulate);
 	
 protected:
 	// Called when the game starts or when spawned

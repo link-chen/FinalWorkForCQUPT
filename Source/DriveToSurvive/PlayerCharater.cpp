@@ -21,6 +21,8 @@ APlayerCharater::APlayerCharater()
 	Camera->SetupAttachment(SpringArm);
 	WalkSpeed=300.0f;
 	RunSpeed=600.0f;
+
+	WaitTime=0.175f;
 }
 
 // Called when the game starts or when spawned
@@ -30,8 +32,7 @@ void APlayerCharater::BeginPlay()
 	
 
 	GetCharacterMovement()->MaxWalkSpeed=WalkSpeed;
-
-	FScriptDelegate UDel;
+	
 	UDel.BindUFunction(this,"OnOverlayBegin");
 	GetCapsuleComponent()->OnComponentBeginOverlap.Add(UDel);
 
@@ -94,14 +95,29 @@ void APlayerCharater::GunFire()
 void APlayerCharater::DisCardGun()
 {
 	//解除绑定并扔出枪支
+
+	GetCapsuleComponent()->OnComponentBeginOverlap.Remove(UDel);
+	
 	if(PlayerGun)
 	{
-		PlayerGun->AddActorLocalOffset(FVector(-100.0f,0.0f,0.0f));
-		PlayerGun->GiveUp();
+		PlayerGun->AddActorLocalOffset(FVector(0.0f,500.0f,0.0f));
+		PlayerGun->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 		bGun0=false;
+		PlayerGun->GiveUp();
 	}
 	PlayerGun=nullptr;
-	ChangeGun();
+	ReAddScriptDelegate();
+}
+
+void APlayerCharater::ReAddScriptDelegate()
+{
+	GetWorldTimerManager().SetTimer(ReAddDel,this,&APlayerCharater::ReAddScript,WaitTime,false);
+}
+
+void APlayerCharater::ReAddScript()
+{
+	GetCapsuleComponent()->OnComponentBeginOverlap.Add(UDel);
+	GetWorldTimerManager().ClearTimer(ReAddDel);
 }
 
 
@@ -114,7 +130,8 @@ void APlayerCharater::OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other,
 {
 	if(AGun* Gun=Cast<AGun>(Other))
 	{
-
+		Gun->SetPhysic(false);
+		UE_LOG(LogTemp,Warning,TEXT("GetGun"));
 		if(IsGun0Available()&&!IsGun1Available())
 		{
 			PlayerGun1=Gun;
@@ -143,6 +160,7 @@ void APlayerCharater::OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other,
 		{
 			PlayerGun=Gun;
 			PlayerGun->SetActorRelativeLocation(FightGunAttachLocation);
+			PlayerGun->SetActorRelativeRotation(FightGunAttachRotator);
 			PlayerGun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,FightSocket);
 			bGun0=true;
 		}
@@ -236,7 +254,7 @@ void APlayerCharater::ChangeGun()
 		bGun0=true;
 		bGun1=false;
 	}
-	else if(!IsGun0Available()&&IsGun1Available())
+	else if(IsGun0Available()&&!IsGun1Available())
 	{
 		UE_LOG(LogTemp,Warning,TEXT("ChangeGun3"));
 		PlayerGun1=PlayerGun;
@@ -252,7 +270,8 @@ void APlayerCharater::ChangeGun()
 
 void APlayerCharater::PlayReLoadAnimation()
 {
-	PlayAnimMontage(ReLoadAnimMontage);
+	if(IsGun0Available())
+		PlayAnimMontage(ReLoadAnimMontage);
 }
 
 

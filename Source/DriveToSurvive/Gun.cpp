@@ -31,9 +31,7 @@ void AGun::BeginPlay()
 	Super::BeginPlay();
 
 	GunBullte=MaxBullte;
-
-	GunMesh->AddForce(GunMesh->GetForwardVector()*100000.0f);
-
+	
 	bCanUse=true;
 }
 
@@ -81,9 +79,17 @@ void AGun::ReLoadBullte()
 	}
 }
 
+void AGun::SetPhysic(bool Simulate)
+{
+	GunMesh->SetSimulatePhysics(Simulate);
+}
+
+
 void AGun::GiveUp()
 {
-	GunMesh->AddForce(FVector(10.0f,10.0f,10.0f));
+	UE_LOG(LogTemp,Warning,TEXT("SetPhysic"));
+	GunMesh->AddForce(FVector(0.0f,10.0f,0.0f));
+	SetPhysic(true);
 }
 
 FVector AGun::GetFireLocation()

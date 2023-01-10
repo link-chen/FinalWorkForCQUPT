@@ -88,6 +88,16 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 	FName ReleaseSocket;
 
 	void PlayReLoadAnimation();
+
+	FScriptDelegate UDel;
+
+	void ReAddScriptDelegate();
+	void ReAddScript();
+
+	FTimerHandle ReAddDel;
+
+	UPROPERTY(EditAnywhere)
+	float WaitTime;
 	
 	UFUNCTION()
 	virtual void NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,
