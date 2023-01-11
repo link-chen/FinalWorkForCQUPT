@@ -49,10 +49,13 @@ void APlayerCharater::Tick(float DeltaTime)
 
 void APlayerCharater::MoveForward(float Value)
 {
-	Controller->GetControlRotation().Roll;
-	const FRotator YawRotation(0.0f,Controller->GetControlRotation().Yaw,0.0f);
-	const FVector Direction(FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X));
-	AddMovementInput(Direction,Value);
+	if(Controller)
+	{
+		Controller->GetControlRotation().Roll;
+		const FRotator YawRotation(0.0f,Controller->GetControlRotation().Yaw,0.0f);
+		const FVector Direction(FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X));
+		AddMovementInput(Direction,Value);
+	}
 	/*
 	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
 	AddMovementInput(Direction, Value);
@@ -61,9 +64,12 @@ void APlayerCharater::MoveForward(float Value)
 
 void APlayerCharater::MoveRight(float Value)
 {
-	const FRotator YawRotation(0.0f,Controller->GetControlRotation().Yaw,0.0f);
-	const FVector Direction(FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y));
-	AddMovementInput(Direction,Value);
+	if(Controller)
+	{
+		const FRotator YawRotation(0.0f,Controller->GetControlRotation().Yaw,0.0f);
+		const FVector Direction(FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y));
+		AddMovementInput(Direction,Value);
+	}
 	/*
 	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
 	AddMovementInput(Direction, Value);
@@ -131,9 +137,9 @@ void APlayerCharater::OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other,
 	if(AGun* Gun=Cast<AGun>(Other))
 	{
 		Gun->SetPhysic(false);
-		UE_LOG(LogTemp,Warning,TEXT("GetGun"));
 		if(IsGun0Available()&&!IsGun1Available())
 		{
+			UE_LOG(LogTemp,Warning,TEXT("GetGun1"));
 			PlayerGun1=Gun;
 			if(PlayerGun1==PlayerGun)
 			{
@@ -141,11 +147,13 @@ void APlayerCharater::OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other,
 				return;
 			}
 			PlayerGun1->SetActorRelativeLocation(GunAttachLocation);
+			PlayerGun1->SetActorRelativeRotation(GunAttachRotator);
 			PlayerGun1->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,ReleaseSocket);
 			bGun1=true;
 		}
 		if(!IsGun0Available()&&IsGun1Available())
 		{
+			UE_LOG(LogTemp,Warning,TEXT("GetGun2"));
 			PlayerGun=Gun;
 			if(PlayerGun1==PlayerGun)
 			{
@@ -153,11 +161,13 @@ void APlayerCharater::OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other,
 				return;
 			}
 			PlayerGun->SetActorRelativeLocation(FightGunAttachLocation);
+			PlayerGun->SetActorRelativeRotation(FightGunAttachRotator);
 			PlayerGun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,FightSocket);
 			bGun0=true;
 		}
 		else if(!IsGun0Available()&&!IsGun1Available())
 		{
+			UE_LOG(LogTemp,Warning,TEXT("GetGun3"));
 			PlayerGun=Gun;
 			PlayerGun->SetActorRelativeLocation(FightGunAttachLocation);
 			PlayerGun->SetActorRelativeRotation(FightGunAttachRotator);
