@@ -2,7 +2,7 @@
 
 
 #include "GunBullte.h"
-
+#include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -13,6 +13,9 @@ AGunBullte::AGunBullte()
 	
 	Mesh=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	ProjectileMovementComponent=CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComponent"));
+	Mesh->SetupAttachment(RootComponent);
+	CapsuleComponent=CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule"));
+	CapsuleComponent->SetupAttachment(Mesh);
 }
 
 // Called when the game starts or when spawned
@@ -22,7 +25,7 @@ void AGunBullte::BeginPlay()
 
 	FScriptDelegate Del;
 	Del.BindUFunction(this,"NotifyHit");
-	Mesh->OnComponentBeginOverlap.Add(Del);
+	CapsuleComponent->OnComponentBeginOverlap.Add(Del);
 
 	AddActorLocalRotation(BullteRotator);
 }

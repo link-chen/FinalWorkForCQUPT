@@ -46,6 +46,8 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	float DownForceRate;
 	UPROPERTY(EditAnywhere)
 	float ReChargeRate;
+	UPROPERTY(EditAnywhere)
+	float BrakeBackRate;
 
 	UPROPERTY(EditAnywhere)
 	TArray<USoundCue*> SoundArray;

@@ -122,6 +122,7 @@ void ABaseCar::MoveRight(float Value)
 
 void ABaseCar::Brake()
 {
+	MoveForward(BrakeBackRate);
 	CurrentSpeed=GetVehicleMovementComponent()->GetForwardSpeed()/100.0f;
 	GetVehicleMovementComponent()->SetHandbrakeInput(true);
 	bDraw=true;

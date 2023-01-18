@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GunBullte.generated.h"
 
 UCLASS()
@@ -16,6 +17,8 @@ class DRIVETOSURVIVE_API AGunBullte : public AActor
 	UStaticMeshComponent* Mesh;
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* Scene;
+	UPROPERTY(EditAnywhere)
+	UCapsuleComponent* CapsuleComponent;
 
 	UPROPERTY(EditAnywhere)
 	FRotator BullteRotator;
