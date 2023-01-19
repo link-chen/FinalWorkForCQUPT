@@ -93,9 +93,9 @@ void APlayerCharater::StopGun()
 
 void APlayerCharater::GunFire()
 {
-	UE_LOG(LogTemp,Warning,TEXT("Using Gun"));
+	FVector Start=Camera->GetComponentLocation();
 	if(PlayerGun)
-		PlayerGun->Fire();
+		PlayerGun->Fire(Start);
 }
 
 void APlayerCharater::DisCardGun()
@@ -113,6 +113,27 @@ void APlayerCharater::DisCardGun()
 	}
 	PlayerGun=nullptr;
 	ReAddScriptDelegate();
+}
+
+TArray<int> APlayerCharater::GetGunBullteMessage()
+{
+	TArray<int> Message;
+	if(PlayerGun)
+	{
+		int* arr=PlayerGun->GetCurrnetBullteMessage();
+		Message.Add(arr[0]);
+		Message.Add(arr[1]);
+		delete[] arr;
+	}
+	return  Message;
+}
+
+void APlayerCharater::ReLoad()
+{
+	if(PlayerGun)
+	{
+		PlayerGun->ReLoadBullte();
+	}
 }
 
 void APlayerCharater::ReAddScriptDelegate()
@@ -139,7 +160,6 @@ void APlayerCharater::OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other,
 		Gun->SetPhysic(false);
 		if(IsGun0Available()&&!IsGun1Available())
 		{
-			UE_LOG(LogTemp,Warning,TEXT("GetGun1"));
 			PlayerGun1=Gun;
 			if(PlayerGun1==PlayerGun)
 			{
@@ -153,7 +173,6 @@ void APlayerCharater::OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other,
 		}
 		if(!IsGun0Available()&&IsGun1Available())
 		{
-			UE_LOG(LogTemp,Warning,TEXT("GetGun2"));
 			PlayerGun=Gun;
 			if(PlayerGun1==PlayerGun)
 			{
@@ -167,7 +186,6 @@ void APlayerCharater::OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other,
 		}
 		else if(!IsGun0Available()&&!IsGun1Available())
 		{
-			UE_LOG(LogTemp,Warning,TEXT("GetGun3"));
 			PlayerGun=Gun;
 			PlayerGun->SetActorRelativeLocation(FightGunAttachLocation);
 			PlayerGun->SetActorRelativeRotation(FightGunAttachRotator);
@@ -242,7 +260,6 @@ void APlayerCharater::ChangeGun()
 	AGun* TempGun;
 	if(IsGun0Available()&&IsGun1Available())
 	{
-		UE_LOG(LogTemp,Warning,TEXT("ChangeGun1"));
 		TempGun=PlayerGun;
 		PlayerGun=PlayerGun1;
 		PlayerGun1=TempGun;
@@ -254,7 +271,6 @@ void APlayerCharater::ChangeGun()
 	}
 	else if(!IsGun0Available()&&IsGun1Available())
 	{
-		UE_LOG(LogTemp,Warning,TEXT("ChangeGun2"));
 		PlayerGun=PlayerGun1;
 		PlayerGun1=nullptr;
 
@@ -266,7 +282,6 @@ void APlayerCharater::ChangeGun()
 	}
 	else if(IsGun0Available()&&!IsGun1Available())
 	{
-		UE_LOG(LogTemp,Warning,TEXT("ChangeGun3"));
 		PlayerGun1=PlayerGun;
 		PlayerGun=nullptr;
 
@@ -281,8 +296,12 @@ void APlayerCharater::ChangeGun()
 void APlayerCharater::PlayReLoadAnimation()
 {
 	if(IsGun0Available())
-		PlayAnimMontage(ReLoadAnimMontage);
+	{
+		if(PlayerGun->GetCurrnetBullteMessage()[0]!=PlayerGun->GetMaxBullte())
+			PlayAnimMontage(ReLoadAnimMontage);
+	}
 }
+
 
 
 // Called to bind functionality to input

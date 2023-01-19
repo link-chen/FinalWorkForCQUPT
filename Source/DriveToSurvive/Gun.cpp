@@ -2,7 +2,7 @@
 
 
 #include "Gun.h"
-
+#include "DrawDebugHelpers.h"
 #include <GeomUtils/GuContactBuffer.h>
 
 #include "Components/AudioComponent.h"
@@ -35,16 +35,20 @@ void AGun::BeginPlay()
 	bCanUse=true;
 }
 
-void AGun::Fire()
+void AGun::Fire(FVector CameraLocation)
 {
+	FVector Forward=CameraLocation.ForwardVector;
+	FVector End=CameraLocation+Distance*Forward;
 	UWorld* World=GetWorld();
 	if(World)
 	{
+		DrawDebugLine(this->GetWorld(), Forward,End,FColor::Red,false,1.0f,0.0f,0.5f);
 		if(GunBullte&&bCanUse)
 		{
-			UE_LOG(LogTemp,Warning,TEXT("GunFire"));
 			World->SpawnActor<AGunBullte>(Bullte,GetFireLocation(),GetFireRotator());
 			Audio->Play();
+			Test();
+			GunBullte--;
 		}
 	}
 }
@@ -84,10 +88,22 @@ void AGun::SetPhysic(bool Simulate)
 	GunMesh->SetSimulatePhysics(Simulate);
 }
 
+int *AGun::GetCurrnetBullteMessage()
+{
+	int* array=new int[2];
+	array[0]=GunBullte;
+	array[1]=LeftGunBullte;
+	return array;
+}
+
+int AGun::GetMaxBullte()
+{
+	return MaxBullte;
+}
+
 
 void AGun::GiveUp()
 {
-	UE_LOG(LogTemp,Warning,TEXT("SetPhysic"));
 	GunMesh->AddForce(FVector(0.0f,10.0f,0.0f));
 	SetPhysic(true);
 }

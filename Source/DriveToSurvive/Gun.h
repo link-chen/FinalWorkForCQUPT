@@ -47,12 +47,15 @@ class DRIVETOSURVIVE_API AGun : public AActor
 	FRotator GetFireRotator();
 
 	void UseBullte();
+
+	UPROPERTY(EditAnywhere)
+	float Distance;
 	
 public:	
 	// Sets default values for this actor's properties
 	AGun();
 
-	void Fire();
+	void Fire(FVector CameraLocation);
 	float GetShotTime();
 
 	void ReLoadBullte();
@@ -62,6 +65,13 @@ public:
 	bool bCanUse;
 
 	void SetPhysic(bool Simulate);
+	
+	int *GetCurrnetBullteMessage();
+
+	int GetMaxBullte();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void Test();
 	
 protected:
 	// Called when the game starts or when spawned

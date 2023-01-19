@@ -50,7 +50,10 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 	UAnimMontage* PlayerDieAnimMontage;
 	
 	void DisCardGun();
-	void ReLoad();
+
+	UFUNCTION(BlueprintCallable)
+	TArray<int> GetGunBullteMessage();
+	
 
 	bool bRun;
 
@@ -109,6 +112,9 @@ public:
 	// Sets default values for this character's properties
 	APlayerCharater();
 
+	UFUNCTION(BlueprintCallable)
+	void ReLoad();
+	
 	UPROPERTY(BlueprintReadOnly)
 	bool bGun0;
 	UPROPERTY(BlueprintReadOnly)
