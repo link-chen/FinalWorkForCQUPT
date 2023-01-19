@@ -50,12 +50,15 @@ class DRIVETOSURVIVE_API AGun : public AActor
 
 	UPROPERTY(EditAnywhere)
 	float Distance;
+
+	UPROPERTY(EditAnywhere)
+	UMaterial* Material;
 	
 public:	
 	// Sets default values for this actor's properties
 	AGun();
 
-	void Fire(FVector CameraLocation);
+	void Fire(FVector CameraLocation,FVector Forward);
 	float GetShotTime();
 
 	void ReLoadBullte();

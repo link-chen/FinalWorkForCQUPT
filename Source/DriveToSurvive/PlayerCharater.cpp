@@ -93,9 +93,10 @@ void APlayerCharater::StopGun()
 
 void APlayerCharater::GunFire()
 {
-	FVector Start=Camera->GetComponentLocation();
+	FVector Start=Camera->GetComponentToWorld().GetLocation();
+	FVector Forward=Camera->GetForwardVector();
 	if(PlayerGun)
-		PlayerGun->Fire(Start);
+		PlayerGun->Fire(Start,Forward);
 }
 
 void APlayerCharater::DisCardGun()

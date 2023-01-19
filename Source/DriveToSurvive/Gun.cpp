@@ -6,6 +6,8 @@
 #include <GeomUtils/GuContactBuffer.h>
 
 #include "Components/AudioComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values
 AGun::AGun()
@@ -35,20 +37,39 @@ void AGun::BeginPlay()
 	bCanUse=true;
 }
 
-void AGun::Fire(FVector CameraLocation)
+void AGun::Fire(FVector CameraLocation,FVector Forward)
 {
-	FVector Forward=CameraLocation.ForwardVector;
 	FVector End=CameraLocation+Distance*Forward;
 	UWorld* World=GetWorld();
 	if(World)
 	{
-		DrawDebugLine(this->GetWorld(), Forward,End,FColor::Red,false,1.0f,0.0f,0.5f);
 		if(GunBullte&&bCanUse)
 		{
+			/*
 			World->SpawnActor<AGunBullte>(Bullte,GetFireLocation(),GetFireRotator());
+			*/
 			Audio->Play();
 			Test();
 			GunBullte--;
+			FCollisionQueryParams CollisonQueryParams(TEXT("QueryParams"),true,NULL);
+			CollisonQueryParams.bTraceComplex = true;
+			CollisonQueryParams.bReturnPhysicalMaterial = false;
+			CollisonQueryParams.AddIgnoredActor(this);
+		
+
+			FHitResult HitResult;
+			GetWorld()->LineTraceSingleByChannel(HitResult,CameraLocation,End,ECollisionChannel::ECC_Visibility,CollisonQueryParams);
+		
+			if (HitResult.GetActor())
+			{
+				UKismetSystemLibrary::PrintString(GetWorld(), HitResult.GetActor()->GetName());
+				if(Material)
+					UGameplayStatics::SpawnDecalAtLocation(this,Material,FVector(12.5f,12.5f,12.5f),HitResult.Location,FRotator(0.0f,0.0f,0.0f));
+				if(AGunBullte* Bullte=Cast<AGunBullte>(HitResult.GetActor()))
+				{
+					
+				}
+			}
 		}
 	}
 }
