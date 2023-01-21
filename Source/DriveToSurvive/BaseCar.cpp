@@ -54,6 +54,11 @@ void ABaseCar::BeginPlay()
 	if(World!=nullptr)
 	{
 		GameModeBase=Cast<ADriveToSurviveGameModeBase>(World->GetAuthGameMode());
+		if(GameModeBase==nullptr)
+		{
+			UE_LOG(LogTemp,Warning,TEXT("Nullptr"));
+			bCanCarRun=true;
+		}
 	}
 
 	bStart=false;

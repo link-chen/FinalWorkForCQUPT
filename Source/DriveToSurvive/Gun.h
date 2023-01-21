@@ -53,6 +53,9 @@ class DRIVETOSURVIVE_API AGun : public AActor
 
 	UPROPERTY(EditAnywhere)
 	UMaterial* Material;
+
+	UPROPERTY(EditAnywhere)
+	float HurtValue;
 	
 public:	
 	// Sets default values for this actor's properties

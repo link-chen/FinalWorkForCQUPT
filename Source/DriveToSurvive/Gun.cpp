@@ -5,6 +5,9 @@
 #include "DrawDebugHelpers.h"
 #include <GeomUtils/GuContactBuffer.h>
 
+#include "BaseCar.h"
+#include "BaseEnemy.h"
+#include "StartLine.h"
 #include "Components/AudioComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -51,23 +54,31 @@ void AGun::Fire(FVector CameraLocation,FVector Forward)
 			Audio->Play();
 			Test();
 			GunBullte--;
-			FCollisionQueryParams CollisonQueryParams(TEXT("QueryParams"),true,NULL);
-			CollisonQueryParams.bTraceComplex = true;
-			CollisonQueryParams.bReturnPhysicalMaterial = false;
-			CollisonQueryParams.AddIgnoredActor(this);
-		
+
+			TArray<AActor*> IgnoreActors;	
 
 			FHitResult HitResult;
-			GetWorld()->LineTraceSingleByChannel(HitResult,CameraLocation,End,ECollisionChannel::ECC_Visibility,CollisonQueryParams);
-		
+			bool bIsHit=UKismetSystemLibrary::LineTraceSingle(GetWorld(), CameraLocation, End, TraceTypeQuery1, true, IgnoreActors, EDrawDebugTrace::None, HitResult, true);
+			if(bIsHit)
+			{
+				UE_LOG(LogTemp,Warning,TEXT("IsHit"));
+			}
 			if (HitResult.GetActor())
 			{
 				UKismetSystemLibrary::PrintString(GetWorld(), HitResult.GetActor()->GetName());
 				if(Material)
 					UGameplayStatics::SpawnDecalAtLocation(this,Material,FVector(12.5f,12.5f,12.5f),HitResult.Location,FRotator(0.0f,0.0f,0.0f));
-				if(AGunBullte* Bullte=Cast<AGunBullte>(HitResult.GetActor()))
+				if(AStartLine* Line=Cast<AStartLine>(HitResult.GetActor()))
 				{
 					
+				}
+				if(ABaseCar* Car=Cast<ABaseCar>(HitResult.GetActor()))
+				{
+					Car->Destroy();
+				}
+				if(ABaseEnemy* Enemy=Cast<ABaseEnemy>(HitResult.GetActor()))
+				{
+					Enemy->GetHurt(HurtValue);
 				}
 			}
 		}
