@@ -114,6 +114,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ReLoad();
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UUserWidget* Widget;
 	
 	UPROPERTY(BlueprintReadOnly)
 	bool bGun0;

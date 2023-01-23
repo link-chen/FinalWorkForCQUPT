@@ -7,13 +7,18 @@
 
 #include "CarWheel.h"
 #include "DriveToSurviveGameModeBase.h"
+#include "FPSGameModeBase.h"
 #include "WheeledVehicleMovementComponent.h"
 #include "WheeledVehicleMovementComponent4W.h"
+#include "Blueprint/UserWidget.h"
 #include "Components/AudioComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Serialization/VarInt.h"
 
 ABaseCar::ABaseCar()
 {
+	PrimaryActorTick.bCanEverTick = true;
+	
 	ExternalCamera=CreateDefaultSubobject<UCameraComponent>(TEXT("ExternalCamera"));
 	InternalCamera=CreateDefaultSubobject<UCameraComponent>(TEXT("InternalCamera"));
 	SpringArm=CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
@@ -49,15 +54,28 @@ void ABaseCar::BeginPlay()
 	ReBornRotator=GetTransform().Rotator();
 	LastLocation=GetTransform().GetLocation();
 	ElectronicPower=MaxElectronicPower;
-
+	
 	UWorld* World=GetWorld();
+	if(Widget!=nullptr&&World!=nullptr)
+	{
+		CarUI=CreateWidget<UUserWidget>(World,Widget);
+	}
+	UE_LOG(LogTemp,Warning,TEXT("CarUI==%d"),CarUI!=nullptr);
 	if(World!=nullptr)
 	{
 		GameModeBase=Cast<ADriveToSurviveGameModeBase>(World->GetAuthGameMode());
+		if(GameModeBase)
+		{
+			
+		}
 		if(GameModeBase==nullptr)
 		{
-			UE_LOG(LogTemp,Warning,TEXT("Nullptr"));
-			bCanCarRun=true;
+			AFPSGameModeBase* GameMode=Cast<AFPSGameModeBase>(World->GetAuthGameMode());
+			if(GameMode)
+			{
+				bCanCarRun=true;
+				ReChargeRate=0.5f;
+			}
 		}
 	}
 
@@ -76,9 +94,12 @@ void ABaseCar::BeginPlay()
 	TurnLight();
 
 	bDraw=false;
+	CarUI=false;
 }
+
 void ABaseCar::Tick(float DeltaSeconds)
 {
+	Super::Tick(DeltaSeconds);
 	FVector forward=GetActorForwardVector();
 	if(bAddForce)
 	{
@@ -98,7 +119,7 @@ void ABaseCar::Tick(float DeltaSeconds)
 		{
 			bCanCarRun=true;
 			bStart=true;
-			LightOut();
+			ShowRunning();
 		}
 	}
 	if(bDraw)
@@ -108,6 +129,29 @@ void ABaseCar::Tick(float DeltaSeconds)
 			
 			UGameplayStatics::SpawnDecalAtLocation(this,CarWheelMaterial,FVector(30.0f,30.0f,30.0f),GetMesh()->GetSocketLocation(CarWheelBoneName[i]),FRotator(0.0f,0.0f,0.0f));
 		}
+	}
+}
+
+void ABaseCar::ShowRunning()
+{
+	if(CarUI!=nullptr)
+	{
+		UE_LOG(LogTemp,Warning,TEXT("Show"));
+		CarUI->AddToViewport();
+	}
+	else
+	{
+		CarUI=CreateWidget<UUserWidget>(GetWorld(),Widget);
+		CarUI->AddToViewport();
+	}
+}
+
+void ABaseCar::HideRunning()
+{
+	if(CarUI!=nullptr)
+	{
+		UE_LOG(LogTemp,Warning,TEXT("Hide"));
+		CarUI->RemoveFromParent();
 	}
 }
 

@@ -39,12 +39,10 @@ void ADriveToSurviveGameModeBase::BeginPlay()
 	{
 		if(AStartLine* Line=Cast<AStartLine>(Actor))
 		{
-			UE_LOG(LogTemp,Warning,TEXT("Find!"));
 			StartLine=Line;
 		}
 		if(ASignalLight* Signal=Cast<ASignalLight>(Actor))
 		{
-			UE_LOG(LogTemp,Warning,TEXT("SignalLight"));
 			SignalLight=Signal;
 		}
 	}
@@ -59,7 +57,6 @@ void ADriveToSurviveGameModeBase::CountTime()
 		{
 			SignalLight->CloseLight(LeftTime);
 		}
-		UE_LOG(LogTemp,Warning,TEXT("Time==%d"),LeftTime);
 	}
 	else
 	{
@@ -68,6 +65,7 @@ void ADriveToSurviveGameModeBase::CountTime()
 		if(SignalLight)
 			SignalLight->CloseLightSecondPart();
 		GetWorldTimerManager().ClearTimer(Time);
+		PlayerCar->ShowRunning();
 	}
 }
 bool ADriveToSurviveGameModeBase::GetCarRunable()

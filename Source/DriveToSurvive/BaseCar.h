@@ -90,6 +90,8 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 
 	bool bUseLight;
 	void TurnLight();
+
+	UUserWidget* CarUI;
 	
 public:
 	bool bCanUseDRS;
@@ -111,8 +113,6 @@ public:
 	void UseERS();
 	void ERS();
 	void ReSetTransform();
-	UFUNCTION(BlueprintImplementableEvent)
-	void LightOut();
 	float GetERSRate();
 	void SetERSRate(float Value);
 	float GetDownForceRate();
@@ -122,6 +122,10 @@ public:
 	float GetGearChangeTime();
 	UFUNCTION(BlueprintImplementableEvent)
 	void PausedGame();
+	UFUNCTION(BlueprintCallable)
+	void ShowRunning();
+	UFUNCTION(BlueprintCallable)
+	void HideRunning();
 	UFUNCTION()
 	virtual void OnOverlayBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	                            UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
@@ -133,5 +137,7 @@ public:
 	UFUNCTION()
 	virtual void NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,
 		bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> Widget;
 	ABaseCar();
 };
