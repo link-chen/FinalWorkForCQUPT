@@ -5,6 +5,7 @@
 
 #include <corecrt_io.h>
 
+#include "Blueprint/UserWidget.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GeomUtils/GuContactBuffer.h"
@@ -38,6 +39,7 @@ void APlayerCharater::BeginPlay()
 
 	bGun0=false;
 	bGun1=false;
+	ShowUI();
 }
 
 // Called every frame
@@ -303,6 +305,26 @@ void APlayerCharater::PlayReLoadAnimation()
 	}
 }
 
+void APlayerCharater::ShowUI()
+{
+	if(UI)
+	{
+		UI->AddToViewport();
+	}
+	else
+	{
+		UI=CreateWidget(GetWorld(),Fight);
+		UI->AddToViewport();
+	}
+}
+
+void APlayerCharater::HideUI()
+{
+	if(UI)
+	{
+		UI->RemoveFromViewport();
+	}
+}
 
 
 // Called to bind functionality to input

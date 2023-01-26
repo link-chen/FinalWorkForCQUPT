@@ -101,6 +101,10 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 
 	UPROPERTY(EditAnywhere)
 	float WaitTime;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> Fight;
+	UUserWidget* UI;
 	
 	UFUNCTION()
 	virtual void NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,
@@ -114,9 +118,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ReLoad();
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	UUserWidget* Widget;
 	
 	UPROPERTY(BlueprintReadOnly)
 	bool bGun0;
@@ -134,4 +135,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION(BlueprintCallable)
+	void ShowUI();
+	UFUNCTION(BlueprintCallable)
+	void HideUI();
 };

@@ -3,14 +3,15 @@
 
 #include "Clock.h"
 
-#include <ThirdParty/openexr/Deploy/OpenEXR-2.3.0/OpenEXR/include/ImathMath.h>
+#include "Components/LightComponent.h"
+#include "Engine/DirectionalLight.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AClock::AClock()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	Time=0.0f;
 }
 
 // Called when the game starts or when spawned
@@ -25,22 +26,18 @@ void AClock::BeginPlay()
 void AClock::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
+
+float AClock::ReturnNum()
+{
+	return sin(RotateNum/57.29578)+1.0075f;
+}
+
 
 void AClock::Count()
 {
-	Time+=0.2f;
-}
-
-float AClock::GetDayTime()
-{
-	return DayTime;
-}
-
-float AClock::GetLightForce()
-{
-	return 1.0f+sin(Time);
+	RotateNum+=Speed;
+	Signal();
 }
 
 

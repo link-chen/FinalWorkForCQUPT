@@ -6,6 +6,7 @@
 #include "BaseCar.h"
 #include "DriveToSurviveGameModeBase.h"
 #include "GameFramework/GameModeBase.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AStartLine::AStartLine()
@@ -26,6 +27,16 @@ AStartLine::AStartLine()
 void AStartLine::BeginPlay()
 {
 	Super::BeginPlay();
+	TArray<AActor*> Actors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AActor::StaticClass(), Actors);
+
+	for(AActor* Actor:Actors)
+	{
+		if(AFireWorkSpawnSpace* Fire=Cast<AFireWorkSpawnSpace>(Actor))
+			FireWorkSpawnSpacesArray.Add(Fire);
+		if(ARebornPlace* ReBorn=Cast<ARebornPlace>(Actor))
+			RebornArray.Add(ReBorn);
+	}
 }
 void AStartLine::CheckFinish()
 {

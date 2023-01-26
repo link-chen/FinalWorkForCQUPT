@@ -17,7 +17,8 @@ class DRIVETOSURVIVE_API ABaseEnemy : public ACharacter
 
 	UPROPERTY(EditAnywhere)
 	UAnimMontage* DeathMontage;
-	
+
+	UPROPERTY()
 	bool bFindEnemy;
 	
 public:
@@ -44,4 +45,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	virtual void GetHurt(float Value);
+
+	UPROPERTY(EditAnywhere)
+	FString EnemyLable;
 };

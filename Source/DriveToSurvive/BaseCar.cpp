@@ -151,7 +151,7 @@ void ABaseCar::HideRunning()
 	if(CarUI!=nullptr)
 	{
 		UE_LOG(LogTemp,Warning,TEXT("Hide"));
-		CarUI->RemoveFromParent();
+		CarUI->RemoveFromViewport();
 	}
 }
 
