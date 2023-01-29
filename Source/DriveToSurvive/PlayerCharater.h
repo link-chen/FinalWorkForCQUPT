@@ -9,6 +9,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "PlayerCharater.generated.h"
 
+class ABaseCar;
+
 UCLASS()
 class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 {
@@ -139,4 +141,10 @@ public:
 	void ShowUI();
 	UFUNCTION(BlueprintCallable)
 	void HideUI();
+
+	UPROPERTY(BlueprintReadWrite)
+	ABaseCar* Car;
+
+	UFUNCTION(BlueprintCallable)
+	void ChangeControlForCar();
 };

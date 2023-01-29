@@ -382,3 +382,21 @@ void ABaseCar::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveC
 	if(CrashedMaterial)
 		UGameplayStatics::SpawnDecalAtLocation(Other,CrashedMaterial,FVector(30.0f,30.0f,30.f),HitLocation,FRotator(0.0f,0.0f,0.0f));
 }
+
+void ABaseCar::ChangeControl()
+{
+	if(PlayerCharacter)
+	{
+		UE_LOG(LogTemp,Warning,TEXT("ChangeControl"));
+		HideRunning();
+		PlayerCharacter->GetMesh()->SetVisibility(true,true);
+		FVector CarLocation=GetActorLocation();
+		PlayerCharacter->SetActorLocation(CarLocation+FVector(100.0f,100.0f,100.0f));
+	}
+}
+
+void ABaseCar::ChangeClear()
+{
+	UE_LOG(LogTemp,Warning,TEXT("Ca"));
+	GetWorld()->GetTimerManager().ClearTimer(TimerForChange);
+}

@@ -28,6 +28,7 @@ public:
 
 	void PlayDeathAnimation();
 
+	UPROPERTY(BlueprintReadWrite)
 	bool bLive;
 
 	UFUNCTION(BlueprintCallable)

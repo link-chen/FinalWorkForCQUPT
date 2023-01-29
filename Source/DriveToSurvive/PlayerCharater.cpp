@@ -5,6 +5,7 @@
 
 #include <corecrt_io.h>
 
+#include "BaseCar.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -326,6 +327,14 @@ void APlayerCharater::HideUI()
 	}
 }
 
+void APlayerCharater::ChangeControlForCar()
+{
+	if(Car)
+	{
+		GetMesh()->SetVisibility(false,true);
+		Car->ShowRunning();
+	}
+}
 
 // Called to bind functionality to input
 void APlayerCharater::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

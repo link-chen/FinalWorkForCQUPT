@@ -10,6 +10,7 @@
 #include "DriveToSurviveGameModeBase.h"
 #include "Components/SpotLightComponent.h"
 #include "Sound/SoundCue.h"
+#include "PlayerCharater.h"
 #include "BaseCar.generated.h"
 class UWheeledVehicleMovementComponent4W;
 /**
@@ -65,6 +66,8 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	TArray<UCarWheel*> CarWheelsArray;
 	FTimerHandle Timer;
 
+	FTimerHandle TimerForChange;
+
 	UPROPERTY(EditAnywhere)
 	UMaterial* CrashedMaterial;
 	UPROPERTY(EditAnywhere)
@@ -91,7 +94,6 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	bool bUseLight;
 	void TurnLight();
 
-	UUserWidget* CarUI;
 	
 public:
 	bool bCanUseDRS;
@@ -137,7 +139,15 @@ public:
 	UFUNCTION()
 	virtual void NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,
 		bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
+	UFUNCTION(BlueprintCallable)
+	void ChangeControl();
+	void ChangePlayer();
+	void ChangeClear();
+	UPROPERTY(BlueprintReadWrite)
+	APlayerCharater* PlayerCharacter;
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> Widget;
+	UPROPERTY(BlueprintReadWrite)
+	UUserWidget* CarUI;
 	ABaseCar();
 };
