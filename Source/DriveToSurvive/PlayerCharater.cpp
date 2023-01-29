@@ -21,6 +21,8 @@ APlayerCharater::APlayerCharater()
 	SpringArm->SetupAttachment(GetMesh());
 	Camera=CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
+	CheckCapsule=CreateDefaultSubobject<UCapsuleComponent>(TEXT("CheckCapsuleComponent"));
+	CheckCapsule->SetupAttachment(GetMesh());
 	WalkSpeed=300.0f;
 	RunSpeed=600.0f;
 
@@ -41,6 +43,12 @@ void APlayerCharater::BeginPlay()
 	bGun0=false;
 	bGun1=false;
 	ShowUI();
+
+	FScriptDelegate Del,OutDel;
+	Del.BindUFunction(this,"OnCapsuleBeginOverLap");
+	CheckCapsule->OnComponentBeginOverlap.Add(Del);
+	OutDel.BindUFunction(this,"OnCapsuleEndOverLap");
+	CheckCapsule->OnComponentEndOverlap.Add(OutDel);
 }
 
 // Called every frame
@@ -198,6 +206,22 @@ void APlayerCharater::OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other,
 		}
 	}
 }
+
+void APlayerCharater::OnCapsuleBeginOverLap(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
+{
+
+	if(Cast<ABaseCar>(Other))
+	{
+		UE_LOG(LogTemp,Warning,TEXT("OverlapBegin"));
+	}
+}
+
+void APlayerCharater::OnCapsuleEndOverLap(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp)
+{
+	if(Cast<ABaseCar>(Other))
+		UE_LOG(LogTemp,Warning,TEXT("OverlapEnd"));
+}
+
 
 void APlayerCharater::StartJump()
 {

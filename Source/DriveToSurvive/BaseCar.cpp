@@ -341,13 +341,13 @@ void ABaseCar::OnOverlayBegin(UPrimitiveComponent* OverlappedComponent, AActor* 
 {
 	if(ABaseCar* Car=Cast<ABaseCar>(OtherActor))
 	{
-		UE_LOG(LogTemp,Warning,TEXT("CarCrashed"));
+		
 	}
 }
 
 void ABaseCar::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
-	UE_LOG(LogTemp,Warning,TEXT("Crashed!"));
+	
 }
 
 void ABaseCar::TurnLight()
@@ -378,12 +378,11 @@ void ABaseCar::SetSwitchGearTime(float Time)
 
 void ABaseCar::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
 {
-	UE_LOG(LogTemp,Warning,TEXT("OnHit"));
 	if(CrashedMaterial)
 		UGameplayStatics::SpawnDecalAtLocation(Other,CrashedMaterial,FVector(30.0f,30.0f,30.f),HitLocation,FRotator(0.0f,0.0f,0.0f));
 }
 
-void ABaseCar::ChangeControl()
+void ABaseCar::ChangeControlForPlayer()
 {
 	if(PlayerCharacter)
 	{
@@ -392,11 +391,10 @@ void ABaseCar::ChangeControl()
 		PlayerCharacter->GetMesh()->SetVisibility(true,true);
 		FVector CarLocation=GetActorLocation();
 		PlayerCharacter->SetActorLocation(CarLocation+FVector(100.0f,100.0f,100.0f));
+		//缺一段更改控制权的代码，好他妈难写
+		/*
+		UnPossessed();
+		PlayerCharacter->PossessedBy(UGameplayStatics::GetPlayerController(GetWorld(),0));
+		*/
 	}
-}
-
-void ABaseCar::ChangeClear()
-{
-	UE_LOG(LogTemp,Warning,TEXT("Ca"));
-	GetWorld()->GetTimerManager().ClearTimer(TimerForChange);
 }

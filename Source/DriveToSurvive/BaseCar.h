@@ -140,9 +140,7 @@ public:
 	virtual void NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,
 		bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
 	UFUNCTION(BlueprintCallable)
-	void ChangeControl();
-	void ChangePlayer();
-	void ChangeClear();
+	void ChangeControlForPlayer();
 	UPROPERTY(BlueprintReadWrite)
 	APlayerCharater* PlayerCharacter;
 	UPROPERTY(EditAnywhere)

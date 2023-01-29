@@ -114,6 +114,11 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 
 	UFUNCTION()
 	virtual  void OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit);
+
+	UFUNCTION()
+	virtual void OnCapsuleBeginOverLap(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit);
+	UFUNCTION()
+	virtual void OnCapsuleEndOverLap(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp);
 public:
 	// Sets default values for this character's properties
 	APlayerCharater();
@@ -125,6 +130,9 @@ public:
 	bool bGun0;
 	UPROPERTY(BlueprintReadOnly)
 	bool bGun1;
+
+	UPROPERTY(EditAnywhere)
+	UCapsuleComponent* CheckCapsule;
 	
 protected:
 	// Called when the game starts or when spawned
