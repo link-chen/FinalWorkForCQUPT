@@ -155,4 +155,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ChangeControlForCar();
+	
+
+	void NothingToDo();
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void SignalFunc();
 };

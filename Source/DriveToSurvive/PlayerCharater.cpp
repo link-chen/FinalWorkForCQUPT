@@ -213,13 +213,18 @@ void APlayerCharater::OnCapsuleBeginOverLap(UPrimitiveComponent* MyComp, AActor*
 	if(Cast<ABaseCar>(Other))
 	{
 		UE_LOG(LogTemp,Warning,TEXT("OverlapBegin"));
+		Car=Cast<ABaseCar>(Other);
+		Car->PlayerCharacter=this;
 	}
 }
 
 void APlayerCharater::OnCapsuleEndOverLap(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp)
 {
 	if(Cast<ABaseCar>(Other))
+	{
 		UE_LOG(LogTemp,Warning,TEXT("OverlapEnd"));
+		Car=nullptr;
+	}
 }
 
 
@@ -355,9 +360,20 @@ void APlayerCharater::ChangeControlForCar()
 {
 	if(Car)
 	{
+		bool temp=false;
 		GetMesh()->SetVisibility(false,true);
 		Car->ShowRunning();
+		if(!temp)
+		{
+			temp=true;
+			SignalFunc();
+		}
 	}
+}
+
+void APlayerCharater::NothingToDo()
+{
+	
 }
 
 // Called to bind functionality to input
@@ -388,5 +404,8 @@ void APlayerCharater::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	PlayerInputComponent->BindAction("ChangeCamera",IE_Pressed,this,&APlayerCharater::ChangeGun);
 
 	PlayerInputComponent->BindAction("GiveUpGun",IE_Pressed,this,&APlayerCharater::DisCardGun);
+
+	PlayerInputComponent->BindAction("TakeChange",IE_Pressed,this,&APlayerCharater::ChangeControlForCar);
+	PlayerInputComponent->BindAction("TakeChange",IE_Released,this,&APlayerCharater::NothingToDo);
 }
 
