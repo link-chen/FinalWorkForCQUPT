@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Gun.h"
+#include "TargetActor.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -152,11 +153,18 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 	ABaseCar* Car;
+	ATargetActor* PlayerTargetActor;
 
 	UFUNCTION(BlueprintCallable)
 	void ChangeControlForCar();
-	
 
+	UPROPERTY(EditAnywhere)
+	int TargetTypeNum;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	TArray<int> TargetArray;
+
+	void InteractFunc();	
+	
 	void NothingToDo();
 	
 	UFUNCTION(BlueprintImplementableEvent)

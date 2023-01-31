@@ -6,6 +6,7 @@
 #include <corecrt_io.h>
 
 #include "BaseCar.h"
+#include "TargetActor.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -27,6 +28,7 @@ APlayerCharater::APlayerCharater()
 	RunSpeed=600.0f;
 
 	WaitTime=0.175f;
+	
 }
 
 // Called when the game starts or when spawned
@@ -49,6 +51,9 @@ void APlayerCharater::BeginPlay()
 	CheckCapsule->OnComponentBeginOverlap.Add(Del);
 	OutDel.BindUFunction(this,"OnCapsuleEndOverLap");
 	CheckCapsule->OnComponentEndOverlap.Add(OutDel);
+
+	for(int i=0;i<TargetTypeNum;i++)
+		TargetArray.Add(0);
 }
 
 // Called every frame
@@ -205,6 +210,14 @@ void APlayerCharater::OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other,
 			bGun0=true;
 		}
 	}
+	if(ATargetActor* Target=Cast<ATargetActor>(Other))
+	{
+		/*
+		UE_LOG(LogTemp,Warning,TEXT("TargetActor==%d"),Target->GetLable());
+		TargetArray[Target->GetLable()]+=1;
+		Target->Destroy();
+		*/
+	}
 }
 
 void APlayerCharater::OnCapsuleBeginOverLap(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
@@ -216,6 +229,10 @@ void APlayerCharater::OnCapsuleBeginOverLap(UPrimitiveComponent* MyComp, AActor*
 		Car=Cast<ABaseCar>(Other);
 		Car->PlayerCharacter=this;
 	}
+	if(Cast<ATargetActor>(Other))
+	{
+		PlayerTargetActor=Cast<ATargetActor>(Other);
+	}
 }
 
 void APlayerCharater::OnCapsuleEndOverLap(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp)
@@ -224,6 +241,10 @@ void APlayerCharater::OnCapsuleEndOverLap(UPrimitiveComponent* MyComp, AActor* O
 	{
 		UE_LOG(LogTemp,Warning,TEXT("OverlapEnd"));
 		Car=nullptr;
+	}
+	if(Cast<ATargetActor>(Other))
+	{
+		PlayerTargetActor=nullptr;
 	}
 }
 
@@ -324,6 +345,7 @@ void APlayerCharater::ChangeGun()
 		bGun0=false;
 		bGun1=true;
 	}
+	
 }
 
 void APlayerCharater::PlayReLoadAnimation()
@@ -358,16 +380,20 @@ void APlayerCharater::HideUI()
 
 void APlayerCharater::ChangeControlForCar()
 {
+	GetMesh()->SetVisibility(false,true);
+	Car->ShowRunning();
+	SignalFunc();
+}
+
+void APlayerCharater::InteractFunc()
+{
 	if(Car)
 	{
-		bool temp=false;
-		GetMesh()->SetVisibility(false,true);
-		Car->ShowRunning();
-		if(!temp)
-		{
-			temp=true;
-			SignalFunc();
-		}
+		ChangeControlForCar();
+	}
+	if(PlayerTargetActor)
+	{
+		UE_LOG(LogTemp,Warning,TEXT("GetTarget"));
 	}
 }
 
@@ -405,7 +431,7 @@ void APlayerCharater::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 	PlayerInputComponent->BindAction("GiveUpGun",IE_Pressed,this,&APlayerCharater::DisCardGun);
 
-	PlayerInputComponent->BindAction("TakeChange",IE_Pressed,this,&APlayerCharater::ChangeControlForCar);
+	PlayerInputComponent->BindAction("TakeChange",IE_Pressed,this,&APlayerCharater::InteractFunc);
 	PlayerInputComponent->BindAction("TakeChange",IE_Released,this,&APlayerCharater::NothingToDo);
 }
 

@@ -391,10 +391,6 @@ void ABaseCar::ChangeControlForPlayer()
 		PlayerCharacter->GetMesh()->SetVisibility(true,true);
 		FVector CarLocation=GetActorLocation();
 		PlayerCharacter->SetActorLocation(CarLocation+FVector(100.0f,100.0f,100.0f));
-		//缺一段更改控制权的代码，好他妈难写
-		/*
-		UnPossessed();
-		PlayerCharacter->PossessedBy(UGameplayStatics::GetPlayerController(GetWorld(),0));
-		*/
+		UGameplayStatics::GetPlayerController(GetWorld(),0);
 	}
 }
