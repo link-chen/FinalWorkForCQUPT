@@ -16,20 +16,24 @@ UCLASS()
 class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 {
 	GENERATED_BODY()
-	
+
+	//Function For Move
 	void MoveForward(float Value);
 	void MoveRight(float Value);
+	UFUNCTION()
+	void StartJump();
+	UFUNCTION()
+	void StopJump();
 
 	FTimerHandle Timer;
-	
+
+	//Gun
 	void UseGun();
 	void StopGun();
 	void GunFire();
-	
+	void DisCardGun();
 	AGun* PlayerGun;
 	AGun* PlayerGun1;
-	
-
 	bool IsGun1Available();
 	bool IsGun0Available();
 	
@@ -37,8 +41,7 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 	UCameraComponent* Camera;
 	UPROPERTY(EditAnywhere)
 	USpringArmComponent* SpringArm;
-
-	TArray<AGun*> GunList;
+	
 
 	UPROPERTY(EditAnywhere)
 	float WalkSpeed;
@@ -51,22 +54,13 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 	UAnimMontage* FireAnimMontage;
 	UPROPERTY(EditAnywhere)
 	UAnimMontage* PlayerDieAnimMontage;
-	
-	void DisCardGun();
 
 	UFUNCTION(BlueprintCallable)
 	TArray<int> GetGunBullteMessage();
 	
 
 	bool bRun;
-
-	// 按下键时，设置跳跃标记。
-	UFUNCTION()
-	void StartJump();
-
-	// 释放键时，清除跳跃标记。
-	UFUNCTION()
-	void StopJump();
+	
 	
 	void ActiveMode();
 	void CanncelActiveMode();
@@ -157,6 +151,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ChangeControlForCar();
+	void GetTargetActor();
 
 	UPROPERTY(EditAnywhere)
 	int TargetTypeNum;
@@ -169,4 +164,7 @@ public:
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void SignalFunc();
+
+	void SavePlayerTargetActor();
+	void ReadPlayerTargetActor();
 };

@@ -6,11 +6,14 @@
 #include <corecrt_io.h>
 
 #include "BaseCar.h"
+#include "FPSGameModeBase.h"
 #include "TargetActor.h"
+#include "TPSSaveGame.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GeomUtils/GuContactBuffer.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 APlayerCharater::APlayerCharater()
@@ -52,8 +55,7 @@ void APlayerCharater::BeginPlay()
 	OutDel.BindUFunction(this,"OnCapsuleEndOverLap");
 	CheckCapsule->OnComponentEndOverlap.Add(OutDel);
 
-	for(int i=0;i<TargetTypeNum;i++)
-		TargetArray.Add(0);
+	ReadPlayerTargetActor();
 }
 
 // Called every frame
@@ -385,6 +387,16 @@ void APlayerCharater::ChangeControlForCar()
 	SignalFunc();
 }
 
+void APlayerCharater::GetTargetActor()
+{
+	if(PlayerTargetActor)
+	{
+		TargetArray[PlayerTargetActor->GetLable()]++;
+		PlayerTargetActor->Destroy();
+		SavePlayerTargetActor();
+	}
+}
+
 void APlayerCharater::InteractFunc()
 {
 	if(Car)
@@ -393,13 +405,39 @@ void APlayerCharater::InteractFunc()
 	}
 	if(PlayerTargetActor)
 	{
-		UE_LOG(LogTemp,Warning,TEXT("GetTarget"));
+		GetTargetActor();
 	}
 }
 
 void APlayerCharater::NothingToDo()
 {
 	
+}
+
+void APlayerCharater::SavePlayerTargetActor()
+{
+	if(UTPSSaveGame* Save=Cast<UTPSSaveGame>(UGameplayStatics::CreateSaveGameObject(UTPSSaveGame::StaticClass())))
+	{
+		Save->PlayerTargetActorNum=TargetArray;
+		if(UGameplayStatics::SaveGameToSlot(Save,"TPSSaveSlot",1))
+		{
+			
+		}
+	}
+}
+
+void APlayerCharater::ReadPlayerTargetActor()
+{
+	if(UTPSSaveGame* Read=Cast<UTPSSaveGame>(UGameplayStatics::LoadGameFromSlot("TPSSaveSlot",1)))
+	{
+		TargetArray=Read->PlayerTargetActorNum;
+	}
+	else
+	{
+		TargetTypeNum=Cast<AFPSGameModeBase>(GetWorld()->GetAuthGameMode())->TotalTargetNum;
+		for(int i=0;i<TargetTypeNum;i++)
+			TargetArray.Add(0);
+	}
 }
 
 // Called to bind functionality to input

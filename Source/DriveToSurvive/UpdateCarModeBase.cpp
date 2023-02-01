@@ -48,7 +48,8 @@ void AUpdateCarModeBase::ReadGameMessage()
 		Mass=Read->Mass;
 		ReChargeRate=Read->ReChargeRate;
 		ChangeGearTime=Read->ChangeGearTime;
-	}else
+	}
+	else
 	{
 		ERSRate=BaseCar->GetERSRate();
 		MaxElectronicPower=BaseCar->MaxElectronicPower;

@@ -13,5 +13,12 @@ UCLASS()
 class DRIVETOSURVIVE_API AFPSGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
+	void SaveGameMessage();
+	void ReadGameMessage();
+
+public:
+	UPROPERTY(EditAnywhere)
+	int TotalTargetNum;
+	AFPSGameModeBase();
 };
