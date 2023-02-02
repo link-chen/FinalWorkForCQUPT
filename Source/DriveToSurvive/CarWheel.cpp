@@ -32,7 +32,6 @@ void UCarWheel::Tick(float DeltaSeconds)
 void UCarWheel::Wear(float Value)
 {
 	CurrentLife-=Value;
-	UE_LOG(LogTemp,Warning,TEXT("CurrentLife==%f"),CurrentLife);
 }
 
 float UCarWheel::GetCurrentLife()

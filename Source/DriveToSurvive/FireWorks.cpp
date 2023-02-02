@@ -34,7 +34,6 @@ void AFireWorks::Tick(float DeltaTime)
 	AddActorLocalOffset(FVector(0,0,4.75f));
 	if(GetActorLocation().Z>=MaxHeight&&!bBoomed)
 	{
-		UE_LOG(LogTemp,Warning,TEXT("FireWorksBoom"));
 		TailComponent->Deactivate();
 		BoomComponent->Activate();
 		bBoomed=true;

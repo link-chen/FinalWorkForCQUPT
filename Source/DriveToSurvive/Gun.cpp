@@ -61,7 +61,7 @@ void AGun::Fire(FVector CameraLocation,FVector Forward)
 			bool bIsHit=UKismetSystemLibrary::LineTraceSingle(GetWorld(), CameraLocation, End, TraceTypeQuery1, true, IgnoreActors, EDrawDebugTrace::None, HitResult, true);
 			if(bIsHit)
 			{
-				UE_LOG(LogTemp,Warning,TEXT("IsHit"));
+
 			}
 			if (HitResult.GetActor())
 			{

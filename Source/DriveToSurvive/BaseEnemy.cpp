@@ -34,7 +34,6 @@ void ABaseEnemy::Tick(float DeltaTime)
 void ABaseEnemy::GetHurt(float Value)
 {
 	CurrentLife-=Value;
-	UE_LOG(LogTemp,Warning,TEXT("GetHurt"));
 }
 
 void ABaseEnemy::PlayDeathAnimation()

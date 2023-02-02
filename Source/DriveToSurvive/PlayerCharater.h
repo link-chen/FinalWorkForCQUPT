@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Gun.h"
+#include "SourceCollectHub.h"
 #include "TargetActor.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
@@ -42,12 +43,13 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 	UPROPERTY(EditAnywhere)
 	USpringArmComponent* SpringArm;
 	
-
+	//Move Speed
 	UPROPERTY(EditAnywhere)
 	float WalkSpeed;
 	UPROPERTY(EditAnywhere)
 	float RunSpeed;
 
+	//Animation
 	UPROPERTY(EditAnywhere)
 	UAnimMontage* ReLoadAnimMontage;
 	UPROPERTY(EditAnywhere)
@@ -65,9 +67,6 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 	void ActiveMode();
 	void CanncelActiveMode();
 
-	void TakeWeaponOne();
-	void TakeWeaponTwo();
-
 	void TakeWeaponRelease();
 
 	void ChangeGun();
@@ -76,12 +75,10 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 	FVector GunAttachLocation;
 	UPROPERTY(EditAnywhere)
 	FRotator GunAttachRotator;
-	
 	UPROPERTY(EditAnywhere)
 	FVector FightGunAttachLocation;
 	UPROPERTY(EditAnywhere)
 	FRotator FightGunAttachRotator;
-	
 	UPROPERTY(EditAnywhere)
 	FName FightSocket;
 	UPROPERTY(EditAnywhere)
@@ -106,10 +103,8 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 	UFUNCTION()
 	virtual void NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,
 	bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
-
 	UFUNCTION()
 	virtual  void OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit);
-
 	UFUNCTION()
 	virtual void OnCapsuleBeginOverLap(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit);
 	UFUNCTION()
@@ -148,6 +143,7 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	ABaseCar* Car;
 	ATargetActor* PlayerTargetActor;
+	ASourceCollectHub* Hub;
 
 	UFUNCTION(BlueprintCallable)
 	void ChangeControlForCar();
@@ -159,7 +155,6 @@ public:
 	TArray<int> TargetArray;
 
 	void InteractFunc();	
-	
 	void NothingToDo();
 	
 	UFUNCTION(BlueprintImplementableEvent)

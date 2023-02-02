@@ -37,7 +37,6 @@ void ASignalLight::CloseLight(int Pivote)
 {
 	if(Pivote>=5&&Pivote<0)
 		return;
-	UE_LOG(LogTemp,Warning,TEXT("LightArray[%d] on"),Pivote);
 	LightArray[Pivote]->SetIntensity(10000.0f);
 }
 

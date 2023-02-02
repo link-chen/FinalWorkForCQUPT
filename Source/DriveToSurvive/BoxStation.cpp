@@ -36,7 +36,7 @@ void ABoxStation::OnOverlayBegin(UPrimitiveComponent* OverlappedComponent, AActo
 {
 	if(ABaseCar* Car=Cast<ABaseCar>(OtherActor))
 	{
-		UE_LOG(LogTemp,Warning,TEXT("CarCross"));
+		
 	}
 }
 

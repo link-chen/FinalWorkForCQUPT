@@ -32,7 +32,6 @@ void AGunBullte::BeginPlay()
 
 void AGunBullte::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
 {
-	UE_LOG(LogTemp,Warning,TEXT("HitOn"));
 	if(Material)
 	{
 		UGameplayStatics::SpawnDecalAtLocation(Other,Material,FVector(30.0f,30.0f,30.f),HitLocation,FRotator(0.0f,0.0f,0.0f));
@@ -42,7 +41,7 @@ void AGunBullte::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiv
 
 void AGunBullte::OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
 {
-	UE_LOG(LogTemp,Warning,TEXT("OnBeginOverlap"));
+	
 }
 
 // Called every frame

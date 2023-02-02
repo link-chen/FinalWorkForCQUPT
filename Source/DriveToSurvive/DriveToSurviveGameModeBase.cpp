@@ -26,11 +26,6 @@ void ADriveToSurviveGameModeBase::BeginPlay()
 	PlayerCar=Cast<ABaseCar>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	if(PlayerCar!=nullptr)
 	ReadGameMessage();
-	UE_LOG(LogTemp,Warning,TEXT("ERSRate==%f"),PlayerCar->GetERSRate());
-	UE_LOG(LogTemp,Warning,TEXT("DownForceRate==%f"),PlayerCar->GetDownForceRate());
-	UE_LOG(LogTemp,Warning,TEXT("ElectronicPower==%f"),PlayerCar->MaxElectronicPower);
-	UE_LOG(LogTemp,Warning,TEXT("Mass==%f"),PlayerCar->GetVehicleMovementComponent()->Mass);
-	UE_LOG(LogTemp,Warning,TEXT("ReChargeRate%f"),PlayerCar->GetReChargeRate());
  
 	TArray<AActor*> Actors;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AActor::StaticClass(), Actors);

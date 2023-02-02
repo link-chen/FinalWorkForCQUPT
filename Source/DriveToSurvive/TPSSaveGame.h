@@ -23,6 +23,8 @@ class DRIVETOSURVIVE_API UTPSSaveGame : public USaveGame
 public:
 	UPROPERTY()
 	TArray<int> PlayerTargetActorNum;
+	UPROPERTY()
+	TArray<int> CollectedTargetActorNum;
 	
 	UPROPERTY()
 	FString SaveSlotName;

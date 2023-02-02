@@ -60,7 +60,6 @@ void ABaseCar::BeginPlay()
 	{
 		CarUI=CreateWidget<UUserWidget>(World,Widget);
 	}
-	UE_LOG(LogTemp,Warning,TEXT("CarUI==%d"),CarUI!=nullptr);
 	if(World!=nullptr)
 	{
 		GameModeBase=Cast<ADriveToSurviveGameModeBase>(World->GetAuthGameMode());
@@ -136,7 +135,6 @@ void ABaseCar::ShowRunning()
 {
 	if(CarUI!=nullptr)
 	{
-		UE_LOG(LogTemp,Warning,TEXT("Show"));
 		CarUI->AddToViewport();
 	}
 	else
@@ -150,7 +148,6 @@ void ABaseCar::HideRunning()
 {
 	if(CarUI!=nullptr)
 	{
-		UE_LOG(LogTemp,Warning,TEXT("Hide"));
 		CarUI->RemoveFromViewport();
 	}
 }
@@ -251,7 +248,7 @@ void ABaseCar::WearTyre()
 			CarWheelsArray[i]->Wear(GetVehicleMovementComponent()->GetForwardSpeed()/100.0f*3.6f>3.0f?GetVehicleMovementComponent()->GetForwardSpeed()/100.0f*3.6f/10.0f:0.0f);
 			if(CarWheelsArray[i]->GetCurrentLife()<0.0f)
 			{
-				UE_LOG(LogTemp,Warning,TEXT("CarWheelsArray[%d] Destory"),i);
+
 			}
 		}
 	}
@@ -368,11 +365,9 @@ void ABaseCar::TurnLight()
 
 void ABaseCar::SetSwitchGearTime(float Time)
 {
-	UE_LOG(LogTemp,Warning,TEXT("SetGearSwitchTime"));
 	UWheeledVehicleMovementComponent4W* WheelMoveComponent=Cast<UWheeledVehicleMovementComponent4W>(GetVehicleMovementComponent());
 	if(WheelMoveComponent!=nullptr)
 	{
-		UE_LOG(LogTemp,Warning,TEXT("ChangeTime==%f"),WheelMoveComponent->TransmissionSetup.GearSwitchTime);
 	}
 }
 
@@ -386,7 +381,6 @@ void ABaseCar::ChangeControlForPlayer()
 {
 	if(PlayerCharacter)
 	{
-		UE_LOG(LogTemp,Warning,TEXT("ChangeControl"));
 		HideRunning();
 		PlayerCharacter->GetMesh()->SetVisibility(true,true);
 		FVector CarLocation=GetActorLocation();

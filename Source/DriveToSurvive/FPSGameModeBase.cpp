@@ -11,7 +11,7 @@ void AFPSGameModeBase::SaveGameMessage()
 	if(UTPSSaveGame* Save=Cast<UTPSSaveGame>(UGameplayStatics::CreateSaveGameObject(UTPSSaveGame::StaticClass())))
 	{
 
-		if(UGameplayStatics::SaveGameToSlot(Save,"SaveSlot",0))
+		if(UGameplayStatics::SaveGameToSlot(Save,"TPSSaveSlot",1))
 		{
 			
 		}

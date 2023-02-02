@@ -227,7 +227,6 @@ void APlayerCharater::OnCapsuleBeginOverLap(UPrimitiveComponent* MyComp, AActor*
 
 	if(Cast<ABaseCar>(Other))
 	{
-		UE_LOG(LogTemp,Warning,TEXT("OverlapBegin"));
 		Car=Cast<ABaseCar>(Other);
 		Car->PlayerCharacter=this;
 	}
@@ -235,18 +234,25 @@ void APlayerCharater::OnCapsuleBeginOverLap(UPrimitiveComponent* MyComp, AActor*
 	{
 		PlayerTargetActor=Cast<ATargetActor>(Other);
 	}
+	if(Cast<ASourceCollectHub>(Other))
+	{
+		Hub=Cast<ASourceCollectHub>(Other);
+	}
 }
 
 void APlayerCharater::OnCapsuleEndOverLap(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp)
 {
 	if(Cast<ABaseCar>(Other))
 	{
-		UE_LOG(LogTemp,Warning,TEXT("OverlapEnd"));
 		Car=nullptr;
 	}
 	if(Cast<ATargetActor>(Other))
 	{
 		PlayerTargetActor=nullptr;
+	}
+	if(Cast<ASourceCollectHub>(Other))
+	{
+		Hub=nullptr;
 	}
 }
 
@@ -275,16 +281,6 @@ void APlayerCharater::CanncelActiveMode()
 		PlayerGun->bCanUse=true;
 }
 
-void APlayerCharater::TakeWeaponOne()
-{
-	
-}
-
-void APlayerCharater::TakeWeaponTwo()
-{
-	
-}
-
 void APlayerCharater::TakeWeaponRelease()
 {
 	if(PlayerGun==nullptr)
@@ -297,7 +293,7 @@ void APlayerCharater::TakeWeaponRelease()
 	}
 	else
 	{
-		UE_LOG(LogTemp,Warning,TEXT("Can not get any weapon"));
+		
 	}
 }
 
@@ -407,6 +403,12 @@ void APlayerCharater::InteractFunc()
 	{
 		GetTargetActor();
 	}
+	if(Hub)
+	{
+		Hub->GetPlayerSource(TargetArray);
+		for(int i=0;i<TargetArray.Num();i++)
+			TargetArray[i]=0;
+	}
 }
 
 void APlayerCharater::NothingToDo()
@@ -430,7 +432,17 @@ void APlayerCharater::ReadPlayerTargetActor()
 {
 	if(UTPSSaveGame* Read=Cast<UTPSSaveGame>(UGameplayStatics::LoadGameFromSlot("TPSSaveSlot",1)))
 	{
-		TargetArray=Read->PlayerTargetActorNum;
+		if(Read->PlayerTargetActorNum.Num()==0)
+		{
+			TargetTypeNum=Cast<AFPSGameModeBase>(GetWorld()->GetAuthGameMode())->TotalTargetNum;
+			for(int i=0;i<TargetTypeNum;i++)
+				TargetArray.Add(0);
+		}
+		else
+		{
+			for(int i=0;i<Read->PlayerTargetActorNum.Num();i++)
+				TargetArray.Add(Read->PlayerTargetActorNum[i]);
+		}
 	}
 	else
 	{
@@ -456,9 +468,6 @@ void APlayerCharater::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 	PlayerInputComponent->BindAction("TakeERS",IE_Pressed,this,&APlayerCharater::ActiveMode);
 	PlayerInputComponent->BindAction("TakeERS",IE_Released,this,&APlayerCharater::CanncelActiveMode);
-
-	PlayerInputComponent->BindAction("WeaponOne",IE_Pressed,this,&APlayerCharater::TakeWeaponOne);
-	PlayerInputComponent->BindAction("WeaponTwo",IE_Pressed,this,&APlayerCharater::TakeWeaponTwo);
 
 	PlayerInputComponent->BindAction("Fire",IE_Pressed,this,&APlayerCharater::UseGun);
 	PlayerInputComponent->BindAction("Fire",IE_Released,this,&APlayerCharater::StopGun);
