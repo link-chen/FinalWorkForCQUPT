@@ -14,11 +14,15 @@ class DRIVETOSURVIVE_API AFPSGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 
+	bool bFinishTask;
+	bool bBossKilled;
 	void SaveGameMessage();
 	void ReadGameMessage();
 
 public:
 	UPROPERTY(EditAnywhere)
 	int TotalTargetNum;
+	UPROPERTY(EditAnywhere)
+	TArray<int> TargetArray;
 	AFPSGameModeBase();
 };

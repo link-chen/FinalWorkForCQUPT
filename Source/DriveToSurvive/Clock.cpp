@@ -30,7 +30,7 @@ void AClock::Tick(float DeltaTime)
 
 float AClock::ReturnNum()
 {
-	return sin(RotateNum/57.29578)+1.0075f;
+	return cos(fmod(RotateNum,360.0)/57.29578);
 }
 
 

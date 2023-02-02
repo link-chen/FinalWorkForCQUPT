@@ -167,6 +167,19 @@ void APlayerCharater::ReAddScript()
 }
 
 
+void APlayerCharater::PlayerDie()
+{
+	if(PlayerGun)
+	{
+		DisCardGun();
+	}
+	if(PlayerGun1)
+	{
+		ChangeGun();
+		DisCardGun();
+	}
+}
+
 void APlayerCharater::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
 {
 	
@@ -420,7 +433,20 @@ void APlayerCharater::SavePlayerTargetActor()
 {
 	if(UTPSSaveGame* Save=Cast<UTPSSaveGame>(UGameplayStatics::CreateSaveGameObject(UTPSSaveGame::StaticClass())))
 	{
-		Save->PlayerTargetActorNum=TargetArray;
+		if(Save->PlayerTargetActorNum.Num()==0)
+		{
+			for(int i=0;i<TargetArray.Num();i++)
+			{
+				Save->PlayerTargetActorNum.Add(TargetArray[i]);
+			}
+		}
+		else
+		{
+			for(int i=0;i<TargetArray.Num();i++)
+			{
+				Save->PlayerTargetActorNum[i]=TargetArray[i];
+			}
+		}
 		if(UGameplayStatics::SaveGameToSlot(Save,"TPSSaveSlot",1))
 		{
 			

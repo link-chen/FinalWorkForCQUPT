@@ -3,3 +3,7 @@
 
 #include "MapWidget.h"
 
+void UMapWidget::SetPlace(float X, float Y)
+{
+	
+}

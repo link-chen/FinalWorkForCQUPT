@@ -13,5 +13,7 @@ UCLASS()
 class DRIVETOSURVIVE_API UMapWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
+	UFUNCTION(BlueprintCallable)
+	void SetPlace(float X,float Y);
 };

@@ -99,6 +99,8 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> Fight;
 	UUserWidget* UI;
+
+	void PlayerDie();
 	
 	UFUNCTION()
 	virtual void NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,
