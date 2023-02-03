@@ -43,7 +43,7 @@ void ABaseEnemy::PlayDeathAnimation()
 
 void ABaseEnemy::Death()
 {
-	Destroy();
+	GetController()->Destroy();
 }
 
 // Called to bind functionality to input

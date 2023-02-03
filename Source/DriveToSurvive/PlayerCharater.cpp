@@ -399,6 +399,8 @@ void APlayerCharater::ChangeControlForCar()
 {
 	GetMesh()->SetVisibility(false,true);
 	Car->ShowRunning();
+	//Car->PossessedBy(GetController());
+	//UnPossessed();
 	SignalFunc();
 }
 

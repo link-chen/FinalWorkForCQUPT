@@ -20,6 +20,8 @@ class DRIVETOSURVIVE_API ABaseEnemy : public ACharacter
 
 	UPROPERTY()
 	bool bFindEnemy;
+
+	FTimerHandle DeleteHandle;
 	
 public:
 	// Sets default values for this character's properties
