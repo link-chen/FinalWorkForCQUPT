@@ -61,6 +61,9 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 	TArray<int> GetGunBullteMessage();
 	
 
+	UPROPERTY(EditAnywhere)
+	int MaxLife;
+
 	bool bRun;
 	
 	
@@ -164,4 +167,7 @@ public:
 
 	void SavePlayerTargetActor();
 	void ReadPlayerTargetActor();
+
+	UPROPERTY(BlueprintReadOnly)
+	int CurrentLife;
 };

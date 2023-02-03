@@ -56,6 +56,9 @@ void APlayerCharater::BeginPlay()
 	CheckCapsule->OnComponentEndOverlap.Add(OutDel);
 
 	ReadPlayerTargetActor();
+
+
+	CurrentLife=MaxLife;
 }
 
 // Called every frame
@@ -178,6 +181,9 @@ void APlayerCharater::PlayerDie()
 		ChangeGun();
 		DisCardGun();
 	}
+	for(int i=0;i<TargetArray.Num();i++)
+		TargetArray[i]=0;
+	
 }
 
 void APlayerCharater::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
@@ -506,5 +512,6 @@ void APlayerCharater::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 	PlayerInputComponent->BindAction("TakeChange",IE_Pressed,this,&APlayerCharater::InteractFunc);
 	PlayerInputComponent->BindAction("TakeChange",IE_Released,this,&APlayerCharater::NothingToDo);
+	
 }
 
