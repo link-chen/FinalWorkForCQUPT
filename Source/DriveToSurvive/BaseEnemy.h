@@ -20,27 +20,32 @@ class DRIVETOSURVIVE_API ABaseEnemy : public ACharacter
 
 	UPROPERTY()
 	bool bFindEnemy;
+	
 
-	FTimerHandle DeleteHandle;
+	void DieOut();
+
+	UPROPERTY(EditAnywhere)
+	float DeleteTIme;
 	
 public:
 	// Sets default values for this character's properties
 	ABaseEnemy();
 
 
-	void PlayDeathAnimation();
+	virtual void PlayDeathAnimation();
 
 	UPROPERTY(BlueprintReadWrite)
 	bool bLive;
 
 	UFUNCTION(BlueprintCallable)
-	void Death();
+	virtual void Death();
 	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
+	FTimerHandle DeleteHandle;
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

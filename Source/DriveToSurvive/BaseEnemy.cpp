@@ -3,6 +3,12 @@
 
 #include "BaseEnemy.h"
 
+void ABaseEnemy::DieOut()
+{
+	GetWorldTimerManager().ClearTimer(DeleteHandle);
+	Destroy();
+}
+
 // Sets default values
 ABaseEnemy::ABaseEnemy()
 {
@@ -29,6 +35,7 @@ void ABaseEnemy::Tick(float DeltaTime)
 	{
 		bLive=false;
 		PlayDeathAnimation();
+		UE_LOG(LogTemp,Warning,TEXT("die"));
 	}
 }
 void ABaseEnemy::GetHurt(float Value)
@@ -38,12 +45,14 @@ void ABaseEnemy::GetHurt(float Value)
 
 void ABaseEnemy::PlayDeathAnimation()
 {
-	PlayAnimMontage(DeathMontage);
+	if(DeathMontage)
+		PlayAnimMontage(DeathMontage);
 }
 
 void ABaseEnemy::Death()
 {
 	GetController()->Destroy();
+	GetWorldTimerManager().SetTimer(DeleteHandle,this,&ABaseEnemy::DieOut,DeleteTIme,false);
 }
 
 // Called to bind functionality to input

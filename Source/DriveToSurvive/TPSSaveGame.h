@@ -25,7 +25,8 @@ public:
 	TArray<int> PlayerTargetActorNum;
 	UPROPERTY()
 	TArray<int> CollectedTargetActorNum;
-	
+	UPROPERTY()
+	FVector ReStartLocation;
 	UPROPERTY()
 	FString SaveSlotName;
 	UPROPERTY()

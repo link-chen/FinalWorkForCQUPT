@@ -7,6 +7,7 @@
 
 #include "BaseCar.h"
 #include "BaseEnemy.h"
+#include "BoomEnemy.h"
 #include "StartLine.h"
 #include "Components/AudioComponent.h"
 #include "Kismet/GameplayStatics.h"
