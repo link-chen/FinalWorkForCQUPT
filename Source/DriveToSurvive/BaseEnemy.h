@@ -17,20 +17,21 @@ class DRIVETOSURVIVE_API ABaseEnemy : public ACharacter
 
 	UPROPERTY(EditAnywhere)
 	UAnimMontage* DeathMontage;
+	UPROPERTY(EditAnywhere)
+	UAnimMontage* HurtMontage;
 
 	UPROPERTY()
 	bool bFindEnemy;
 	
 
 	void DieOut();
-
-	UPROPERTY(EditAnywhere)
-	float DeleteTIme;
 	
 public:
 	// Sets default values for this character's properties
 	ABaseEnemy();
 
+	UPROPERTY(EditAnywhere)
+	float DeleteTime;
 
 	virtual void PlayDeathAnimation();
 

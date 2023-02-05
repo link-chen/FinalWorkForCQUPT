@@ -5,27 +5,38 @@
 
 void ABoomEnemy::Death()
 {
-	UE_LOG(LogTemp,Warning,TEXT("Boom"));
+	UE_LOG(LogTemp,Warning,TEXT("BoomDeath"));
+	GetWorldTimerManager().SetTimer(DeleteHandle,this,&ABoomEnemy::DieOut,DeleteTime,false);
 }
 
 void ABoomEnemy::Tick(float DeltaSeconds)
 {
+	//live check has done in baseenemy
 	Super::Tick(DeltaSeconds);
 }
 
 void ABoomEnemy::BeginPlay()
 {
+	//All Init has done in baseenemy
 	Super::BeginPlay();
-	bLive=true;
 }
 
 void ABoomEnemy::GetHurt(float Value)
 {
-	UE_LOG(LogTemp,Warning,TEXT("BoomGetHurt"));
+	//hurt has done in baseenemy
+	Super::GetHurt(Value);
 }
 
 void ABoomEnemy::PlayDeathAnimation()
 {
 	Super::PlayDeathAnimation();
 	Death();
+}
+
+void ABoomEnemy::DieOut()
+{
+	UE_LOG(LogTemp,Warning,TEXT("BoomEnemyBoom!"));
+	GetWorld()->SpawnActor<ABomb>(BombClass,GetActorLocation(),GetActorRotation());
+	GetWorldTimerManager().ClearTimer(DeleteHandle);
+	Destroy();
 }

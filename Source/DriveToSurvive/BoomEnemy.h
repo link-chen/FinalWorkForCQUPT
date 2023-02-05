@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "BaseEnemy.h"
+#include "Bomb.h"
 #include "BoomEnemy.generated.h"
 
 /**
@@ -12,6 +13,8 @@
 UCLASS()
 class DRIVETOSURVIVE_API ABoomEnemy : public ABaseEnemy
 {
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<ABomb> BombClass;
 	GENERATED_BODY()
 public:
 	virtual void Death() override;
@@ -19,4 +22,5 @@ public:
 	virtual void BeginPlay() override;
 	virtual void GetHurt(float Value) override;
 	virtual void PlayDeathAnimation() override;
+	void DieOut();
 };

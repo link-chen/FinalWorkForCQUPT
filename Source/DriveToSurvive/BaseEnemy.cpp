@@ -35,24 +35,25 @@ void ABaseEnemy::Tick(float DeltaTime)
 	{
 		bLive=false;
 		PlayDeathAnimation();
-		UE_LOG(LogTemp,Warning,TEXT("die"));
 	}
 }
 void ABaseEnemy::GetHurt(float Value)
 {
 	CurrentLife-=Value;
+	if(HurtMontage)
+		PlayAnimMontage(HurtMontage);
 }
 
 void ABaseEnemy::PlayDeathAnimation()
 {
+	GetController()->Destroy();
 	if(DeathMontage)
 		PlayAnimMontage(DeathMontage);
 }
 
 void ABaseEnemy::Death()
 {
-	GetController()->Destroy();
-	GetWorldTimerManager().SetTimer(DeleteHandle,this,&ABaseEnemy::DieOut,DeleteTIme,false);
+	GetWorldTimerManager().SetTimer(DeleteHandle,this,&ABaseEnemy::DieOut,DeleteTime,false);
 }
 
 // Called to bind functionality to input
