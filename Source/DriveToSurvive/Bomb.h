@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "NiagaraComponent.h"
+#include "PlayerCharater.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/Actor.h"
 #include "Bomb.generated.h"
@@ -22,6 +23,10 @@ class DRIVETOSURVIVE_API ABomb : public AActor
 	float ExitTime;
 	UPROPERTY(EditAnywhere)
 	float UpRate;
+
+	float HurtValue;
+
+	APlayerCharater* Character;
 public:	
 	// Sets default values for this actor's properties
 	ABomb();
@@ -34,6 +39,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void SetBoomValue(float Value);
+	
 	UFUNCTION()
 	virtual void OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit);
 };

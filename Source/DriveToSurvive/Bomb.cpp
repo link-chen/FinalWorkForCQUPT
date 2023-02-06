@@ -41,11 +41,21 @@ void ABomb::Tick(float DeltaTime)
 	BoomSphereComponent->SetSphereRadius(BoomSphereComponent->GetUnscaledSphereRadius()+UpRate);
 }
 
+void ABomb::SetBoomValue(float Value)
+{
+	HurtValue=Value;
+	UE_LOG(LogTemp,Error,TEXT("SetHurtValue==%f"),HurtValue);
+}
+
 void ABomb::OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved,FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
 {
-	if(Cast<APlayerCharater>(Other))
+	if(APlayerCharater* Player=Cast<APlayerCharater>(Other))
 	{
-		UE_LOG(LogTemp,Error,TEXT("HurtPlayer"));
+		if(Character==nullptr)
+		{
+			Character=Player;
+			Player->CurrentLife-=HurtValue;
+		}
 	}
 }
 

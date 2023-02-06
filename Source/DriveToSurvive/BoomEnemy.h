@@ -16,6 +16,8 @@ class DRIVETOSURVIVE_API ABoomEnemy : public ABaseEnemy
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<ABomb> BombClass;
 	GENERATED_BODY()
+	UPROPERTY(EditAnywhere)
+	float HurtValue;
 public:
 	virtual void Death() override;
 	virtual void Tick(float DeltaSeconds) override;

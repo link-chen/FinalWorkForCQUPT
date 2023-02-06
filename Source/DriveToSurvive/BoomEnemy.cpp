@@ -36,7 +36,8 @@ void ABoomEnemy::PlayDeathAnimation()
 void ABoomEnemy::DieOut()
 {
 	UE_LOG(LogTemp,Warning,TEXT("BoomEnemyBoom!"));
-	GetWorld()->SpawnActor<ABomb>(BombClass,GetActorLocation(),GetActorRotation());
+	ABomb* Bomb=GetWorld()->SpawnActor<ABomb>(BombClass,GetActorLocation(),GetActorRotation());
+	Bomb->SetBoomValue(HurtValue);
 	GetWorldTimerManager().ClearTimer(DeleteHandle);
 	Destroy();
 }
