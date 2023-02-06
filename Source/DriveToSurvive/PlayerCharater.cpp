@@ -59,6 +59,7 @@ void APlayerCharater::BeginPlay()
 
 
 	CurrentLife=MaxLife;
+	bLive=true;
 }
 
 // Called every frame
@@ -66,6 +67,10 @@ void APlayerCharater::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if(CurrentLife<=0.0f&&bLive)
+	{
+		bLive=false;
+	}
 }
 
 void APlayerCharater::MoveForward(float Value)

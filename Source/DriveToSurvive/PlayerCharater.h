@@ -168,4 +168,5 @@ public:
 	float MaxLife;
 	UPROPERTY(BlueprintReadOnly)
 	float CurrentLife;
+	bool bLive;
 };
