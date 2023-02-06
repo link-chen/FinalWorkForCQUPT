@@ -37,14 +37,12 @@ void ABomb::BeginPlay()
 void ABomb::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	UE_LOG(LogTemp,Warning,TEXT("BoomSphereComponent->GetUnscaledSphereRadius==%f"),BoomSphereComponent->GetUnscaledSphereRadius());
 	BoomSphereComponent->SetSphereRadius(BoomSphereComponent->GetUnscaledSphereRadius()+UpRate);
 }
 
 void ABomb::SetBoomValue(float Value)
 {
 	HurtValue=Value;
-	UE_LOG(LogTemp,Error,TEXT("SetHurtValue==%f"),HurtValue);
 }
 
 void ABomb::OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved,FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
