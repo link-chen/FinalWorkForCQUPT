@@ -70,6 +70,9 @@ void APlayerCharater::Tick(float DeltaTime)
 	if(CurrentLife<=0.0f&&bLive)
 	{
 		bLive=false;
+		DestroyPlayerInputComponent();
+		if(PlayerDieAnimMontage)
+			PlayAnimMontage(PlayerDieAnimMontage);
 	}
 }
 
@@ -489,6 +492,34 @@ void APlayerCharater::ReadPlayerTargetActor()
 		TargetTypeNum=Cast<AFPSGameModeBase>(GetWorld()->GetAuthGameMode())->TotalTargetNum;
 		for(int i=0;i<TargetTypeNum;i++)
 			TargetArray.Add(0);
+	}
+}
+
+void APlayerCharater::Destroyed()
+{
+	Super::Destroyed();
+	GetCapsuleComponent()->OnComponentBeginOverlap.Remove(UDel);
+	UI->RemoveFromParent();
+	if (UWorld* World = GetWorld())
+	{
+		if (AFPSGameModeBase* GameMode = Cast<AFPSGameModeBase>(World->GetAuthGameMode()))
+		{
+			GameMode->GetOnPlayerDied().Broadcast(this);
+		}
+	}
+}
+
+void APlayerCharater::ReBorn()
+{
+	AController* CortollerRef = GetController();
+	Destroy();
+	//鍦ㄤ笘鐣屼腑鑾峰緱World鍜孏ameMode锛屼互璋冪敤鍏堕噸鍚帺瀹跺嚱鏁般€?
+	if (UWorld* World = GetWorld())
+	{
+		if (AFPSGameModeBase* GameMode = Cast<AFPSGameModeBase>(World->GetAuthGameMode()))
+		{
+			GameMode->RestartPlayer(CortollerRef);
+		}
 	}
 }
 

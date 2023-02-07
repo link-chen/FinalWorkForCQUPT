@@ -23,7 +23,34 @@ void AFPSGameModeBase::ReadGameMessage()
 	
 }
 
+void AFPSGameModeBase::BeginPlay()
+{
+	Super::BeginPlay();
+	if (!OnPlayerDied.IsBound())
+	{
+		OnPlayerDied.AddDynamic(this, &AFPSGameModeBase::PlayerDied);
+	}
+}
+
 AFPSGameModeBase::AFPSGameModeBase()
 {
-	
+	if(Player!=nullptr)
+	{
+		DefaultPawnClass=Player;
+	}
+}
+
+void AFPSGameModeBase::RestartPlayer(AController* NewPlayer)
+{
+	Super::RestartPlayer(NewPlayer);
+	UE_LOG(LogTemp,Warning,TEXT("ReStart"));
+	if(APlayerCharater* GamePlayer=Cast<APlayerCharater>(NewPlayer))
+	{
+		
+	}
+}
+
+void AFPSGameModeBase::PlayerDied(ACharacter* Character)
+{
+	AController* CharacterController = Character->GetController();
 }

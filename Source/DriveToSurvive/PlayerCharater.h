@@ -169,4 +169,8 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	float CurrentLife;
 	bool bLive;
+
+	virtual void Destroyed() override;
+	UFUNCTION(BlueprintCallable)
+	void ReBorn();
 };
