@@ -48,6 +48,7 @@ void ASourceCollectHub::GetPlayerSource(TArray<int> PlayerTargetArray)
 	if(Finish)
 	{
 		UE_LOG(LogTemp,Warning,TEXT("FinishCollected"))
+		Cast<AFPSGameModeBase>(GetWorld()->GetAuthGameMode())->BossCreate();
 	}
 	Save();
 }

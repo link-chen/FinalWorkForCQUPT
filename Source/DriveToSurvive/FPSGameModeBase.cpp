@@ -54,3 +54,8 @@ void AFPSGameModeBase::PlayerDied(ACharacter* Character)
 {
 	AController* CharacterController = Character->GetController();
 }
+
+void AFPSGameModeBase::BossCreate()
+{
+	UE_LOG(LogTemp,Warning,TEXT("SpawnBoss"));
+}

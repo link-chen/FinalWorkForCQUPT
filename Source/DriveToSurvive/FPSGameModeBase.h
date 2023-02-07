@@ -41,4 +41,6 @@ public:
 	FOnPlayerDiedSignature OnPlayerDied;
 
 	const FOnPlayerDiedSignature& GetOnPlayerDied() const { return OnPlayerDied; }
+
+	void BossCreate();
 };

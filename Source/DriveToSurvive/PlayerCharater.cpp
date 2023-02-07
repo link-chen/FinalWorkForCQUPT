@@ -499,7 +499,10 @@ void APlayerCharater::Destroyed()
 {
 	Super::Destroyed();
 	GetCapsuleComponent()->OnComponentBeginOverlap.Remove(UDel);
-	UI->RemoveFromParent();
+	if(UI)
+	{
+		UI->RemoveFromParent();
+	}
 	if (UWorld* World = GetWorld())
 	{
 		if (AFPSGameModeBase* GameMode = Cast<AFPSGameModeBase>(World->GetAuthGameMode()))
