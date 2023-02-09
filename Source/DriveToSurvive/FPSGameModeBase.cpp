@@ -40,13 +40,14 @@ AFPSGameModeBase::AFPSGameModeBase()
 	}
 }
 
-void AFPSGameModeBase::RestartPlayer(AController* NewPlayer)
+void AFPSGameModeBase::RestartPlayer(AController* NewPlayer,FVector CurrentLocation)
 {
 	Super::RestartPlayer(NewPlayer);
 	UE_LOG(LogTemp,Warning,TEXT("ReStart"));
-	if(APlayerCharater* GamePlayer=Cast<APlayerCharater>(NewPlayer))
+	if(APlayerCharater* GamePlayer=Cast<APlayerCharater>(NewPlayer->GetCharacter()))
 	{
-		
+		UE_LOG(LogTemp,Warning,TEXT("Set"));
+		GamePlayer->SetActorLocation(CurrentLocation);
 	}
 }
 

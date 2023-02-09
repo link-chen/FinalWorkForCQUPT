@@ -74,6 +74,7 @@ void APlayerCharater::Tick(float DeltaTime)
 		if(PlayerDieAnimMontage)
 			PlayAnimMontage(PlayerDieAnimMontage);
 	}
+	SetActorRotation(FRotator(GetActorRotation().Pitch,GetActorRotation().Yaw,0.0f));
 }
 
 void APlayerCharater::MoveForward(float Value)
@@ -384,8 +385,10 @@ void APlayerCharater::PlayReLoadAnimation()
 
 void APlayerCharater::ShowUI()
 {
+	/*
 	if(UI)
 	{
+		UE_LOG(LogTemp,Warning,TEXT("Here"));
 		UI->AddToViewport();
 	}
 	else
@@ -393,6 +396,9 @@ void APlayerCharater::ShowUI()
 		UI=CreateWidget(GetWorld(),Fight);
 		UI->AddToViewport();
 	}
+	*/
+	UI=CreateWidget(GetWorld(),Fight);
+	UI->AddToViewport();
 }
 
 void APlayerCharater::HideUI()
@@ -400,12 +406,16 @@ void APlayerCharater::HideUI()
 	if(UI)
 	{
 		UI->RemoveFromViewport();
+	}else
+	{
+		
 	}
 }
 
 void APlayerCharater::ChangeControlForCar()
 {
 	GetMesh()->SetVisibility(false,true);
+	Car->PlayerCharacter=this;
 	Car->ShowRunning();
 	HideUI();
 	//Car->PossessedBy(GetController());
@@ -515,13 +525,14 @@ void APlayerCharater::Destroyed()
 void APlayerCharater::ReBorn()
 {
 	AController* CortollerRef = GetController();
+	FVector Location=GetActorLocation();
 	Destroy();
 	//鍦ㄤ笘鐣屼腑鑾峰緱World鍜孏ameMode锛屼互璋冪敤鍏堕噸鍚帺瀹跺嚱鏁般€?
 	if (UWorld* World = GetWorld())
 	{
 		if (AFPSGameModeBase* GameMode = Cast<AFPSGameModeBase>(World->GetAuthGameMode()))
 		{
-			GameMode->RestartPlayer(CortollerRef);
+			GameMode->RestartPlayer(CortollerRef,Location);
 		}
 	}
 }

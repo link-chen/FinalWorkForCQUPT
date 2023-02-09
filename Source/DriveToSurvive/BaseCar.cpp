@@ -133,15 +133,19 @@ void ABaseCar::Tick(float DeltaSeconds)
 
 void ABaseCar::ShowRunning()
 {
+	/*
 	if(CarUI!=nullptr)
 	{
-		CarUI->AddToViewport();
+		//CarUI->AddToViewport();
 	}
 	else
 	{
 		CarUI=CreateWidget<UUserWidget>(GetWorld(),Widget);
 		CarUI->AddToViewport();
 	}
+	*/
+	CarUI=CreateWidget<UUserWidget>(GetWorld(),Widget);
+	CarUI->AddToViewport();
 }
 
 void ABaseCar::HideRunning()
@@ -149,6 +153,9 @@ void ABaseCar::HideRunning()
 	if(CarUI!=nullptr)
 	{
 		CarUI->RemoveFromViewport();
+	}else
+	{
+		
 	}
 }
 
@@ -388,6 +395,6 @@ void ABaseCar::ChangeControlForPlayer()
 		PlayerCharacter->ShowUI();
 		//UnPossessed();
 		//PlayerCharacter->PossessedBy(GetController());
-		UGameplayStatics::GetPlayerController(GetWorld(),0);
+		//UGameplayStatics::GetPlayerController(GetWorld(),0);
 	}
 }

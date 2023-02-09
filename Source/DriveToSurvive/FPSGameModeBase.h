@@ -32,7 +32,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<APlayerCharater> Player;
 
-	void RestartPlayer(AController* NewPlayer);
+	void RestartPlayer(AController* NewPlayer,FVector CurrentLocation);
 	
 	UFUNCTION()
 	virtual void PlayerDied(ACharacter* Character);
