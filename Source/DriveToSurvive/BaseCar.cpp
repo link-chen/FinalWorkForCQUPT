@@ -48,6 +48,12 @@ ABaseCar::ABaseCar()
 	GetMesh()->OnComponentHit.Add(HitOn);
 	
 }
+
+void ABaseCar::DisBrake()
+{
+	GetVehicleMovementComponent()->SetBrakeInput(false);
+}
+
 void ABaseCar::BeginPlay()
 {
 	Super::BeginPlay();
@@ -388,6 +394,7 @@ void ABaseCar::ChangeControlForPlayer()
 {
 	if(PlayerCharacter)
 	{
+		GetVehicleMovementComponent()->SetHandbrakeInput(true);
 		HideRunning();
 		PlayerCharacter->GetMesh()->SetVisibility(true,true);
 		FVector CarLocation=GetActorLocation();

@@ -148,4 +148,5 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	UUserWidget* CarUI;
 	ABaseCar();
+	void DisBrake();
 };

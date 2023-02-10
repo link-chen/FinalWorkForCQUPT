@@ -417,6 +417,7 @@ void APlayerCharater::ChangeControlForCar()
 	GetMesh()->SetVisibility(false,true);
 	Car->PlayerCharacter=this;
 	Car->ShowRunning();
+	Car->DisBrake();
 	HideUI();
 	//Car->PossessedBy(GetController());
 	//UnPossessed();
