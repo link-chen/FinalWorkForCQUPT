@@ -13,6 +13,7 @@ AAirPlan::AAirPlan()
 
 	MeshComponent=CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshComponent"));
 	Box=CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
+	Box->AttachToComponent(MeshComponent,FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 // Called when the game starts or when spawned
@@ -26,7 +27,24 @@ void AAirPlan::BeginPlay()
 }
 void AAirPlan::OnOverlayBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if(Cast<ABaseCar>(OtherActor))
+	UE_LOG(LogTemp,Warning,TEXT("BoxHere"));
+	if(ABaseCar* Car=Cast<ABaseCar>(OtherActor))
+	{
+		UE_LOG(LogTemp,Warning,TEXT("CarEnter"));
+	}
+	if(APlayerCharater* Player=Cast<APlayerCharater>(OtherActor))
+	{
+		UE_LOG(LogTemp,Warning,TEXT("PlayerEnter"));
+	}
+}
+
+void AAirPlan::EndOverLap(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp)
+{
+	if(ABaseCar* Car=Cast<ABaseCar>(Other))
+	{
+		
+	}
+	if(APlayerCharater* Player=Cast<APlayerCharater>(Other))
 	{
 		
 	}
