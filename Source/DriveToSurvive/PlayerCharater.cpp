@@ -345,7 +345,6 @@ void APlayerCharater::ChangeGun()
 		PlayerGun1=TempGun;
 
 		PlayerGun->SetActorRelativeLocation(FightGunAttachLocation);
-		PlayerGun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,FightSocket);
 		PlayerGun1->SetActorRelativeLocation(GunAttachLocation);
 		PlayerGun1->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,ReleaseSocket);
 	}

@@ -20,34 +20,22 @@ AAirPlan::AAirPlan()
 void AAirPlan::BeginPlay()
 {
 	Super::BeginPlay();
-
-	FScriptDelegate Delegate;
-	Delegate.BindUFunction(this,"OnOverlayBegin");
-	Box->OnComponentBeginOverlap.Add(Delegate);
+	FScriptDelegate Del;
+	Del.BindUFunction(this,"OnOverlayBegin");
+	Box->OnComponentBeginOverlap.Add(Del);
 }
 void AAirPlan::OnOverlayBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp,Warning,TEXT("BoxHere"));
 	if(ABaseCar* Car=Cast<ABaseCar>(OtherActor))
 	{
 		UE_LOG(LogTemp,Warning,TEXT("CarEnter"));
-	}
-	if(APlayerCharater* Player=Cast<APlayerCharater>(OtherActor))
-	{
-		UE_LOG(LogTemp,Warning,TEXT("PlayerEnter"));
+		//Car->AttachToComponent(MeshComponent,FAttachmentTransformRules::KeepWorldTransform,"skeleton_grp插槽");
 	}
 }
 
 void AAirPlan::EndOverLap(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp)
 {
-	if(ABaseCar* Car=Cast<ABaseCar>(Other))
-	{
-		
-	}
-	if(APlayerCharater* Player=Cast<APlayerCharater>(Other))
-	{
-		
-	}
+	
 }
 
 // Called every frame

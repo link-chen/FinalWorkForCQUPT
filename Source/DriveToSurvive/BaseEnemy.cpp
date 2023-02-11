@@ -3,6 +3,8 @@
 
 #include "BaseEnemy.h"
 
+#include "FPSGameModeBase.h"
+
 void ABaseEnemy::DieOut()
 {
 	GetWorldTimerManager().ClearTimer(DeleteHandle);

@@ -13,6 +13,8 @@ class DRIVETOSURVIVE_API AAirPlan : public AActor
 	GENERATED_BODY()
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* Box;
+	UPROPERTY(EditAnywhere)
+	FName SocketName;
 public:	
 	// Sets default values for this actor's properties
 	AAirPlan();
@@ -27,9 +29,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION()
 	virtual void OnOverlayBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 							UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
 							const FHitResult& SweepResult);
 
+	UFUNCTION()
 	virtual  void EndOverLap(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp);
 };

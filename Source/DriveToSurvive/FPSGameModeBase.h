@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BaseEnemy.h"
 #include "GameFramework/GameModeBase.h"
 #include "PlayerCharater.h"
 #include "FPSGameModeBase.generated.h"
@@ -19,7 +20,16 @@ class DRIVETOSURVIVE_API AFPSGameModeBase : public AGameModeBase
 	bool bBossKilled;
 	void SaveGameMessage();
 	void ReadGameMessage();
+	UPROPERTY(EditAnywhere)
+	int MaxEnemyNumber;
 
+	FTimerHandle Timer;
+	
+	UPROPERTY(EditAnywhere)
+	TArray<ABaseEnemy*> Enemies;
+
+	UPROPERTY(EditAnywhere)
+	TArray<TSubclassOf<ABaseEnemy>> EnemyTemplate; 
 protected:
 	virtual void BeginPlay() override;
 public:
@@ -36,11 +46,13 @@ public:
 	
 	UFUNCTION()
 	virtual void PlayerDied(ACharacter* Character);
-	//瑕佺粦瀹氬鎵樼殑绛惧悕銆?
+
 	UPROPERTY()
 	FOnPlayerDiedSignature OnPlayerDied;
 
 	const FOnPlayerDiedSignature& GetOnPlayerDied() const { return OnPlayerDied; }
 
 	void BossCreate();
+
+	void CreateEnemy();
 };
