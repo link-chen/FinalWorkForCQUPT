@@ -99,6 +99,10 @@ class DRIVETOSURVIVE_API APlayerCharater : public ACharacter
 	TSubclassOf<UUserWidget> Fight;
 	UUserWidget* UI;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> MapWidget;
+	UUserWidget* Map;
+
 	void PlayerDie();
 	
 	UFUNCTION()
@@ -173,4 +177,7 @@ public:
 	virtual void Destroyed() override;
 	UFUNCTION(BlueprintCallable)
 	void ReBorn();
+
+	void ShowMap();
+	void DisPlayMap();
 };

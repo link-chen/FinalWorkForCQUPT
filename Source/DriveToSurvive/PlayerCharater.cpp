@@ -527,13 +527,29 @@ void APlayerCharater::ReBorn()
 	AController* CortollerRef = GetController();
 	FVector Location=GetActorLocation();
 	Destroy();
-	//鍦ㄤ笘鐣屼腑鑾峰緱World鍜孏ameMode锛屼互璋冪敤鍏堕噸鍚帺瀹跺嚱鏁般€?
 	if (UWorld* World = GetWorld())
 	{
 		if (AFPSGameModeBase* GameMode = Cast<AFPSGameModeBase>(World->GetAuthGameMode()))
 		{
 			GameMode->RestartPlayer(CortollerRef,Location);
 		}
+	}
+}
+
+void APlayerCharater::ShowMap()
+{
+	Map=CreateWidget(GetWorld(),MapWidget);
+	Map->AddToViewport();
+}
+
+void APlayerCharater::DisPlayMap()
+{
+	if(Map)
+	{
+		Map->RemoveFromViewport();
+	}else
+	{
+		
 	}
 }
 
@@ -565,6 +581,8 @@ void APlayerCharater::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 	PlayerInputComponent->BindAction("TakeChange",IE_Pressed,this,&APlayerCharater::InteractFunc);
 	PlayerInputComponent->BindAction("TakeChange",IE_Released,this,&APlayerCharater::NothingToDo);
-	
+
+	PlayerInputComponent->BindAction("TakeDRS",IE_Pressed,this,&APlayerCharater::ShowMap);
+	PlayerInputComponent->BindAction("TakeDRS",IE_Released,this,&APlayerCharater::DisPlayMap);
 }
 
