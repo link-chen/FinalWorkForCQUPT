@@ -30,6 +30,7 @@ void AFPSGameModeBase::BeginPlay()
 	{
 		OnPlayerDied.AddDynamic(this, &AFPSGameModeBase::PlayerDied);
 	}
+	/*
 	TArray<AActor*> Actors;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AActor::StaticClass(), Actors);
 	for(AActor* Actor:Actors)
@@ -37,6 +38,7 @@ void AFPSGameModeBase::BeginPlay()
 		if(ABaseEnemy* Enemy=Cast<ABaseEnemy>(Actor))
 			Enemies.Add(Enemy);
 	}
+	*/
 	GetWorldTimerManager().SetTimer(Timer,this,&AFPSGameModeBase::CreateEnemy,5,true);
 }
 
@@ -71,6 +73,7 @@ void AFPSGameModeBase::BossCreate()
 
 void AFPSGameModeBase::CreateEnemy()
 {
+	/*
 	int Left=0;
 	for(int i=0;i<Enemies.Num();i++)
 	{
@@ -84,7 +87,8 @@ void AFPSGameModeBase::CreateEnemy()
 		int RandPivote=0;
 		int RandResult=rand()%EnemyTemplate.Num();
 		RandPivote=RandResult<=EnemyTemplate.Num()-1?RandResult:0;
-		ABaseEnemy* Enemy=GetWorld()->SpawnActor<ABaseEnemy>(EnemyTemplate[RandPivote],FVector(0.0f,0.0f,0.0f),FRotator(0.0f,0.0f,0.0f));
+		ABaseEnemy* Enemy=GetWorld()->SpawnActor<ABaseEnemy>(EnemyTemplate[RandPivote],FVector(259120.0f,59830.0f,0.0f),FRotator(0.0f,0.0f,0.0f));
 		Enemies.Add(Enemy);
 	}
+	*/
 }

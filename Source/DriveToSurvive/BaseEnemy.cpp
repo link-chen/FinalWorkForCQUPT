@@ -48,7 +48,8 @@ void ABaseEnemy::GetHurt(float Value)
 
 void ABaseEnemy::PlayDeathAnimation()
 {
-	GetController()->Destroy();
+	if(GetController())
+		GetController()->Destroy();
 	if(DeathMontage)
 		PlayAnimMontage(DeathMontage);
 }
