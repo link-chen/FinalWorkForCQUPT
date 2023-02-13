@@ -66,7 +66,6 @@ void AGun::Fire(FVector CameraLocation,FVector Forward)
 			}
 			if (HitResult.GetActor())
 			{
-				UKismetSystemLibrary::PrintString(GetWorld(), HitResult.GetActor()->GetName());
 				if(Material)
 					UGameplayStatics::SpawnDecalAtLocation(this,Material,FVector(12.5f,12.5f,12.5f),HitResult.Location,FRotator(0.0f,0.0f,0.0f));
 				if(AStartLine* Line=Cast<AStartLine>(HitResult.GetActor()))
