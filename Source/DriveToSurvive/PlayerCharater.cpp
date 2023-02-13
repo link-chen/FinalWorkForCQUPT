@@ -338,6 +338,7 @@ bool APlayerCharater::IsGun0Available()
 void APlayerCharater::ChangeGun()
 {
 	AGun* TempGun;
+	GetCapsuleComponent()->OnComponentBeginOverlap.Remove(UDel);
 	if(IsGun0Available()&&IsGun1Available())
 	{
 		TempGun=PlayerGun;
@@ -345,6 +346,7 @@ void APlayerCharater::ChangeGun()
 		PlayerGun1=TempGun;
 
 		PlayerGun->SetActorRelativeLocation(FightGunAttachLocation);
+		PlayerGun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,FightSocket);
 		PlayerGun1->SetActorRelativeLocation(GunAttachLocation);
 		PlayerGun1->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,ReleaseSocket);
 	}
@@ -370,7 +372,7 @@ void APlayerCharater::ChangeGun()
 		bGun0=false;
 		bGun1=true;
 	}
-	
+	ReAddScriptDelegate();
 }
 
 void APlayerCharater::PlayReLoadAnimation()

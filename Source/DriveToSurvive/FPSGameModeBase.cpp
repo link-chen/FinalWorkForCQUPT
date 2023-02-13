@@ -30,7 +30,7 @@ void AFPSGameModeBase::BeginPlay()
 	{
 		OnPlayerDied.AddDynamic(this, &AFPSGameModeBase::PlayerDied);
 	}
-	/*
+	
 	TArray<AActor*> Actors;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AActor::StaticClass(), Actors);
 	for(AActor* Actor:Actors)
@@ -38,7 +38,7 @@ void AFPSGameModeBase::BeginPlay()
 		if(ABaseEnemy* Enemy=Cast<ABaseEnemy>(Actor))
 			Enemies.Add(Enemy);
 	}
-	*/
+
 	GetWorldTimerManager().SetTimer(Timer,this,&AFPSGameModeBase::CreateEnemy,5,true);
 }
 
@@ -73,7 +73,6 @@ void AFPSGameModeBase::BossCreate()
 
 void AFPSGameModeBase::CreateEnemy()
 {
-	/*
 	int Left=0;
 	for(int i=0;i<Enemies.Num();i++)
 	{
@@ -90,5 +89,5 @@ void AFPSGameModeBase::CreateEnemy()
 		ABaseEnemy* Enemy=GetWorld()->SpawnActor<ABaseEnemy>(EnemyTemplate[RandPivote],FVector(259120.0f,59830.0f,0.0f),FRotator(0.0f,0.0f,0.0f));
 		Enemies.Add(Enemy);
 	}
-	*/
+
 }
