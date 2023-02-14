@@ -46,6 +46,18 @@ void ABaseEnemy::GetHurt(float Value)
 		PlayAnimMontage(HurtMontage);
 }
 
+void ABaseEnemy::HitStart()
+{
+	if(Weapon)
+		Weapon->Start();
+}
+
+void ABaseEnemy::HitEnd()
+{
+	if(Weapon)
+		Weapon->End();
+}
+
 void ABaseEnemy::PlayDeathAnimation()
 {
 	if(GetController())

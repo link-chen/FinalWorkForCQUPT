@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BaseWeapon.h"
 #include "GameFramework/Character.h"
 #include "BaseEnemy.generated.h"
 
@@ -25,6 +26,9 @@ class DRIVETOSURVIVE_API ABaseEnemy : public ACharacter
 	
 
 	void DieOut();
+
+	TSubclassOf<ABaseWeapon> BaseWeapon;
+	ABaseWeapon* Weapon;
 	
 public:
 	// Sets default values for this character's properties
@@ -57,4 +61,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	FString EnemyLable;
+
+	UFUNCTION(BlueprintCallable)
+	void HitStart();
+	UFUNCTION(BlueprintCallable)
+	void HitEnd();
 };
