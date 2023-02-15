@@ -555,6 +555,11 @@ void APlayerCharater::DisPlayMap()
 	}
 }
 
+void APlayerCharater::GetHurt(float Value)
+{
+	CurrentLife-=Value;
+}
+
 // Called to bind functionality to input
 void APlayerCharater::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {

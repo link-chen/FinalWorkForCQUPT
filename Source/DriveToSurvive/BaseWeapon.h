@@ -12,11 +12,11 @@ class DRIVETOSURVIVE_API ABaseWeapon : public AActor
 {
 	GENERATED_BODY()
 	UPROPERTY(EditAnywhere)
-	TSet<AActor*> Hit;
+	TArray<AActor*> Hit;
 	UPROPERTY(EditAnywhere)
 	TArray<FName> SocketNames;
 	UPROPERTY(EditAnywhere)
-	UStaticMeshComponent* MeshComponent;
+	USkeletalMeshComponent* MeshComponent;
 	TArray<FVector> SocketLocation;
 	bool bTrance;
 	bool bFirst;

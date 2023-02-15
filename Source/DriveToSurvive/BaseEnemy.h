@@ -27,8 +27,14 @@ class DRIVETOSURVIVE_API ABaseEnemy : public ACharacter
 
 	void DieOut();
 
+	UPROPERTY(EditAnywhere)
 	TSubclassOf<ABaseWeapon> BaseWeapon;
 	ABaseWeapon* Weapon;
+
+	UPROPERTY(EditAnywhere)
+	FVector Location;
+	UPROPERTY(EditAnywhere)
+	FRotator Rotation;
 	
 public:
 	// Sets default values for this character's properties

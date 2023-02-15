@@ -8,6 +8,8 @@
 void ABaseEnemy::DieOut()
 {
 	GetWorldTimerManager().ClearTimer(DeleteHandle);
+	if(Weapon)
+		Weapon->Destroy();
 	Destroy();
 }
 
@@ -26,6 +28,13 @@ void ABaseEnemy::BeginPlay()
 
 	CurrentLife=MaxLife;
 	bLive=true;
+	if(BaseWeapon)
+	{
+		Weapon=GetWorld()->SpawnActor<ABaseWeapon>(BaseWeapon,GetActorLocation(),GetActorRotation());
+		Weapon->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,"hand_rSocket");
+		Weapon->SetActorRelativeLocation(Location);
+		Weapon->SetActorRelativeRotation(Rotation);
+	}
 }
 
 // Called every frame

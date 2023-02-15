@@ -180,4 +180,6 @@ public:
 
 	void ShowMap();
 	void DisPlayMap();
+
+	void GetHurt(float Value); 
 };
