@@ -28,8 +28,6 @@ class DRIVETOSURVIVE_API AFPSGameModeBase : public AGameModeBase
 	UPROPERTY(EditAnywhere)
 	TArray<ABaseEnemy*> Enemies;
 
-	UPROPERTY(EditAnywhere)
-	TArray<TSubclassOf<ABaseEnemy>> EnemyTemplate; 
 protected:
 	virtual void BeginPlay() override;
 public:
@@ -54,5 +52,7 @@ public:
 
 	void BossCreate();
 
-	void CreateEnemy();
+	bool CanCreateEnemy();
+
+	void AddEnemy(ABaseEnemy* Enemy);
 };

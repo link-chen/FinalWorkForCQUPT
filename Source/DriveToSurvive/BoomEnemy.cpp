@@ -35,6 +35,10 @@ void ABoomEnemy::PlayDeathAnimation()
 
 void ABoomEnemy::DieOut()
 {
+	if(Super::Weapon)
+	{
+		Super::Weapon->Destroy();
+	}
 	UE_LOG(LogTemp,Warning,TEXT("BoomEnemyBoom!"));
 	ABomb* Bomb=GetWorld()->SpawnActor<ABomb>(BombClass,GetActorLocation(),GetActorRotation());
 	Bomb->SetBoomValue(HurtValue);

@@ -11,6 +11,7 @@
 UCLASS()
 class DRIVETOSURVIVE_API ARebornPlace : public AActor
 {
+	//this is the reborn place for car
 	GENERATED_BODY()
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* MeshComponent;

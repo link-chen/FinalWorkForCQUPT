@@ -29,7 +29,6 @@ class DRIVETOSURVIVE_API ABaseEnemy : public ACharacter
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<ABaseWeapon> BaseWeapon;
-	ABaseWeapon* Weapon;
 
 	UPROPERTY(EditAnywhere)
 	FVector Location;
@@ -40,6 +39,8 @@ public:
 	// Sets default values for this character's properties
 	ABaseEnemy();
 
+	ABaseWeapon* Weapon;
+	
 	UPROPERTY(EditAnywhere)
 	float DeleteTime;
 
