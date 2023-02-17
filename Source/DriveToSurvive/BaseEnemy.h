@@ -65,6 +65,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	virtual void GetHurt(float Value);
+	UFUNCTION(BlueprintCallable)
+	virtual float GetCurrentPercent();
 
 	UPROPERTY(EditAnywhere)
 	FString EnemyLable;

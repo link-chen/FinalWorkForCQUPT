@@ -41,6 +41,7 @@ class DRIVETOSURVIVE_API AGun : public AActor
 	int MaxBullte;
 
 	UPROPERTY(EditAnywhere)
+	int MaxLeftBullte;
 	int LeftGunBullte;
 
 	FVector GetFireLocation();
@@ -78,6 +79,8 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void Test();
+
+	void ReLoadAllBullte();
 	
 protected:
 	// Called when the game starts or when spawned

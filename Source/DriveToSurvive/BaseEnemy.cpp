@@ -55,6 +55,11 @@ void ABaseEnemy::GetHurt(float Value)
 		PlayAnimMontage(HurtMontage);
 }
 
+float ABaseEnemy::GetCurrentPercent()
+{
+	return CurrentLife/MaxLife;
+}
+
 void ABaseEnemy::HitStart()
 {
 	if(Weapon)

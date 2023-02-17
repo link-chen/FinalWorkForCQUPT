@@ -31,12 +31,19 @@ AGun::AGun()
 	GunFireNiagaraComponent->SetupAttachment(FireMesh);
 }
 
+void AGun::ReLoadAllBullte()
+{
+	GunBullte=MaxBullte;
+	LeftGunBullte=MaxLeftBullte;
+}
+
 // Called when the game starts or when spawned
 void AGun::BeginPlay()
 {
 	Super::BeginPlay();
 
 	GunBullte=MaxBullte;
+	LeftGunBullte=MaxLeftBullte;
 	
 	bCanUse=true;
 }
@@ -55,7 +62,6 @@ void AGun::Fire(FVector CameraLocation,FVector Forward)
 			Audio->Play();
 			Test();
 			GunBullte--;
-
 			TArray<AActor*> IgnoreActors;	
 
 			FHitResult HitResult;
@@ -64,6 +70,7 @@ void AGun::Fire(FVector CameraLocation,FVector Forward)
 			{
 
 			}
+
 			if (HitResult.GetActor())
 			{
 				if(Material)
@@ -78,7 +85,7 @@ void AGun::Fire(FVector CameraLocation,FVector Forward)
 				}
 				if(ABaseEnemy* Enemy=Cast<ABaseEnemy>(HitResult.GetActor()))
 				{
-					Enemy->GetHurt(HurtValue);
+					Enemy->GetHurt(HurtValue+rand()%10);
 				}
 			}
 		}
@@ -99,6 +106,7 @@ void AGun::ReLoadBullte()
 		else
 			LeftGunBullte-=MaxBullte;
 		GunBullte=MaxBullte;
+		bCanUse=true;
 	}
 	else
 	{
@@ -112,6 +120,7 @@ void AGun::ReLoadBullte()
 			LeftGunBullte=(GunBullte+LeftGunBullte)-MaxBullte;
 			GunBullte=MaxBullte;
 		}
+		bCanUse=true;
 	}
 }
 

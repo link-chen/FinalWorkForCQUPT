@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Ammunition.h"
 #include "Gun.h"
 #include "SourceCollectHub.h"
 #include "TargetActor.h"
@@ -149,6 +150,7 @@ public:
 	ABaseCar* Car;
 	ATargetActor* PlayerTargetActor;
 	ASourceCollectHub* Hub;
+	AAmmunition* Ammunition;
 
 	UFUNCTION(BlueprintCallable)
 	void ChangeControlForCar();
@@ -181,5 +183,10 @@ public:
 	void ShowMap();
 	void DisPlayMap();
 
-	void GetHurt(float Value); 
+	void GetHurt(float Value);
+	void LineTracing();
+	UPROPERTY(BlueprintReadOnly)
+	bool bCanSeeEnemyBlood;
+	UPROPERTY(BlueprintReadOnly)
+	float EnemyPercent;
 };

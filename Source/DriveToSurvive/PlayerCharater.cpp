@@ -75,6 +75,7 @@ void APlayerCharater::Tick(float DeltaTime)
 			PlayAnimMontage(PlayerDieAnimMontage);
 	}
 	SetActorRotation(FRotator(GetActorRotation().Pitch,GetActorRotation().Yaw,0.0f));
+	LineTracing();
 }
 
 void APlayerCharater::MoveForward(float Value)
@@ -266,6 +267,10 @@ void APlayerCharater::OnCapsuleBeginOverLap(UPrimitiveComponent* MyComp, AActor*
 	{
 		Hub=Cast<ASourceCollectHub>(Other);
 	}
+	if(Cast<AAmmunition>(Other))
+	{
+		Ammunition=Cast<AAmmunition>(Other);
+	}
 }
 
 void APlayerCharater::OnCapsuleEndOverLap(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp)
@@ -281,6 +286,10 @@ void APlayerCharater::OnCapsuleEndOverLap(UPrimitiveComponent* MyComp, AActor* O
 	if(Cast<ASourceCollectHub>(Other))
 	{
 		Hub=nullptr;
+	}
+	if(Cast<AAmmunition>(Other))
+	{
+		Ammunition=nullptr;
 	}
 }
 
@@ -380,7 +389,10 @@ void APlayerCharater::PlayReLoadAnimation()
 	if(IsGun0Available())
 	{
 		if(PlayerGun->GetCurrnetBullteMessage()[0]!=PlayerGun->GetMaxBullte())
+		{
 			PlayAnimMontage(ReLoadAnimMontage);
+			PlayerGun->bCanUse=false;
+		}
 	}
 }
 
@@ -450,6 +462,10 @@ void APlayerCharater::InteractFunc()
 		Hub->GetPlayerSource(TargetArray);
 		for(int i=0;i<TargetArray.Num();i++)
 			TargetArray[i]=0;
+	}
+	if(Ammunition)
+	{
+		Ammunition->AddAmmunition(PlayerGun,PlayerGun1);
 	}
 }
 
@@ -558,6 +574,30 @@ void APlayerCharater::DisPlayMap()
 void APlayerCharater::GetHurt(float Value)
 {
 	CurrentLife-=Value;
+}
+
+void APlayerCharater::LineTracing()
+{
+	FVector Start=Camera->GetComponentToWorld().GetLocation();
+	FVector Forward=Camera->GetForwardVector();
+	TArray<AActor*> IgnoreActors;	
+
+	FHitResult HitResult;
+	bool bIsHit=UKismetSystemLibrary::LineTraceSingle(GetWorld(), Start, Start+Forward*2750.0f, TraceTypeQuery1, true, IgnoreActors, EDrawDebugTrace::None, HitResult, true);
+	if(bIsHit)
+	{
+		//UKismetSystemLibrary::PrintString(GetWorld(),HitResult.GetActor()->GetName());
+		if(ABaseEnemy* Enemy=Cast<ABaseEnemy>(HitResult.GetActor()))
+		{
+			bCanSeeEnemyBlood=true;
+			EnemyPercent=Enemy->GetCurrentPercent();
+		}
+		else
+		{
+			bCanSeeEnemyBlood=false;
+			EnemyPercent=0.0f;
+		}
+	}
 }
 
 // Called to bind functionality to input
