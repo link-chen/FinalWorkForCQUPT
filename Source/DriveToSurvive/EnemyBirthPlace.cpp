@@ -12,7 +12,7 @@ void AEnemyBirthPlace::CreateEnemy()
 	AFPSGameModeBase* Mode=Cast<AFPSGameModeBase>(GetWorld()->GetAuthGameMode());
 	if(Mode)
 	{
-		if(Mode->CanCreateEnemy())
+		if(Mode->CanCreateEnemy()&&bCanUse)
 		{
 			int RandPivote=0;
 			int RandResult=rand()%EnemyTemplate.Num();
@@ -47,6 +47,7 @@ void AEnemyBirthPlace::BeginPlay()
 	Super::BeginPlay();
 
 	GetWorldTimerManager().SetTimer(Timer,this,&AEnemyBirthPlace::CreateEnemy,CreateTime,true,0);
+	bCanUse=true;
 }
 
 // Called every frame
@@ -54,5 +55,10 @@ void AEnemyBirthPlace::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AEnemyBirthPlace::SetUseable(bool CanUse)
+{
+	bCanUse=CanUse;
 }
 

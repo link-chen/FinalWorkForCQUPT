@@ -60,6 +60,8 @@ void APlayerCharater::BeginPlay()
 
 	CurrentLife=MaxLife;
 	bLive=true;
+
+	ForwardRate=7750.0f;
 }
 
 // Called every frame
@@ -271,6 +273,10 @@ void APlayerCharater::OnCapsuleBeginOverLap(UPrimitiveComponent* MyComp, AActor*
 	{
 		Ammunition=Cast<AAmmunition>(Other);
 	}
+	if(Cast<ABreakingPoint>(Other))
+	{
+		BreakingPoint=Cast<ABreakingPoint>(Other);
+	}
 }
 
 void APlayerCharater::OnCapsuleEndOverLap(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp)
@@ -290,6 +296,10 @@ void APlayerCharater::OnCapsuleEndOverLap(UPrimitiveComponent* MyComp, AActor* O
 	if(Cast<AAmmunition>(Other))
 	{
 		Ammunition=nullptr;
+	}
+	if(Cast<ABreakingPoint>(Other))
+	{
+		BreakingPoint=nullptr;
 	}
 }
 
@@ -467,6 +477,10 @@ void APlayerCharater::InteractFunc()
 	{
 		Ammunition->AddAmmunition(PlayerGun,PlayerGun1);
 	}
+	if(BreakingPoint)
+	{
+		BreakingPoint->SetC4();
+	}
 }
 
 void APlayerCharater::NothingToDo()
@@ -583,7 +597,7 @@ void APlayerCharater::LineTracing()
 	TArray<AActor*> IgnoreActors;	
 
 	FHitResult HitResult;
-	bool bIsHit=UKismetSystemLibrary::LineTraceSingle(GetWorld(), Start, Start+Forward*2750.0f, TraceTypeQuery1, true, IgnoreActors, EDrawDebugTrace::None, HitResult, true);
+	bool bIsHit=UKismetSystemLibrary::LineTraceSingle(GetWorld(), Start, Start+Forward*ForwardRate, TraceTypeQuery1, true, IgnoreActors, EDrawDebugTrace::None, HitResult, true);
 	if(bIsHit)
 	{
 		//UKismetSystemLibrary::PrintString(GetWorld(),HitResult.GetActor()->GetName());

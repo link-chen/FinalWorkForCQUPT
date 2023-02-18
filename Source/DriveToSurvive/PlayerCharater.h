@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Ammunition.h"
+#include "BreakingPoint.h"
 #include "Gun.h"
 #include "SourceCollectHub.h"
 #include "TargetActor.h"
@@ -151,6 +152,7 @@ public:
 	ATargetActor* PlayerTargetActor;
 	ASourceCollectHub* Hub;
 	AAmmunition* Ammunition;
+	ABreakingPoint* BreakingPoint;
 
 	UFUNCTION(BlueprintCallable)
 	void ChangeControlForCar();
@@ -189,4 +191,6 @@ public:
 	bool bCanSeeEnemyBlood;
 	UPROPERTY(BlueprintReadOnly)
 	float EnemyPercent;
+	UPROPERTY(EditAnywhere)
+	float ForwardRate;
 };

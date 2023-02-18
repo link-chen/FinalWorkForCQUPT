@@ -20,6 +20,7 @@ class DRIVETOSURVIVE_API AEnemyBirthPlace : public AActor
 	void CreateEnemy();
 	UPROPERTY(EditAnywhere)
 	float CreateTime;
+	bool bCanUse;
 public:	
 	// Sets default values for this actor's properties
 	AEnemyBirthPlace();
@@ -32,4 +33,5 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void SetUseable(bool CanUse);
 };
