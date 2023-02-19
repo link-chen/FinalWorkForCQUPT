@@ -3,6 +3,8 @@
 
 #include "BreakingPoint.h"
 
+#include "FPSGameModeBase.h"
+
 // Sets default values
 ABreakingPoint::ABreakingPoint()
 {
@@ -35,6 +37,11 @@ void ABreakingPoint::SetC4()
 void ABreakingPoint::Boom()
 {
 	UE_LOG(LogTemp,Warning,TEXT("Booming"));
+	for(int i=0;i<Array.Num();i++)
+	{
+		Array[i]->Destroy();
+	}
+	Cast<AFPSGameModeBase>(GetWorld()->GetAuthGameMode())->SetBreakingPoints(this);
 	Destroy();
 }
 

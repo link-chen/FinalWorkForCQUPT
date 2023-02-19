@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AirPlan.h"
 #include "BaseEnemy.h"
 #include "GameFramework/GameModeBase.h"
 #include "PlayerCharater.h"
@@ -27,6 +28,11 @@ class DRIVETOSURVIVE_API AFPSGameModeBase : public AGameModeBase
 	
 	UPROPERTY(EditAnywhere)
 	TArray<ABaseEnemy*> Enemies;
+	UPROPERTY(EditAnywhere)
+	TArray<ABreakingPoint*> BreakingPoints;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AAirPlan> AirPlan;
 
 protected:
 	virtual void BeginPlay() override;
@@ -55,4 +61,8 @@ public:
 	bool CanCreateEnemy();
 
 	void AddEnemy(ABaseEnemy* Enemy);
+	
+	void SpawnAirPlan();
+	void CheckBreakingPoint();
+	void SetBreakingPoints(ABreakingPoint* BreakingPoint);
 };

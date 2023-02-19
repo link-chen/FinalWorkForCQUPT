@@ -6,6 +6,7 @@
 #include "TPSSaveGame.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMaterialLibrary.h"
+#include "Math/UnitConversion.h"
 
 void AFPSGameModeBase::SaveGameMessage()
 {
@@ -38,7 +39,11 @@ void AFPSGameModeBase::BeginPlay()
 	{
 		if(ABaseEnemy* Enemy=Cast<ABaseEnemy>(Actor))
 			Enemies.Add(Enemy);
+		if(ABreakingPoint* BreakingPoint=Cast<ABreakingPoint>(Actor))
+			BreakingPoints.Add(BreakingPoint);
 	}
+
+	GetWorldTimerManager().SetTimer(Timer,this,&AFPSGameModeBase::CheckBreakingPoint,1.0f,true,0);
 }
 
 AFPSGameModeBase::AFPSGameModeBase()
@@ -107,4 +112,40 @@ void AFPSGameModeBase::AddEnemy(ABaseEnemy* Enemy)
 		}
 		Enemies.Add(Enemy);
 	}
+}
+
+void AFPSGameModeBase::SpawnAirPlan()
+{
+	if(AirPlan)
+	{
+		AAirPlan* Air=GetWorld()->SpawnActor<AAirPlan>(AirPlan,FVector(0.0f,0.0f,5000.0f),FRotator(0.0f));
+		Air->bFly=true;
+		Air->bEnter=true;
+		Air->CPPStartFly();
+		UE_LOG(LogTemp,Warning,TEXT("Spawing"));
+	}
+}
+
+void AFPSGameModeBase::CheckBreakingPoint()
+{
+	UE_LOG(LogTemp,Warning,TEXT("Checking"));
+	int NullNum=0;
+	for(ABreakingPoint* BreakingPoint:BreakingPoints)
+		if(!BreakingPoint)
+			NullNum++;
+	if(NullNum==BreakingPoints.Num())
+	{
+		SpawnAirPlan();
+		GetWorldTimerManager().ClearTimer(Timer);
+	}
+}
+
+void AFPSGameModeBase::SetBreakingPoints(ABreakingPoint* BreakingPoint)
+{
+	for(int i=0;i<BreakingPoints.Num();i++)
+		if(BreakingPoints[i]==BreakingPoint)
+		{
+			BreakingPoints[i]=nullptr;
+			UE_LOG(LogTemp,Warning,TEXT("NULL"))
+		}
 }

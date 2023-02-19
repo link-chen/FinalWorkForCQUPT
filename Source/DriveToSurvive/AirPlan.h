@@ -25,6 +25,10 @@ protected:
 
 public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	bool bFly;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	bool bEnter;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	USkeletalMeshComponent* MeshComponent;
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -36,4 +40,7 @@ public:
 
 	UFUNCTION()
 	virtual  void EndOverLap(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void CPPStartFly();
 };

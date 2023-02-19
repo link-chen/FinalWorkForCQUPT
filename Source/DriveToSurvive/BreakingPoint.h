@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "EnemyBirthPlace.h"
 #include "GameFramework/Actor.h"
 #include "BreakingPoint.generated.h"
 
@@ -16,6 +17,8 @@ class DRIVETOSURVIVE_API ABreakingPoint : public AActor
 	UPROPERTY(EditAnywhere)
 	int Time;
 	FTimerHandle Timer;
+	UPROPERTY(EditAnywhere)
+	TArray<AEnemyBirthPlace*> Array;
 public:	
 	// Sets default values for this actor's properties
 	ABreakingPoint();
