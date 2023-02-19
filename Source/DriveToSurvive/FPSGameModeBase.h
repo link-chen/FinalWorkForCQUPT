@@ -65,4 +65,6 @@ public:
 	void SpawnAirPlan();
 	void CheckBreakingPoint();
 	void SetBreakingPoints(ABreakingPoint* BreakingPoint);
+	UPROPERTY(EditAnywhere)
+	FVector AirPlanLocation;
 };
