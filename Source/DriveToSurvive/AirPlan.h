@@ -25,8 +25,6 @@ protected:
 
 public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	bool bFly;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	bool bEnter;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	USkeletalMeshComponent* MeshComponent;

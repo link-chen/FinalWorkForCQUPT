@@ -119,7 +119,7 @@ void AFPSGameModeBase::SpawnAirPlan()
 	if(AirPlan)
 	{
 		AAirPlan* Air=GetWorld()->SpawnActor<AAirPlan>(AirPlan,AirPlanLocation,FRotator(0.0f));
-		Air->bFly=true;
+		Air->SetActorScale3D(FVector(2.0f));
 		Air->bEnter=true;
 		Air->CPPStartFly();
 		UE_LOG(LogTemp,Warning,TEXT("Spawing"));
