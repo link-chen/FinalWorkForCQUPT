@@ -14,6 +14,8 @@ class DRIVETOSURVIVE_API AAirPlan : public AActor
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* Box;
 	UPROPERTY(EditAnywhere)
+	UBoxComponent* CheckPlayerComponent;
+	UPROPERTY(EditAnywhere)
 	FName SocketName;
 public:	
 	// Sets default values for this actor's properties
