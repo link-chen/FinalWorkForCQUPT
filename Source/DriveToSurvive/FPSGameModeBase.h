@@ -65,6 +65,9 @@ public:
 	void SpawnAirPlan();
 	void CheckBreakingPoint();
 	void SetBreakingPoints(ABreakingPoint* BreakingPoint);
+	UFUNCTION(BlueprintImplementableEvent)
+	void BreakPointClear();
+	
 	UPROPERTY(EditAnywhere)
 	FVector AirPlanLocation;
 };

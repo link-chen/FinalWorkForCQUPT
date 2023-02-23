@@ -137,6 +137,7 @@ void AFPSGameModeBase::CheckBreakingPoint()
 	{
 		SpawnAirPlan();
 		GetWorldTimerManager().ClearTimer(Timer);
+		BreakPointClear();
 	}
 }
 
