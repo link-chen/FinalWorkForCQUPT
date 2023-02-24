@@ -122,13 +122,11 @@ void AFPSGameModeBase::SpawnAirPlan()
 		Air->SetActorScale3D(FVector(2.0f));
 		Air->bEnter=true;
 		Air->CPPStartFly();
-		UE_LOG(LogTemp,Warning,TEXT("Spawing"));
 	}
 }
 
 void AFPSGameModeBase::CheckBreakingPoint()
 {
-	UE_LOG(LogTemp,Warning,TEXT("Checking"));
 	int NullNum=0;
 	for(ABreakingPoint* BreakingPoint:BreakingPoints)
 		if(!BreakingPoint)
@@ -147,6 +145,5 @@ void AFPSGameModeBase::SetBreakingPoints(ABreakingPoint* BreakingPoint)
 		if(BreakingPoints[i]==BreakingPoint)
 		{
 			BreakingPoints[i]=nullptr;
-			UE_LOG(LogTemp,Warning,TEXT("NULL"))
 		}
 }

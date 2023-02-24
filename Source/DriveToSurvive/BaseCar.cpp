@@ -15,6 +15,26 @@
 #include "Kismet/GameplayStatics.h"
 #include "Serialization/VarInt.h"
 
+void ABaseCar::ShowCarMap()
+{
+	if(MapWidget)
+	{
+		MapUI=CreateWidget<UUserWidget>(GetWorld(),MapWidget);
+		MapUI->AddToViewport();
+	}
+}
+
+void ABaseCar::HideCarMap()
+{
+	if(MapUI!=nullptr)
+	{
+		MapUI->RemoveFromViewport();
+	}else
+	{
+		
+	}
+}
+
 ABaseCar::ABaseCar()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -250,6 +270,9 @@ void ABaseCar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis("MoveRight",this,&ABaseCar::MoveRight);
 
 	PlayerInputComponent->BindAction("Light",IE_Pressed,this,&ABaseCar::TurnLight);
+
+	PlayerInputComponent->BindAction("CarMap",IE_Pressed,this,&ABaseCar::ShowCarMap);
+	PlayerInputComponent->BindAction("CarMap",IE_Released,this,&ABaseCar::HideCarMap);
 }
 
 void ABaseCar::WearTyre()

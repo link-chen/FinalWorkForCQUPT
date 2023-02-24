@@ -145,8 +145,14 @@ public:
 	APlayerCharater* PlayerCharacter;
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> Widget;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> MapWidget;
 	UPROPERTY(BlueprintReadWrite)
 	UUserWidget* CarUI;
+	UPROPERTY(BlueprintReadWrite)
+	UUserWidget* MapUI;
+	void ShowCarMap();
+	void HideCarMap();
 	ABaseCar();
 	void DisBrake();
 };

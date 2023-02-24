@@ -153,6 +153,7 @@ public:
 	ASourceCollectHub* Hub;
 	AAmmunition* Ammunition;
 	ABreakingPoint* BreakingPoint;
+	bool bCanAddBreakPoint;
 
 	UFUNCTION(BlueprintCallable)
 	void ChangeControlForCar();
@@ -184,6 +185,8 @@ public:
 
 	void ShowMap();
 	void DisPlayMap();
+	UFUNCTION(BlueprintImplementableEvent)
+	void QuitGame();
 
 	void GetHurt(float Value);
 	void LineTracing();

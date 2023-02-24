@@ -44,6 +44,9 @@ void AGun::BeginPlay()
 
 	GunBullte=MaxBullte;
 	LeftGunBullte=MaxLeftBullte;
+
+	Audio->Deactivate();
+	GunFireNiagaraComponent->Deactivate();
 	
 	bCanUse=true;
 }
@@ -59,6 +62,8 @@ void AGun::Fire(FVector CameraLocation,FVector Forward)
 			/*
 			World->SpawnActor<AGunBullte>(Bullte,GetFireLocation(),GetFireRotator());
 			*/
+			Audio->Activate();
+			GunFireNiagaraComponent->Activate();
 			Audio->Play();
 			Test();
 			GunBullte--;

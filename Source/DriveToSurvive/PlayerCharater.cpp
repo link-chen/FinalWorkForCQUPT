@@ -62,6 +62,7 @@ void APlayerCharater::BeginPlay()
 	bLive=true;
 
 	ForwardRate=7750.0f;
+	bCanAddBreakPoint=false;
 }
 
 // Called every frame
@@ -466,6 +467,8 @@ void APlayerCharater::InteractFunc()
 	if(PlayerTargetActor)
 	{
 		GetTargetActor();
+		Cast<AFPSGameModeBase>(GetWorld()->GetAuthGameMode())->BreakPointClear();
+		bCanAddBreakPoint=true;
 	}
 	if(Hub)
 	{
@@ -479,7 +482,12 @@ void APlayerCharater::InteractFunc()
 	}
 	if(BreakingPoint)
 	{
-		BreakingPoint->SetC4();
+		if(bCanAddBreakPoint)
+			BreakingPoint->SetC4();
+		else
+		{
+			UE_LOG(LogTemp,Error,TEXT("No "))
+		}
 	}
 }
 
@@ -645,5 +653,7 @@ void APlayerCharater::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 	PlayerInputComponent->BindAction("TakeDRS",IE_Pressed,this,&APlayerCharater::ShowMap);
 	PlayerInputComponent->BindAction("TakeDRS",IE_Released,this,&APlayerCharater::DisPlayMap);
+
+	PlayerInputComponent->BindAction("EndGame",IE_Pressed,this,&APlayerCharater::QuitGame);
 }
 

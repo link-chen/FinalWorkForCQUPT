@@ -30,7 +30,6 @@ void AAirPlan::OnOverlayBegin(UPrimitiveComponent* OverlappedComponent, AActor* 
 {
 	if(ABaseCar* PlayerCar=Cast<ABaseCar>(OtherActor))
 	{
-		UE_LOG(LogTemp,Warning,TEXT("CarEnter"));
 		//Car->AttachToComponent(MeshComponent,FAttachmentTransformRules::KeepWorldTransform,"skeleton_grp插槽");
 	}
 }
