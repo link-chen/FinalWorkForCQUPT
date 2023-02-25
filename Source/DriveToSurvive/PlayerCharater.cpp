@@ -89,10 +89,6 @@ void APlayerCharater::MoveForward(float Value)
 		const FVector Direction(FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X));
 		AddMovementInput(Direction,Value);
 	}
-	/*
-	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
-	AddMovementInput(Direction, Value);
-	*/
 }
 
 void APlayerCharater::MoveRight(float Value)
@@ -103,10 +99,6 @@ void APlayerCharater::MoveRight(float Value)
 		const FVector Direction(FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y));
 		AddMovementInput(Direction,Value);
 	}
-	/*
-	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
-	AddMovementInput(Direction, Value);
-	*/
 }
 
 void APlayerCharater::UseGun()
@@ -243,64 +235,30 @@ void APlayerCharater::OnOverlayBegin(UPrimitiveComponent* MyComp, AActor* Other,
 			bGun0=true;
 		}
 	}
-	if(ATargetActor* Target=Cast<ATargetActor>(Other))
-	{
-		/*
-		UE_LOG(LogTemp,Warning,TEXT("TargetActor==%d"),Target->GetLable());
-		TargetArray[Target->GetLable()]+=1;
-		Target->Destroy();
-		*/
-	}
 }
 
 void APlayerCharater::OnCapsuleBeginOverLap(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
 {
 
-	if(Cast<ABaseCar>(Other))
-	{
-		Car=Cast<ABaseCar>(Other);
-		Car->PlayerCharacter=this;
-	}
-	if(Cast<ATargetActor>(Other))
-	{
-		PlayerTargetActor=Cast<ATargetActor>(Other);
-	}
-	if(Cast<ASourceCollectHub>(Other))
-	{
-		Hub=Cast<ASourceCollectHub>(Other);
-	}
-	if(Cast<AAmmunition>(Other))
-	{
-		Ammunition=Cast<AAmmunition>(Other);
-	}
-	if(Cast<ABreakingPoint>(Other))
-	{
-		BreakingPoint=Cast<ABreakingPoint>(Other);
-	}
+	Car=Cast<ABaseCar>(Other)!=nullptr?Cast<ABaseCar>(Other):nullptr;
+	PlayerTargetActor=Cast<ATargetActor>(Other)!=nullptr?Cast<ATargetActor>(Other):nullptr;
+	Hub=Cast<ASourceCollectHub>(Other)!=nullptr?Cast<ASourceCollectHub>(Other):nullptr;
+	Ammunition=Cast<AAmmunition>(Other)!=nullptr?Cast<AAmmunition>(Other):nullptr;
+	BreakingPoint=Cast<ABreakingPoint>(Other)!=nullptr?Cast<ABreakingPoint>(Other):nullptr;
 }
 
 void APlayerCharater::OnCapsuleEndOverLap(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp)
 {
 	if(Cast<ABaseCar>(Other))
-	{
 		Car=nullptr;
-	}
 	if(Cast<ATargetActor>(Other))
-	{
 		PlayerTargetActor=nullptr;
-	}
 	if(Cast<ASourceCollectHub>(Other))
-	{
 		Hub=nullptr;
-	}
 	if(Cast<AAmmunition>(Other))
-	{
 		Ammunition=nullptr;
-	}
 	if(Cast<ABreakingPoint>(Other))
-	{
 		BreakingPoint=nullptr;
-	}
 }
 
 
@@ -408,18 +366,6 @@ void APlayerCharater::PlayReLoadAnimation()
 
 void APlayerCharater::ShowUI()
 {
-	/*
-	if(UI)
-	{
-		UE_LOG(LogTemp,Warning,TEXT("Here"));
-		UI->AddToViewport();
-	}
-	else
-	{
-		UI=CreateWidget(GetWorld(),Fight);
-		UI->AddToViewport();
-	}
-	*/
 	UI=CreateWidget(GetWorld(),Fight);
 	UI->AddToViewport();
 }
@@ -429,9 +375,6 @@ void APlayerCharater::HideUI()
 	if(UI)
 	{
 		UI->RemoveFromViewport();
-	}else
-	{
-		
 	}
 }
 

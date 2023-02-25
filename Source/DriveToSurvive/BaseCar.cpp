@@ -159,17 +159,6 @@ void ABaseCar::Tick(float DeltaSeconds)
 
 void ABaseCar::ShowRunning()
 {
-	/*
-	if(CarUI!=nullptr)
-	{
-		//CarUI->AddToViewport();
-	}
-	else
-	{
-		CarUI=CreateWidget<UUserWidget>(GetWorld(),Widget);
-		CarUI->AddToViewport();
-	}
-	*/
 	CarUI=CreateWidget<UUserWidget>(GetWorld(),Widget);
 	CarUI->AddToViewport();
 }

@@ -5,8 +5,6 @@
 
 #include "TPSSaveGame.h"
 #include "Kismet/GameplayStatics.h"
-#include "Kismet/KismetMaterialLibrary.h"
-#include "Math/UnitConversion.h"
 
 void AFPSGameModeBase::SaveGameMessage()
 {
