@@ -59,6 +59,7 @@ void AFPSGameModeBase::RestartPlayer(AController* NewPlayer,FVector CurrentLocat
 	Super::RestartPlayer(NewPlayer);
 	if(APlayerCharater* GamePlayer=Cast<APlayerCharater>(NewPlayer->GetCharacter()))
 	{
+		GamePlayer->ShowUI();
 		GamePlayer->SetActorLocation(CurrentLocation);
 	}
 }
@@ -86,13 +87,6 @@ bool AFPSGameModeBase::CanCreateEnemy()
 	if(Left<MaxEnemyNumber)
 	{
 		return true;
-		/*
-		int RandPivote=0;
-		int RandResult=rand()%EnemyTemplate.Num();
-		RandPivote=RandResult<=EnemyTemplate.Num()-1?RandResult:0;
-		ABaseEnemy* Enemy=GetWorld()->SpawnActor<ABaseEnemy>(EnemyTemplate[RandPivote],FVector(259120.0f,59830.0f,0.0f),FRotator(0.0f,0.0f,0.0f));
-		Enemies.Add(Enemy);
-		*/
 	}
 	return false;
 

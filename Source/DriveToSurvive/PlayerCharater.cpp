@@ -47,7 +47,6 @@ void APlayerCharater::BeginPlay()
 
 	bGun0=false;
 	bGun1=false;
-	ShowUI();
 
 	FScriptDelegate Del,OutDel;
 	Del.BindUFunction(this,"OnCapsuleBeginOverLap");
