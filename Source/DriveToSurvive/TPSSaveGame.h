@@ -31,6 +31,8 @@ public:
 	FString SaveSlotName;
 	UPROPERTY()
 	uint32 UserIndex;
+	UPROPERTY()
+	bool bFinishTPS;
 	
 	UTPSSaveGame();
 };
