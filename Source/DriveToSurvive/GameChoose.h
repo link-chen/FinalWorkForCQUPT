@@ -15,5 +15,9 @@ class DRIVETOSURVIVE_API AGameChoose : public AGameModeBase
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintCallable)
+	void CheckFinish();
+	UFUNCTION(BlueprintImplementableEvent)
+	void EnterTPSMode();
 	bool GetFinish();
 };

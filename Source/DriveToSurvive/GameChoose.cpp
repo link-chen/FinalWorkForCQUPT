@@ -7,6 +7,18 @@
 #include "TPSSaveGame.h"
 #include "Kismet/GameplayStatics.h"
 
+void AGameChoose::CheckFinish()
+{
+	if(GetFinish())
+	{
+		
+	}
+	else
+	{
+		EnterTPSMode();
+	}
+}
+
 bool AGameChoose::GetFinish()
 {
 	if(UTPSSaveGame* Save=Cast<UTPSSaveGame>(UGameplayStatics::CreateSaveGameObject(UDTSSaveGame::StaticClass())))
