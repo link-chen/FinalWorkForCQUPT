@@ -393,6 +393,9 @@ void ABaseCar::SetSwitchGearTime(float Time)
 	UWheeledVehicleMovementComponent4W* WheelMoveComponent=Cast<UWheeledVehicleMovementComponent4W>(GetVehicleMovementComponent());
 	if(WheelMoveComponent!=nullptr)
 	{
+		//FVehicleTransmissionData &Data=WheelMoveComponent->TransmissionSetup;
+		//Data.GearSwitchTime=Time;
+		
 	}
 }
 
