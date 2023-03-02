@@ -11,19 +11,20 @@ void AGameChoose::CheckFinish()
 {
 	if(GetFinish())
 	{
-		
+		EnterTPSMode();
 	}
 	else
 	{
-		EnterTPSMode();
+		
 	}
 }
 
 bool AGameChoose::GetFinish()
 {
-	if(UTPSSaveGame* Save=Cast<UTPSSaveGame>(UGameplayStatics::CreateSaveGameObject(UDTSSaveGame::StaticClass())))
+	if(UTPSSaveGame* Read=Cast<UTPSSaveGame>(UGameplayStatics::LoadGameFromSlot("TPSSaveSlot",1)))
 	{
-		return Save->bFinishTPS;	
+		UE_LOG(LogTemp,Warning,TEXT("%d"),Read->bFinishTPS);
+		return Read->bFinishTPS;	
 	}
 	return false;
 }

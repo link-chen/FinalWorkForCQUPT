@@ -4,6 +4,9 @@
 #include "AirPlan.h"
 
 #include "BaseCar.h"
+#include "DTSSaveGame.h"
+#include "TPSSaveGame.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AAirPlan::AAirPlan()
@@ -31,6 +34,15 @@ void AAirPlan::OnOverlayBegin(UPrimitiveComponent* OverlappedComponent, AActor* 
 	if(ABaseCar* PlayerCar=Cast<ABaseCar>(OtherActor))
 	{
 		//Car->AttachToComponent(MeshComponent,FAttachmentTransformRules::KeepWorldTransform,"skeleton_grp插槽");
+		UE_LOG(LogTemp,Warning,TEXT("Finish"));
+		if(UTPSSaveGame* Save=Cast<UTPSSaveGame>(UGameplayStatics::CreateSaveGameObject(UTPSSaveGame::StaticClass())))
+		{
+			Save->bFinishTPS=true;
+			if(UGameplayStatics::SaveGameToSlot(Save,"TPSSaveSlot",1))
+			{
+				
+			}
+		}
 	}
 }
 
