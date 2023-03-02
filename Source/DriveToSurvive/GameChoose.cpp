@@ -15,7 +15,7 @@ void AGameChoose::CheckFinish()
 	}
 	else
 	{
-		
+		UE_LOG(LogTemp,Warning,TEXT("CanEnterVehicleMode"));
 	}
 }
 
