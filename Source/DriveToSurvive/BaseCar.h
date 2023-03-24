@@ -94,6 +94,10 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	bool bUseLight;
 	void TurnLight();
 
+
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* Weight;
+
 	
 public:
 	bool bCanUseDRS;

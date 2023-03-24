@@ -56,6 +56,9 @@ ABaseCar::ABaseCar()
 	bUseLight=true;
 
 	CrashedMaterial=CreateDefaultSubobject<UMaterial>(TEXT("CrashedMaterialRender"));
+
+	Weight=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WeightComponent"));
+	Weight->SetupAttachment(GetMesh());
 	
 	FScriptDelegate Crash;
 	Crash.BindUFunction(this,"OnHit");
@@ -78,6 +81,7 @@ void ABaseCar::BeginPlay()
 	ReBornRotator=GetTransform().Rotator();
 	LastLocation=GetTransform().GetLocation();
 	ElectronicPower=MaxElectronicPower;
+	bAddForce=true;
 	
 	UWorld* World=GetWorld();
 	if(Widget!=nullptr&&World!=nullptr)
@@ -134,7 +138,8 @@ void ABaseCar::Tick(float DeltaSeconds)
 		GetMesh()->AddForce(forward*BaseRate*ERSRate);
 	}
 	FVector Down=-GetActorUpVector();
-	float Speed=fabs(GetVehicleMovementComponent()->GetForwardSpeed()/100*3.6);
+	float Speed=fabs(GetVehicleMovementComponent()->GetForwardSpeed()/100);
+	UE_LOG(LogTemp,Warning,TEXT("DownForceRate==%f"),DownForceRate)
 	GetMesh()->AddForce(Down*CarMess*DownForceRate*Speed);
 	if(GameModeBase!=nullptr)
 	{
@@ -188,10 +193,18 @@ void ABaseCar::MoveRight(float Value)
 
 void ABaseCar::Brake()
 {
+	//原方法，整车当作一个质点，记录当前运动速度v0，停止刹车时获取速度v1，能量守恒计算动能变化量后损失部分能量完成动能回收
+	//新方法，基于刹车时各个轮胎的速度，转换动能回收
 	MoveForward(BrakeBackRate);
 	CurrentSpeed=GetVehicleMovementComponent()->GetForwardSpeed()/100.0f;
 	GetVehicleMovementComponent()->SetHandbrakeInput(true);
 	bDraw=true;
+
+	//
+	if(CarWheelsArray[0])
+	{
+		CarWheelsArray[0];
+	}
 }
 void ABaseCar::CancleBrake()
 {
@@ -391,9 +404,8 @@ void ABaseCar::SetSwitchGearTime(float Time)
 	UWheeledVehicleMovementComponent4W* WheelMoveComponent=Cast<UWheeledVehicleMovementComponent4W>(GetVehicleMovementComponent());
 	if(WheelMoveComponent!=nullptr)
 	{
-		//FVehicleTransmissionData &Data=WheelMoveComponent->TransmissionSetup;
-		//Data.GearSwitchTime=Time;
-		
+		FVehicleTransmissionData Data=WheelMoveComponent->TransmissionSetup;
+		Data.GearSwitchTime=Time;
 	}
 }
 
