@@ -11,8 +11,17 @@
 #include "Components/SpotLightComponent.h"
 #include "Sound/SoundCue.h"
 #include "PlayerCharater.h"
+#include "WheeledVehicleMovementComponent4W.h"
 #include "BaseCar.generated.h"
-class UWheeledVehicleMovementComponent4W;
+
+class  PHYSXVEHICLES_API UCarTransData:public UWheeledVehicleMovementComponent4W
+{
+public:
+	void Reset(const FVehicleTransmissionData& NewGearSetup)
+	{
+		UpdateTransmissionSetup(NewGearSetup);
+	}
+};
 /**
  * 
  */

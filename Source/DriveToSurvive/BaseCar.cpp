@@ -139,7 +139,6 @@ void ABaseCar::Tick(float DeltaSeconds)
 	}
 	FVector Down=-GetActorUpVector();
 	float Speed=fabs(GetVehicleMovementComponent()->GetForwardSpeed()/100);
-	UE_LOG(LogTemp,Warning,TEXT("DownForceRate==%f"),DownForceRate)
 	GetMesh()->AddForce(Down*CarMess*DownForceRate*Speed);
 	if(GameModeBase!=nullptr)
 	{
@@ -405,7 +404,12 @@ void ABaseCar::SetSwitchGearTime(float Time)
 	if(WheelMoveComponent!=nullptr)
 	{
 		FVehicleTransmissionData Data=WheelMoveComponent->TransmissionSetup;
+		UE_LOG(LogTemp,Warning,TEXT("%f"),Data.GearSwitchTime);
 		Data.GearSwitchTime=Time;
+		UE_LOG(LogTemp,Warning,TEXT("%f"),Data.GearSwitchTime);
+		UCarTransData* TransData=Cast<UCarTransData>(WheelMoveComponent);
+		if(TransData)
+			TransData->Reset(Data);
 	}
 }
 
