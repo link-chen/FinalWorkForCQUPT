@@ -16,8 +16,22 @@
 
 class  PHYSXVEHICLES_API UCarTransData:public UWheeledVehicleMovementComponent4W
 {
+	
+	int Weight;
 public:
-	void Reset(const FVehicleTransmissionData& NewGearSetup)
+	UCarTransData()
+	{
+		
+	}
+	void UpdateEngineSetup(const FVehicleEngineData& NewEngineSetup)
+	{
+		UpdateEngineSetup(NewEngineSetup);
+	}
+	void UpdateDifferentialSetup(const FVehicleDifferential4WData& NewDifferentialSetup)
+	{
+		UpdateDifferentialSetup(NewDifferentialSetup);
+	}
+	void TransmissionReset(const FVehicleTransmissionData& NewGearSetup)
 	{
 		UpdateTransmissionSetup(NewGearSetup);
 	}
@@ -58,6 +72,8 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	float ReChargeRate;
 	UPROPERTY(EditAnywhere)
 	float BrakeBackRate;
+	UPROPERTY(EditAnywhere)
+	float TurboStart;
 
 	UPROPERTY(EditAnywhere)
 	TArray<USoundCue*> SoundArray;
@@ -168,4 +184,6 @@ public:
 	void HideCarMap();
 	ABaseCar();
 	void DisBrake();
+	UFUNCTION(BlueprintCallable)
+	float GetCurrentRPM();
 };

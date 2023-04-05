@@ -67,12 +67,20 @@ ABaseCar::ABaseCar()
 	FScriptDelegate HitOn;
 	HitOn.BindUFunction(this,"NotifyHit");
 	GetMesh()->OnComponentHit.Add(HitOn);
+
 	
 }
 
 void ABaseCar::DisBrake()
 {
 	GetVehicleMovementComponent()->SetBrakeInput(false);
+}
+
+float ABaseCar::GetCurrentRPM()
+{
+	if(GetVehicleMovement())
+		return GetVehicleMovement()->GetEngineRotationSpeed();
+	return 0.0f;
 }
 
 void ABaseCar::BeginPlay()
@@ -180,6 +188,12 @@ void ABaseCar::MoveForward(float Value)
 {
 	if(bCanCarRun)
 	{
+		if(GetCurrentRPM()!=0.0f&&GetCurrentRPM()/GetVehicleMovement()->GetEngineMaxRotationSpeed()>=TurboStart)
+		{
+			UE_LOG(LogTemp,Warning,TEXT("TurboStart"));
+			UE_LOG(LogTemp,Warning,TEXT("MAXRPM==%f"),GetVehicleMovement()->GetEngineMaxRotationSpeed());
+			UE_LOG(LogTemp,Warning,TEXT("ThrottleValue==%f"),Value);
+		}
 		GetVehicleMovementComponent()->SetThrottleInput(Value);
 		PlayEngineSound();
 	}
@@ -187,14 +201,11 @@ void ABaseCar::MoveForward(float Value)
 
 void ABaseCar::MoveRight(float Value)
 {
-	GetVehicleMovementComponent()->SetSteeringInput(Value*1.01f);
+	GetVehicleMovementComponent()->SetSteeringInput(Value);
 }
 
 void ABaseCar::Brake()
 {
-	//原方法，整车当作一个质点，记录当前运动速度v0，停止刹车时获取速度v1，能量守恒计算动能变化量后损失部分能量完成动能回收
-	//新方法，基于刹车时各个轮胎的速度，转换动能回收
-	MoveForward(BrakeBackRate);
 	CurrentSpeed=GetVehicleMovementComponent()->GetForwardSpeed()/100.0f;
 	GetVehicleMovementComponent()->SetHandbrakeInput(true);
 	bDraw=true;
@@ -404,12 +415,10 @@ void ABaseCar::SetSwitchGearTime(float Time)
 	if(WheelMoveComponent!=nullptr)
 	{
 		FVehicleTransmissionData Data=WheelMoveComponent->TransmissionSetup;
-		UE_LOG(LogTemp,Warning,TEXT("%f"),Data.GearSwitchTime);
 		Data.GearSwitchTime=Time;
-		UE_LOG(LogTemp,Warning,TEXT("%f"),Data.GearSwitchTime);
 		UCarTransData* TransData=Cast<UCarTransData>(WheelMoveComponent);
 		if(TransData)
-			TransData->Reset(Data);
+			TransData->TransmissionReset(Data);
 	}
 }
 

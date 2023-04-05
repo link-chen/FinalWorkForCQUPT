@@ -55,7 +55,7 @@ void AUpdateCarModeBase::ReadGameMessage()
 		MaxElectronicPower=BaseCar->MaxElectronicPower;
 		DownForceRate=0.0f;
 		Mass=2750.0f;
-		ChangeGearTime=4.5f;
+		ChangeGearTime=1.5f;
 		Point=5760;
 		ReChargeRate=0.00005f;
 		UE_LOG(LogTemp,Warning,TEXT("FirstComing"));

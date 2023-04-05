@@ -29,10 +29,15 @@ void ADRSTest::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ADRSTest::OnOverlayBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void ADRSTest::OnOverlayBegin(UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex, bool bFromSweep,
+	const FHitResult& SweepResult)
 {
 	if(ABaseCar* Car=Cast<ABaseCar>(OtherActor))
 	{
+		//初始化后可以用来记录每一辆车通过的时间
 		float CurrentTime=GetGameTimeSinceCreation();
 		float DeltaTime=CurrentTime-TimeSecond;
 		TimeSecond=CurrentTime;

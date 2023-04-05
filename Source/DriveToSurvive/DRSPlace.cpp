@@ -39,7 +39,12 @@ void ADRSPlace::Tick(float DeltaTime)
 
 }
 
-void ADRSPlace::DRSStartFunction(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void ADRSPlace::DRSStartFunction(UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult& SweepResult)
 {
 	if(ABaseCar* Car=Cast<ABaseCar>(OtherActor))
 	{
@@ -50,7 +55,12 @@ void ADRSPlace::DRSStartFunction(UPrimitiveComponent* OverlappedComponent, AActo
 	}
 }
 
-void ADRSPlace::DRSEndFunction(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void ADRSPlace::DRSEndFunction(UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult& SweepResult)
 {
 	if(ABaseCar* Car=Cast<ABaseCar>(OtherActor))
 	{
