@@ -192,7 +192,7 @@ void ABaseCar::MoveForward(float Value)
 		{
 			UE_LOG(LogTemp,Warning,TEXT("TurboStart"));
 			UE_LOG(LogTemp,Warning,TEXT("MAXRPM==%f"),GetVehicleMovement()->GetEngineMaxRotationSpeed());
-			UE_LOG(LogTemp,Warning,TEXT("ThrottleValue==%f"),Value);
+			UE_LOG(LogTemp,Warning,TEXT("ThrottleValue==0.1623492"));
 		}
 		GetVehicleMovementComponent()->SetThrottleInput(Value);
 		PlayEngineSound();
@@ -422,10 +422,14 @@ void ABaseCar::SetSwitchGearTime(float Time)
 	}
 }
 
-void ABaseCar::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
+void ABaseCar::NotifyHit(UPrimitiveComponent* MyComp,AActor* Other,
+	UPrimitiveComponent* OtherComp,bool bSelfMoved,
+	FVector HitLocation,FVector HitNormal,
+	FVector NormalImpulse,const FHitResult& Hit)
 {
 	if(CrashedMaterial)
-		UGameplayStatics::SpawnDecalAtLocation(Other,CrashedMaterial,FVector(30.0f,30.0f,30.f),HitLocation,FRotator(0.0f,0.0f,0.0f));
+		UGameplayStatics::SpawnDecalAtLocation(Other,CrashedMaterial,
+			FVector(30.0f,30.0f,30.f),HitLocation,FRotator(0.0f,0.0f,0.0f));
 }
 
 void ABaseCar::ChangeControlForPlayer()

@@ -55,4 +55,8 @@ public:
 	void MaxLevel();
 	UFUNCTION(BlueprintImplementableEvent)
 	void CreateFirstIntroduce();
+	UFUNCTION(BlueprintImplementableEvent)
+	void FirstGuidance();
+	UFUNCTION(BlueprintImplementableEvent)
+	void SimpleStart();
 };
