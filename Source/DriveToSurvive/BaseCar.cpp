@@ -83,6 +83,13 @@ float ABaseCar::GetCurrentRPM()
 	return 0.0f;
 }
 
+float ABaseCar::GetMaxRPM()
+{
+	if(GetVehicleMovement())
+		return GetVehicleMovement()->GetEngineMaxRotationSpeed();
+	return 0.0f;
+}
+
 void ABaseCar::BeginPlay()
 {
 	Super::BeginPlay();
@@ -188,13 +195,10 @@ void ABaseCar::MoveForward(float Value)
 {
 	if(bCanCarRun)
 	{
-		if(GetCurrentRPM()!=0.0f&&GetCurrentRPM()/GetVehicleMovement()->GetEngineMaxRotationSpeed()>=TurboStart)
-		{
-			UE_LOG(LogTemp,Warning,TEXT("TurboStart"));
-			UE_LOG(LogTemp,Warning,TEXT("MAXRPM==%f"),GetVehicleMovement()->GetEngineMaxRotationSpeed());
-			UE_LOG(LogTemp,Warning,TEXT("ThrottleValue==0.1623492"));
-		}
-		GetVehicleMovementComponent()->SetThrottleInput(Value);
+		if(!bERSCanOpen)
+			GetVehicleMovementComponent()->SetThrottleInput(Value*GetInputRate());
+		else
+			GetVehicleMovementComponent()->SetThrottleInput(Value);
 		PlayEngineSound();
 	}
 }
@@ -285,6 +289,15 @@ void ABaseCar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("CarMap",IE_Released,this,&ABaseCar::HideCarMap);
 }
 
+float ABaseCar::GetInputRate()
+{
+	if(GetMaxRPM()==0.0f)
+		return 0.0f;
+	if(GetCurrentRPM()>=StartWorkRate)
+		return 1.0f;
+	return sqrt(GetCurrentRPM()/GetMaxRPM())>=0.1f?sqrt(GetCurrentRPM()/GetMaxRPM()):0.1f;
+}
+
 void ABaseCar::WearTyre()
 {
 	for(int i=0;i<CarWheelsArray.Num();i++)
@@ -317,6 +330,7 @@ void ABaseCar::UseERS()
 	{
 		GetWorldTimerManager().SetTimer(ERSTimeCount,this,&ABaseCar::ERS,ERSTickTime,true);
 		bERSCanOpen=true;
+		UE_LOG(LogTemp,Warning,TEXT("OpenERS"));
 	}
 	else
 	{

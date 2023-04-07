@@ -76,6 +76,9 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	float TurboStart;
 
 	UPROPERTY(EditAnywhere)
+	float StartWorkRate;
+
+	UPROPERTY(EditAnywhere)
 	TArray<USoundCue*> SoundArray;
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
@@ -87,6 +90,8 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	void ChangeCamera();
 	void QuitGame();
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+
+	float GetInputRate();
 
 	TArray<UCarWheel*> CarWheelsArray;
 	FTimerHandle Timer;
@@ -186,4 +191,6 @@ public:
 	void DisBrake();
 	UFUNCTION(BlueprintCallable)
 	float GetCurrentRPM();
+	float GetMaxRPM();
+	
 };
