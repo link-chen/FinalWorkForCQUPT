@@ -128,6 +128,7 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* Weight;
 
+	float CarWheelSpeed;
 	
 public:
 	bool bCanUseDRS;

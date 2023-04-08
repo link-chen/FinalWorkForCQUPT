@@ -68,7 +68,7 @@ ABaseCar::ABaseCar()
 	HitOn.BindUFunction(this,"NotifyHit");
 	GetMesh()->OnComponentHit.Add(HitOn);
 
-	
+	CarWheelSpeed=0.0f;
 }
 
 void ABaseCar::DisBrake()
@@ -137,6 +137,7 @@ void ABaseCar::BeginPlay()
 
 	bDraw=false;
 	CarUI=false;
+	
 }
 
 void ABaseCar::Tick(float DeltaSeconds)
@@ -217,19 +218,27 @@ void ABaseCar::Brake()
 	//
 	if(CarWheelsArray[0])
 	{
-		CarWheelsArray[0];
+		CarWheelSpeed=CurrentSpeed/(CarWheelsArray[0]->GetWheelLength()*0.01f);
+	}
+	else
+	{
+		CarWheelSpeed=0.0f;
 	}
 }
 void ABaseCar::CancleBrake()
 {
 	float TempSpeed=GetVehicleMovementComponent()->GetForwardSpeed()/100.0f;
 	float DeltaSpeed=CurrentSpeed-TempSpeed;
+	float CurrentWheelSpeed=TempSpeed/(CarWheelsArray[0]->GetWheelLength()*0.01f);
+	float DeltaWheelSpeed=CarWheelSpeed-CurrentWheelSpeed;
+	float DeltaWheelPower=0.5*CarWheelsArray[0]->GetWheelMass()*pow(DeltaWheelSpeed,2.0);
 	GetVehicleMovementComponent()->SetHandbrakeInput(false);
 	for(int i=0;i<CarWheelsArray.Num();i++)
 	{
 		CarWheelsArray[i]->Wear(DeltaSpeed);
 	}
-	float EPower=GetVehicleMovementComponent()->Mass*DeltaSpeed*DeltaSpeed*ReChargeRate;
+	float EPower=(GetVehicleMovementComponent()->Mass*DeltaSpeed*DeltaSpeed*0.5-DeltaWheelPower*4.0f)*ReChargeRate;
+	UE_LOG(LogTemp,Warning,TEXT("EPower==%f"),EPower);
 	ElectronicPower=ElectronicPower+EPower<=MaxElectronicPower?ElectronicPower+EPower:MaxElectronicPower;
 	bDraw=false;
 }
@@ -346,6 +355,7 @@ void ABaseCar::ERS()
 	{
 		bUseERS=true;
 		ElectronicPower=ElectronicPower-ElectronicCost<0.0f?0.0f:ElectronicPower-ElectronicCost;
+		GetMovementComponent();
 	}
 	else
 	{

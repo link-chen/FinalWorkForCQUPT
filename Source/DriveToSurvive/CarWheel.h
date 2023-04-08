@@ -26,4 +26,6 @@ public:
 	float GetCurrentLife();
 	void ReCoverTyre();
 	float GetWheelSize();
+	float GetWheelLength();
+	float GetWheelMass();
 };

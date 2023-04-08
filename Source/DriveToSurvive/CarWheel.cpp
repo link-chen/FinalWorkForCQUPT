@@ -46,7 +46,17 @@ void UCarWheel::ReCoverTyre()
 
 float UCarWheel::GetWheelSize()
 {
-	return 30.0f;
+	return this->ShapeRadius;
+}
+
+float UCarWheel::GetWheelLength()
+{
+	return 3.1415926*2*GetWheelSize();
+}
+
+float UCarWheel::GetWheelMass()
+{
+	return Mass;
 }
 
 
