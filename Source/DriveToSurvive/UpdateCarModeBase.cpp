@@ -40,7 +40,7 @@ void AUpdateCarModeBase::SaveGameMessage()
 void AUpdateCarModeBase::ReadGameMessage()
 {
 	if(UDTSSaveGame* Read=Cast<UDTSSaveGame>(UGameplayStatics::LoadGameFromSlot("SaveSlot",0)))
-	{
+	{	//非第一次进入游戏时，直接读取存档文件数据
 		ERSRate=Read->ERSRate;
 		MaxElectronicPower=Read->MaxElectronicPower;
 		Point=Read->Point;
@@ -51,7 +51,7 @@ void AUpdateCarModeBase::ReadGameMessage()
 		SimpleStart();
 	}
 	else
-	{
+	{	//第一次进入游戏初始化基础属性
 		ERSRate=BaseCar->GetERSRate();
 		MaxElectronicPower=BaseCar->MaxElectronicPower;
 		DownForceRate=0.0f;
@@ -70,7 +70,7 @@ void AUpdateCarModeBase::UpdateERS(int Change)
 {
 	if(Change==1)
 	{
-		if(ERSRate+0.5<=6.0&&Point>=1)
+		if(ERSRate+0.5<=12.0&&Point>=1)
 		{
 			ERSRate+=0.5;
 			Point--;
@@ -100,7 +100,7 @@ void AUpdateCarModeBase::UpdateElectronic(int Change)
 	{
 		if(Point>=1)
 		{
-			MaxElectronicPower+=100.0f;
+			MaxElectronicPower+=1000.0f;
 			Point--;
 			SaveGameMessage();
 		}
@@ -109,7 +109,7 @@ void AUpdateCarModeBase::UpdateElectronic(int Change)
 	}
 	if(Change==-1)
 	{
-		if(MaxElectronicPower-100.0f>=1000.0f)
+		if(MaxElectronicPower-1000.0f>=10000.0f)
 		{
 			MaxElectronicPower-=10.0f;
 			Point++;
@@ -176,7 +176,7 @@ void AUpdateCarModeBase::UpdateReCharge(int Change)
 	{
 		if(Point>=1&&ReChargeRate<=0.99f)
 		{
-			ReChargeRate+=0.000075f;
+			ReChargeRate+=0.00015f;
 			Point--;
 			SaveGameMessage();
 		}
@@ -188,7 +188,7 @@ void AUpdateCarModeBase::UpdateReCharge(int Change)
 		if(ReChargeRate>=0.00006f)
 		{
 			Point++;
-			ReChargeRate-=0.000075f;
+			ReChargeRate-=0.00015f;
 			SaveGameMessage();
 		}
 		else

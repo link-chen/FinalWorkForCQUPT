@@ -45,7 +45,7 @@ ABaseCar::ABaseCar()
 	InternalCamera->SetupAttachment(RootComponent);
 	Audio=CreateDefaultSubobject<UAudioComponent>(TEXT("AudiComponent"));
 	InternalCamera->Deactivate();
-	bAddForce=true;
+
 	bERSCanOpen=false;
 	ReChargeRate=0.00005f;
 	LeftPointLight=CreateDefaultSubobject<USpotLightComponent>(TEXT("LeftLight"));
@@ -68,7 +68,7 @@ ABaseCar::ABaseCar()
 	HitOn.BindUFunction(this,"NotifyHit");
 	GetMesh()->OnComponentHit.Add(HitOn);
 
-	CarWheelSpeed=0.0f;
+	
 }
 
 void ABaseCar::DisBrake()
@@ -78,16 +78,22 @@ void ABaseCar::DisBrake()
 
 float ABaseCar::GetCurrentRPM()
 {
-	if(GetVehicleMovement())
-		return GetVehicleMovement()->GetEngineRotationSpeed();
-	return 0.0f;
+	return GetVehicleMovement()!=nullptr?GetVehicleMovement()->GetEngineRotationSpeed():0.0f;
 }
 
 float ABaseCar::GetMaxRPM()
 {
-	if(GetVehicleMovement())
-		return GetVehicleMovement()->GetEngineMaxRotationSpeed();
-	return 0.0f;
+	return GetVehicleMovement()!=nullptr?GetVehicleMovement()->GetEngineMaxRotationSpeed():0.0f;
+}
+
+void ABaseCar::ChangeAirRow()
+{
+	AirRow-=0.2f;
+}
+
+void ABaseCar::ReCoverAirRow()
+{
+	AirRow+=0.2f;
 }
 
 void ABaseCar::BeginPlay()
@@ -96,7 +102,6 @@ void ABaseCar::BeginPlay()
 	ReBornRotator=GetTransform().Rotator();
 	LastLocation=GetTransform().GetLocation();
 	ElectronicPower=MaxElectronicPower;
-	bAddForce=true;
 	
 	UWorld* World=GetWorld();
 	if(Widget!=nullptr&&World!=nullptr)
@@ -137,25 +142,30 @@ void ABaseCar::BeginPlay()
 
 	bDraw=false;
 	CarUI=false;
-	
+
+
+	AirRow=1.29f;
+
+	UWheeledVehicleMovementComponent4W* WheelMoveComponent=Cast<UWheeledVehicleMovementComponent4W>(GetVehicleMovementComponent());
+	FVehicleEngineData EngineData=WheelMoveComponent->EngineSetup;
+	BaseCurve=EngineData.TorqueCurve;
 }
 
 void ABaseCar::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	FVector forward=GetActorForwardVector();
-	if(bAddForce)
-	{
-		if(GetVehicleMovementComponent()->GetForwardSpeed()>0)
-		GetMesh()->AddForce(-forward*300000);
-	}
+	float PowSpeed=pow(fabs(GetVehicleMovementComponent()->GetForwardSpeed()/100),2.0);
+	float DragForce=AirRow*PowSpeed*Cd*Square/2.0f;//Air==1.29为空气密度，1.01 equals cd
+	if(GetVehicleMovementComponent()->GetForwardSpeed()>0)
+		GetMesh()->AddForce(-forward*DragForce);
+	DownForce=AirRow*9.8*H;
+	FVector Down=-GetActorUpVector();
+	GetMesh()->AddForce(Down*PowSpeed*DownForce*DownForceRate);
 	if(bUseERS)
 	{
 		GetMesh()->AddForce(forward*BaseRate*ERSRate);
 	}
-	FVector Down=-GetActorUpVector();
-	float Speed=fabs(GetVehicleMovementComponent()->GetForwardSpeed()/100);
-	GetMesh()->AddForce(Down*CarMess*DownForceRate*Speed);
 	if(GameModeBase!=nullptr)
 	{
 		if(GameModeBase->GetCarRunable()&&!bStart)
@@ -194,9 +204,9 @@ void ABaseCar::HideRunning()
 
 void ABaseCar::MoveForward(float Value)
 {
-	if(bCanCarRun)
+	if(bCanCarRun)//bCanCarRun由GameMode控制,值为true时车辆可以移动
 	{
-		if(!bERSCanOpen)
+		if(!bERSCanOpen)//用来区分是否开启混合动力输出
 			GetVehicleMovementComponent()->SetThrottleInput(Value*GetInputRate());
 		else
 			GetVehicleMovementComponent()->SetThrottleInput(Value);
@@ -211,35 +221,24 @@ void ABaseCar::MoveRight(float Value)
 
 void ABaseCar::Brake()
 {
-	CurrentSpeed=GetVehicleMovementComponent()->GetForwardSpeed()/100.0f;
+	CurrentSpeed=GetVehicleMovementComponent()->GetForwardSpeed()/100.0f;//记录刹车前一瞬间的车速
 	GetVehicleMovementComponent()->SetHandbrakeInput(true);
 	bDraw=true;
-
-	//
-	if(CarWheelsArray[0])
-	{
-		CarWheelSpeed=CurrentSpeed/(CarWheelsArray[0]->GetWheelLength()*0.01f);
-	}
-	else
-	{
-		CarWheelSpeed=0.0f;
-	}
 }
 void ABaseCar::CancleBrake()
 {
-	float TempSpeed=GetVehicleMovementComponent()->GetForwardSpeed()/100.0f;
-	float DeltaSpeed=CurrentSpeed-TempSpeed;
-	float CurrentWheelSpeed=TempSpeed/(CarWheelsArray[0]->GetWheelLength()*0.01f);
-	float DeltaWheelSpeed=CarWheelSpeed-CurrentWheelSpeed;
-	float DeltaWheelPower=0.5*CarWheelsArray[0]->GetWheelMass()*pow(DeltaWheelSpeed,2.0);
+	float TempSpeed=GetVehicleMovementComponent()->GetForwardSpeed()/100.0f;//获取当前车速
+	float DeltaSpeed=CurrentSpeed-TempSpeed;//计算速度增量
 	GetVehicleMovementComponent()->SetHandbrakeInput(false);
+	float WheelPower;
 	for(int i=0;i<CarWheelsArray.Num();i++)
 	{
-		CarWheelsArray[i]->Wear(DeltaSpeed);
+		WheelPower=CarWheelsArray[i]->GetWheelMass()*pow(DeltaSpeed,2.0f)*0.5f;
+		CarWheelsArray[i]->Wear(WheelPower);//轮胎磨损
 	}
-	float EPower=(GetVehicleMovementComponent()->Mass*DeltaSpeed*DeltaSpeed*0.5-DeltaWheelPower*4.0f)*ReChargeRate;
+	float EPower=(GetVehicleMovementComponent()->Mass*DeltaSpeed*DeltaSpeed*0.5-4*WheelPower)*ReChargeRate;//除去轮胎的能量后计算可以被回收的能量
 	UE_LOG(LogTemp,Warning,TEXT("EPower==%f"),EPower);
-	ElectronicPower=ElectronicPower+EPower<=MaxElectronicPower?ElectronicPower+EPower:MaxElectronicPower;
+	ElectronicPower=ElectronicPower+EPower<=MaxElectronicPower?ElectronicPower+EPower:MaxElectronicPower;//充电
 	bDraw=false;
 }
 
@@ -304,7 +303,7 @@ float ABaseCar::GetInputRate()
 		return 0.0f;
 	if(GetCurrentRPM()>=StartWorkRate)
 		return 1.0f;
-	return sqrt(GetCurrentRPM()/GetMaxRPM())>=0.1f?sqrt(GetCurrentRPM()/GetMaxRPM()):0.1f;
+	return sqrt(GetCurrentRPM()/GetMaxRPM())>=BaseOutPut?sqrt(GetCurrentRPM()/GetMaxRPM()):BaseOutPut;
 }
 
 void ABaseCar::WearTyre()
@@ -324,13 +323,14 @@ void ABaseCar::WearTyre()
 
 void ABaseCar::UseDRS()
 {
-	if(bInDRSPlace)
-	bAddForce=false;
+	Square-=DeltaSquare;
+	H-=DeltaH;
 }
 
 void ABaseCar::DisableDRS()
 {
-	bAddForce=true;
+	Square+=DeltaSquare;
+	H+=DeltaH;
 }
 
 void ABaseCar::UseERS()
@@ -350,18 +350,29 @@ void ABaseCar::UseERS()
 }
 void ABaseCar::ERS()
 {
-	
+	//电池电量不为0时
 	if(ElectronicPower!=0.0)
 	{
 		bUseERS=true;
-		ElectronicPower=ElectronicPower-ElectronicCost<0.0f?0.0f:ElectronicPower-ElectronicCost;
-		GetMovementComponent();
+		ElectronicPower=ElectronicPower-ElectronicCost<0.0f?0.0f:ElectronicPower-ElectronicCost;//计算电量消耗
+		UWheeledVehicleMovementComponent4W* WheelMoveComponent=Cast<UWheeledVehicleMovementComponent4W>(GetVehicleMovementComponent());
+		FVehicleEngineData EngineData=WheelMoveComponent->EngineSetup;
+		EngineData.TorqueCurve=ERSCurve;//切换成混合动力发动机的动力输出曲线
+		UCarTransData* TransData=Cast<UCarTransData>(WheelMoveComponent);
+		if(TransData)//更新引擎参数，不进行更新修改不会起作用
+			TransData->UpdateCarEngineSetup(EngineData);
 	}
 	else
 	{
 		bUseERS=false;
 		bERSCanOpen=false;
 		GetWorldTimerManager().ClearTimer(ERSTimeCount);
+		UWheeledVehicleMovementComponent4W* WheelMoveComponent=Cast<UWheeledVehicleMovementComponent4W>(GetVehicleMovementComponent());
+		FVehicleEngineData EngineData=WheelMoveComponent->EngineSetup;
+		EngineData.TorqueCurve=BaseCurve;//切换为纯燃油动力时的动力输出曲线
+		UCarTransData* TransData=Cast<UCarTransData>(WheelMoveComponent);
+		if(TransData)
+			TransData->UpdateCarEngineSetup(EngineData);
 	}
 }
 

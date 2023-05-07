@@ -32,9 +32,12 @@ public:
 	int FinishedCircle;
 	UPROPERTY(BlueprintReadWrite)
 	int Point;
+	UFUNCTION(BlueprintCallable)
 	bool GetCarRunable();
 	UFUNCTION(BlueprintCallable)
 	void SaveGameMessage();
+	UFUNCTION(BlueprintCallable)
+	void Save();
 	UFUNCTION(BlueprintCallable)
 	void ReadGameMessage();
 	ADriveToSurviveGameModeBase();

@@ -81,11 +81,17 @@ void ADriveToSurviveGameModeBase::SaveGameMessage()
 		Save->ReChargeRate=PlayerCar->GetReChargeRate();
 		UWheeledVehicleMovementComponent4W* WheelMoveComponent=Cast<UWheeledVehicleMovementComponent4W>(PlayerCar->GetVehicleMovementComponent());
 		Save->ChangeGearTime=WheelMoveComponent->TransmissionSetup.GearSwitchTime;
-		if(UGameplayStatics::SaveGameToSlot(Save,"SaveSlot",0))
-		{
-			
-		}
+
+		//异步任务委托
+		FAsyncSaveGameToSlotDelegate SaveDelegate;
+		//启动异步保存进程
+		UGameplayStatics::AsyncSaveGameToSlot(Save, TEXT("SaveSlot"), 0, SaveDelegate);
 	}
+}
+
+void ADriveToSurviveGameModeBase::Save()
+{
+	
 }
 
 void ADriveToSurviveGameModeBase::ReadGameMessage()
@@ -100,6 +106,7 @@ void ADriveToSurviveGameModeBase::ReadGameMessage()
 		PlayerCar->SetDownForceRate(Read->DownForceRate);
 		PlayerCar->SetReChargeRate(Read->ReChargeRate);
 		PlayerCar->SetSwitchGearTime(Read->ChangeGearTime);
+		UE_LOG(LogTemp,Warning,TEXT("CarDownForceRate==%f"),Read->DownForceRate);
 	}
 }
 

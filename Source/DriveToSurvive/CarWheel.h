@@ -16,8 +16,24 @@ class DRIVETOSURVIVE_API UCarWheel : public UVehicleWheel
 {
 	GENERATED_BODY()
 private:
-	float MaxLife;
-	float CurrentLife;
+	float DestoryNum;
+	UPROPERTY(EditAnywhere)
+	float WheelRate;
+	const float Pi=3.1415926f;
+	void CaculatePerformance();
+	UPROPERTY(EditAnywhere)
+	float RateForLine;
+	UPROPERTY(EditAnywhere)
+	float MaxPerformance;
+	UPROPERTY(EditAnywhere)
+	float RateForPow;
+	UPROPERTY(EditAnywhere)
+	float MaxDestoryNum;
+	float Cliff;
+	float WorstPerformace;
+	float CurrentPerformance;
+	bool bFirst;
+	float Lat;
 public:
 	UCarWheel();
 	virtual void Tick(float DeltaSeconds) override;

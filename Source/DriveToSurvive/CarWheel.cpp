@@ -7,41 +7,65 @@
 #include "Shape.h"
 
 
+void UCarWheel::CaculatePerformance()
+{
+	if(bFirst)//由于UComponent未提供BeginPlay方法，用此分支实现数据初始化
+	{
+		MaxDestoryNum=Cliff-sqrt((-RateForLine*RateForPow+MaxPerformance-WorstPerformace)/RateForPow);
+		bFirst=false;
+		this->LatStiffValue=MaxPerformance;
+		return;
+	}
+	if(DestoryNum<Cliff)
+	{	//悬崖点前的性能
+		CurrentPerformance=-RateForLine*DestoryNum+MaxPerformance;
+	}else
+	{	//悬崖点后
+		CurrentPerformance=RateForPow*pow(CurrentPerformance-MaxDestoryNum,2.0f)+WorstPerformace;
+	}
+	this->LatStiffValue=CurrentPerformance;
+}
+
 UCarWheel::UCarWheel()
 {
-	MaxLife=1000.0f;
-	CurrentLife=MaxLife;
+	MaxDestoryNum=1000.0f;
+	DestoryNum=0.0f;
 
 	FScriptDelegate Scr;
 	Scr.BindUFunction(this,"OnCompHit");
 	CollisionMesh;
+
+	bFirst=true;
 }
 
 float UCarWheel::GetLifeRate()
 {
-	return CurrentLife/MaxLife;
+	return 1.0f-DestoryNum/MaxDestoryNum;
 }
 
 void UCarWheel::Tick(float DeltaSeconds)
 {
-	if(CurrentLife<0.0f)
+	if(DestoryNum>=MaxDestoryNum)
 	{
 		
 	}
 }
 void UCarWheel::Wear(float Value)
 {
-	CurrentLife-=Value;
+	float Area=this->ShapeRadius*this->ShapeWidth*2*Pi;//计算参与磨损的面积
+	float Delta=Value*WheelRate/Area;//均摊磨损的能量
+	DestoryNum+=Delta;
+	CaculatePerformance();//计算磨损后的性能
 }
 
 float UCarWheel::GetCurrentLife()
 {
-	return CurrentLife;
+	return 1.0f-DestoryNum/MaxDestoryNum;
 }
 
 void UCarWheel::ReCoverTyre()
 {
-	CurrentLife=MaxLife;
+	DestoryNum=0.0f;
 }
 
 float UCarWheel::GetWheelSize()

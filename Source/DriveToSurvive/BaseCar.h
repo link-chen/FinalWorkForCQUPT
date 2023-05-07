@@ -23,11 +23,11 @@ public:
 	{
 		
 	}
-	void UpdateEngineSetup(const FVehicleEngineData& NewEngineSetup)
+	void UpdateCarEngineSetup(const FVehicleEngineData& NewEngineSetup)
 	{
 		UpdateEngineSetup(NewEngineSetup);
 	}
-	void UpdateDifferentialSetup(const FVehicleDifferential4WData& NewDifferentialSetup)
+	void UpdateCarDifferentialSetup(const FVehicleDifferential4WData& NewDifferentialSetup)
 	{
 		UpdateDifferentialSetup(NewDifferentialSetup);
 	}
@@ -57,7 +57,6 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 	bool bExternal = true;
 	UPROPERTY(EditAnywhere)
 	bool bIsmanual;
-	bool bAddForce;
 	float CurrentSpeed;
 	UPROPERTY(EditAnywhere)
 	float ERSRate;
@@ -127,12 +126,30 @@ class DRIVETOSURVIVE_API ABaseCar : public AWheeledVehicle
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* Weight;
+	
 
-	float CarWheelSpeed;
+	UPROPERTY(EditAnywhere)
+	FRuntimeFloatCurve ERSCurve;
+	FRuntimeFloatCurve BaseCurve;
+
+	float Drag;
+	float DownForce;
+	UPROPERTY(EditAnywhere)
+	float Square;
+	UPROPERTY(EditAnywhere)
+	float H;
+	UPROPERTY(EditAnywhere)
+	float DeltaSquare;
+	UPROPERTY(EditAnywhere)
+	float DeltaH;
+	UPROPERTY(EditAnywhere)
+	float Cd;
+	float AirRow;
+	UPROPERTY(EditAnywhere)
+	float BaseOutPut;
 	
 public:
 	bool bCanUseDRS;
-	bool bInDRSPlace;
 	UPROPERTY(EditAnywhere)
 	float MaxSpeed;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
@@ -193,5 +210,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	float GetCurrentRPM();
 	float GetMaxRPM();
-	
+	UFUNCTION(BlueprintCallable)
+	void ChangeAirRow();
+	UFUNCTION(BlueprintCallable)
+	void ReCoverAirRow();
 };

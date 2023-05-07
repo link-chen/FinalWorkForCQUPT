@@ -50,7 +50,7 @@ void ADRSPlace::DRSStartFunction(UPrimitiveComponent* OverlappedComponent,
 	{
 		if(Car->bCanUseDRS)
 		{
-			Car->bInDRSPlace=true;
+			Car->UseDRS();
 		}
 	}
 }
@@ -68,7 +68,6 @@ void ADRSPlace::DRSEndFunction(UPrimitiveComponent* OverlappedComponent,
 		{
 			Car->DisableDRS();
 			Car->bCanUseDRS=false;
-			Car->bInDRSPlace=false;
 		}
 	}
 }
