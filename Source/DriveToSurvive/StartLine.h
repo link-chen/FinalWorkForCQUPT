@@ -26,6 +26,11 @@ class DRIVETOSURVIVE_API AStartLine : public AActor
     UPROPERTY(EditAnywhere)
 	TArray<AFireWorkSpawnSpace*> FireWorkSpawnSpacesArray;
 
+	UPROPERTY(EditAnywhere)
+	UAudioComponent* Audio;
+	UPROPERTY(EditAnywhere)
+	UAudioComponent* GameAudio;
+
 	void CheckFinish();
 
 	float RacingTime;

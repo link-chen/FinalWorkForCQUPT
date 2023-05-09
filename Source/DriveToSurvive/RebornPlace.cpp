@@ -13,7 +13,7 @@ ARebornPlace::ARebornPlace()
 	Box=CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
 
 	MeshComponent=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	MeshComponent->SetupAttachment(Box);
+	Box->SetupAttachment(MeshComponent);
 	
 	FScriptDelegate Del;
 	Del.BindUFunction(this,"BeginOverLap");
@@ -46,6 +46,7 @@ void ARebornPlace::BeginOverLap(UPrimitiveComponent* OverlappedComponent,
 	{
 		Car->LastLocation=Car->GetTransform().GetLocation();
 		bCross=true;
+		UE_LOG(LogTemp,Warning,TEXT("CarCrossing"));
 	}
 }
 

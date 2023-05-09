@@ -5,6 +5,7 @@
 
 #include "BaseCar.h"
 #include "DriveToSurviveGameModeBase.h"
+#include "Components/AudioComponent.h"
 #include "GameFramework/GameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -21,6 +22,9 @@ AStartLine::AStartLine()
 	ScriptDelegate.BindUFunction(this,"BeginOverlap");
 	CrossingBox->OnComponentBeginOverlap.Add(ScriptDelegate);
 	Circle=0;
+
+	GameAudio=CreateDefaultSubobject<UAudioComponent>(TEXT("Game"));
+	Audio=CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
 }
 
 // Called when the game starts or when spawned
@@ -49,9 +53,13 @@ void AStartLine::CheckFinish()
 	for(int i=0;i<RebornArray.Num();i++)
 	{
 		if(!RebornArray[i]->bCross)
+		{
+			UE_LOG(LogTemp,Warning,TEXT("The number %d check failed"),i);
 			flag=false;
+		}
 		RebornArray[i]->bCross=false;
 	}
+	UE_LOG(LogTemp,Warning,TEXT("Flag==%d"),flag);
 	if(flag)
 	{
 		UWorld* World=GetWorld();
@@ -60,6 +68,7 @@ void AStartLine::CheckFinish()
 			GameModeBase->FinishedCircle++;
 		Circle++;
 	}
+	UE_LOG(LogTemp,Warning,TEXT("Circle==%d"),Circle);
 	if(Circle+1==TargetCircle)
 	{
 		UE_LOG(LogTemp,Warning,TEXT("This is finally lap of race"));
@@ -72,6 +81,9 @@ void AStartLine::CheckFinish()
 		for(int i=0;i<FireWorkSpawnSpacesArray.Num();i++)
 			FireWorkSpawnSpacesArray[i]->StartFireWork();
 		FinishGame();
+		GameAudio->Deactivate();
+		GameAudio->Stop();
+		Audio->Play();
 	}
 }
 

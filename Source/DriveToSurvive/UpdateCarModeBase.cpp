@@ -100,7 +100,7 @@ void AUpdateCarModeBase::UpdateElectronic(int Change)
 	{
 		if(Point>=1)
 		{
-			MaxElectronicPower+=1000.0f;
+			MaxElectronicPower+=2000.0f;
 			Point--;
 			SaveGameMessage();
 		}
@@ -109,9 +109,9 @@ void AUpdateCarModeBase::UpdateElectronic(int Change)
 	}
 	if(Change==-1)
 	{
-		if(MaxElectronicPower-1000.0f>=10000.0f)
+		if(MaxElectronicPower-2000.0f>=10000.0f)
 		{
-			MaxElectronicPower-=10.0f;
+			MaxElectronicPower-=2000.0f;
 			Point++;
 			SaveGameMessage();
 		}
@@ -151,7 +151,7 @@ void AUpdateCarModeBase::UpdateDownForce(int Change)
 	if(Change==1)
 	{
 		if(Point>=1){
-			DownForceRate+=0.1;
+			DownForceRate+=3.0f;
 			Point--;
 			SaveGameMessage();
 		}else
@@ -159,9 +159,9 @@ void AUpdateCarModeBase::UpdateDownForce(int Change)
 	}
 	if(Change==-1)
 	{
-		if(DownForceRate-0.1f>=0.0f)
+		if(DownForceRate-3.0f>=0.0f)
 		{
-			DownForceRate-=0.1f;
+			DownForceRate-=2.5f;
 			Point++;
 			SaveGameMessage();
 		}
@@ -174,9 +174,9 @@ void AUpdateCarModeBase::UpdateReCharge(int Change)
 {
 	if(Change==1)
 	{
-		if(Point>=1&&ReChargeRate<=0.99f)
+		if(Point>=1&&ReChargeRate+0.001<=0.99f)
 		{
-			ReChargeRate+=0.00015f;
+			ReChargeRate+=0.001f;
 			Point--;
 			SaveGameMessage();
 		}
@@ -188,7 +188,7 @@ void AUpdateCarModeBase::UpdateReCharge(int Change)
 		if(ReChargeRate>=0.00006f)
 		{
 			Point++;
-			ReChargeRate-=0.00015f;
+			ReChargeRate-=0.001f;
 			SaveGameMessage();
 		}
 		else
@@ -203,7 +203,7 @@ void AUpdateCarModeBase::UpdateChangeGear(int Change)
 		if(ChangeGearTime>=0.1f&&Point>=1)
 		{
 			Point--;
-			ChangeGearTime-=0.05f;
+			ChangeGearTime-=0.1f;
 			SaveGameMessage();
 		}
 		else
@@ -214,7 +214,7 @@ void AUpdateCarModeBase::UpdateChangeGear(int Change)
 		if(ChangeGearTime<=4.5f)
 		{
 			Point++;
-			ChangeGearTime+=0.05f;
+			ChangeGearTime+=0.1f;
 			SaveGameMessage();
 		}
 		else
