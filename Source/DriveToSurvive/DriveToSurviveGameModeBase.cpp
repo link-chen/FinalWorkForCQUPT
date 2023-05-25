@@ -114,3 +114,4 @@ void ADriveToSurviveGameModeBase::StartCountLight()
 {
 	GetWorldTimerManager().SetTimer(Time,this,&ADriveToSurviveGameModeBase::CountTime,1,true);
 }
+

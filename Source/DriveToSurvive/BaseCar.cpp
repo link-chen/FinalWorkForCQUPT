@@ -100,21 +100,14 @@ void ABaseCar::BeginPlay()
 {
 	Super::BeginPlay();
 	ReBornRotator=GetTransform().Rotator();
-	LastLocation=GetTransform().GetLocation();
+	LastLocation=GetTransform().GetLocation();//设置第一次的重新归位的Location和Rotation
 	ElectronicPower=MaxElectronicPower;
-	
 	UWorld* World=GetWorld();
 	if(Widget!=nullptr&&World!=nullptr)
-	{
-		CarUI=CreateWidget<UUserWidget>(World,Widget);
-	}
+		CarUI=CreateWidget<UUserWidget>(World,Widget);//添加UI
 	if(World!=nullptr)
-	{
+	{//从游戏模式中获取数据
 		GameModeBase=Cast<ADriveToSurviveGameModeBase>(World->GetAuthGameMode());
-		if(GameModeBase)
-		{
-			
-		}
 		if(GameModeBase==nullptr)
 		{
 			AFPSGameModeBase* GameMode=Cast<AFPSGameModeBase>(World->GetAuthGameMode());
@@ -125,30 +118,19 @@ void ABaseCar::BeginPlay()
 			}
 		}
 	}
-
 	bStart=false;
 	TArray<UVehicleWheel*> TempArray=GetVehicleMovementComponent()->Wheels;
-
 	for(int i=0;i<TempArray.Num();i++)
-	{
-		CarWheelsArray.Add(Cast<UCarWheel>(TempArray[i]));
-	}
-
+		CarWheelsArray.Add(Cast<UCarWheel>(TempArray[i]));//添加轮胎进行管理
 	GetWorldTimerManager().SetTimer(Timer,this,&ABaseCar::WearTyre,5,true);
-
-	CarMess=GetVehicleMovementComponent()->Mass;
-	
-	TurnLight();
-
+	CarMess=GetVehicleMovementComponent()->Mass;//初始化质量用于后期进行动能回收计算
+	TurnLight();//关灯，在构造函数中灯默认开启
 	bDraw=false;
 	CarUI=false;
-
-
 	AirRow=1.29f;
-
 	UWheeledVehicleMovementComponent4W* WheelMoveComponent=Cast<UWheeledVehicleMovementComponent4W>(GetVehicleMovementComponent());
 	FVehicleEngineData EngineData=WheelMoveComponent->EngineSetup;
-	BaseCurve=EngineData.TorqueCurve;
+	BaseCurve=EngineData.TorqueCurve;//初始化动力曲线
 }
 
 void ABaseCar::Tick(float DeltaSeconds)

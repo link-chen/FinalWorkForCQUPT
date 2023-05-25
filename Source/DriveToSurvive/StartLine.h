@@ -6,6 +6,7 @@
 #include "FireWorkSpawnSpace.h"
 #include "RebornPlace.h"
 #include "GameFramework/Actor.h"
+#include "Sound/SoundCue.h"
 #include "StartLine.generated.h"
 
 UCLASS()
@@ -30,7 +31,11 @@ class DRIVETOSURVIVE_API AStartLine : public AActor
 	UAudioComponent* Audio;
 	UPROPERTY(EditAnywhere)
 	UAudioComponent* GameAudio;
-
+	UPROPERTY(EditAnywhere)
+	TArray<USoundCue*> Sound;
+	int MusicIndex;
+	bool CanPlay;
+	
 	void CheckFinish();
 
 	float RacingTime;
@@ -38,6 +43,8 @@ class DRIVETOSURVIVE_API AStartLine : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AStartLine();
+	UFUNCTION(BlueprintCallable)
+	void PlayNext();
 
 protected:
 	// Called when the game starts or when spawned

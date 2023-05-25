@@ -27,6 +27,14 @@ AStartLine::AStartLine()
 	Audio=CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
 }
 
+void AStartLine::PlayNext()
+{
+	if(CanPlay){
+		UE_LOG(LogTemp,Warning,TEXT("PlayNextMusic"));
+		GameAudio->SetSound(Sound[MusicIndex++]);
+		GameAudio->Activate();
+	}
+}
 // Called when the game starts or when spawned
 void AStartLine::BeginPlay()
 {
@@ -41,6 +49,7 @@ void AStartLine::BeginPlay()
 		if(ARebornPlace* ReBorn=Cast<ARebornPlace>(Actor))
 			RebornArray.Add(ReBorn);
 	}
+	CanPlay=true;
 }
 void AStartLine::CheckFinish()
 {
@@ -75,14 +84,15 @@ void AStartLine::CheckFinish()
 	}
 	if(TargetCircle==Circle)
 	{
+		CanPlay=false;
 		UE_LOG(LogTemp,Warning,TEXT("Finished"));
 		for(int i=0;i<RebornArray.Num();i++)
 			RebornArray[i]->StartFire();
 		for(int i=0;i<FireWorkSpawnSpacesArray.Num();i++)
 			FireWorkSpawnSpacesArray[i]->StartFireWork();
 		FinishGame();
-		GameAudio->Deactivate();
 		GameAudio->Stop();
+		GameAudio->Deactivate();
 		Audio->Play();
 	}
 }
